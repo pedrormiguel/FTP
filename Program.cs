@@ -1,25 +1,23 @@
-﻿using System;
-using System.Threading.Tasks;
-using FtpClientConsole.Class;
+﻿using System.Threading.Tasks;
+using src.Class;
 using static System.Console;
-using static FtpClientConsole.Utitity.ConsoleUtility;
-namespace FtpClientTest
+using static src.Utility.ConsoleUtility;
+
+namespace src
 {
     class Program
     {
         static async Task Main(string[] args)
         {
-            // var hostname = "ftp://ftp.dlptest.com/";
-            // var username = "dlpuser";
-            // var password = "rNrKYTX9g7z3RgJRmxWuGHbeu";
-            // int port = 21;
             await Menu();
         }
+
         static async Task Menu()
         {
             WriteLine("\t \t ..Menu..");
             WriteLine("Options\n");
-            WriteLine("1.Connect to a Server");
+            WriteLine("1.Connect to a server.");
+            WriteLine("2.Register new server.");
             WriteLine("-----------------------");
             InsertBlankLine();
 
@@ -41,7 +39,7 @@ namespace FtpClientTest
                         {
                             Write("Connected Successfully, hit enter...");
                             WaitAndClearScreen();
-                            await MenuFtpOptions(clientFtp);
+                            MenuFtpOptions(clientFtp).RunSynchronously(); //TODO Monitoring difference between RunSync and await;
                         }
                         else
                         {
@@ -51,6 +49,25 @@ namespace FtpClientTest
                         }
 
                     } while (!output);
+
+                    break;
+
+                case "2":
+
+                    var credentials = MenuConnection();
+                    bool IsSaved = false;
+
+                    var Handler = new DbFileHandler();
+                    IsSaved = await Handler.Add(credentials);
+
+                    if (IsSaved)
+                        Write($"The Ftp server {credentials.HostName} was saved it");
+                    else
+                        Write("Ocurred a problem saving the credetials, try again.");
+
+                    InsertBlankLine();
+                    WaitAndClearScreen();
+                    Menu().RunSynchronously();
 
                     break;
 
@@ -115,7 +132,7 @@ namespace FtpClientTest
 
                     var ouput = await client.UploadFile(localPath, remotePath);
 
-                    if(ouput)
+                    if (ouput)
                         WriteLine("File successfully uploaded.");
                     else
                         WriteLine("File not successfully uploaded.");

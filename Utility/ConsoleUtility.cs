@@ -1,9 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using FtpClientTest;
 using static System.Console;
 
-namespace FtpClientConsole.Utitity
+namespace src.Utility
 {
     public class ConsoleUtility
     {

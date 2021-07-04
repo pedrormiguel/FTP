@@ -1,8 +1,9 @@
 using System;
+using src.Class;
 
-namespace FtpClientConsole.Class
+namespace src.Class
 {
-    public class DtoConnectioSever
+    public class DtoConnectioSever : BaseCredentials
     {
         public string HostName {get; set;}
         public string UserName { get; set; }
@@ -15,6 +16,11 @@ namespace FtpClientConsole.Class
             UserName = username;
             Password = passwrod;
             Port = int.Parse(port);
+        }
+
+        public override string ToString()
+        {
+            return $"{this.Id}-{this.HostName}-{this.UserName}-{this.Password}-{this.Port}";
         }
     }
 }

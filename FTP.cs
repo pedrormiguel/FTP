@@ -1,10 +1,10 @@
-using System.IO;
 using System.Net;
 using System;
+using static System.Console;
 using FluentFTP;
 using System.Threading.Tasks;
 
-namespace FtpClientTest
+namespace src
 {
     public class FTP
     {
@@ -33,12 +33,12 @@ namespace FtpClientTest
 
                 _client.Connect();
 
-                //System.Console.WriteLine($"It's Connected to \n");
+                //WriteLine($"It's Connected to \n");
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine("It's not Connected to the server");  
-                System.Console.WriteLine($"Error's {ex.Data} \n {ex.Message} \n {ex.Source} {ex.TargetSite}");
+                WriteLine("It's not Connected to the server");  
+                WriteLine($"Error's {ex.Data} \n {ex.Message} \n {ex.Source} {ex.TargetSite}");
             }
 
             return _client.IsConnected;
@@ -48,17 +48,17 @@ namespace FtpClientTest
         {
             var directory = await _client.GetNameListingAsync();
 
-            System.Console.WriteLine("Files on the remote server : \n");
+            WriteLine("Files on the remote server : \n");
 
             foreach (var item in directory)
             {
-                System.Console.WriteLine($"- {item}");
+                WriteLine($"- {item}");
             }
         }
 
         public async Task ListItemsFiles(string folderPath)
         {
-            System.Console.WriteLine("\t Files on the remote server : \n");
+            WriteLine("\t Files on the remote server : \n");
 
              foreach (FtpListItem item in await _client.GetListingAsync(folderPath))
             {
@@ -67,7 +67,7 @@ namespace FtpClientTest
                     long size = _client.GetFileSize(item.FullName); 
                     FtpHash hash = _client.GetChecksum(item.FullName);
 
-                    System.Console.WriteLine($"\t {item.FullName} - {item.OwnerPermissions} - {size}");
+                    WriteLine($"\t {item.FullName} - {item.OwnerPermissions} - {size}");
                 }
 
                 DateTime time = _client.GetModifiedTime(item.FullName);
@@ -78,7 +78,7 @@ namespace FtpClientTest
         {
             if (_client.IsConnected)
             {
-                System.Console.WriteLine("Uploading File");
+                WriteLine("Uploading File");
 
                 try
                 {
@@ -88,7 +88,7 @@ namespace FtpClientTest
                 }
                 catch (Exception ex)
                 {
-                    System.Console.WriteLine($"Error's {ex.Data} \n {ex.Message} \n {ex.Source} {ex.TargetSite}");
+                    WriteLine($"Error's {ex.Data} \n {ex.Message} \n {ex.Source} {ex.TargetSite}");
                 }
             }
 
