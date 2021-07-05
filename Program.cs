@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using src.Class;
 using static System.Console;
 using static src.Utility.ConsoleUtility;
@@ -18,10 +20,15 @@ namespace src
             WriteLine("Options\n");
             WriteLine("1.Connect to a server.");
             WriteLine("2.Register new server.");
+            WriteLine("3.List all the servers.");
+            WriteLine("0.Crear the screen.");
+
             WriteLine("-----------------------");
             InsertBlankLine();
 
             var selection = ReadOption();
+            var Handler = new DbFileHandler();
+            Response response = null;
 
             switch (selection)
             {
@@ -39,7 +46,7 @@ namespace src
                         {
                             Write("Connected Successfully, hit enter...");
                             WaitAndClearScreen();
-                            MenuFtpOptions(clientFtp).RunSynchronously(); //TODO Monitoring difference between RunSync and await;
+                            await MenuFtpOptions(clientFtp); //TODO Monitoring difference between  and await;
                         }
                         else
                         {
@@ -55,20 +62,87 @@ namespace src
                 case "2":
 
                     var credentials = MenuConnection();
-                    bool IsSaved = false;
 
-                    var Handler = new DbFileHandler();
-                    IsSaved = await Handler.Add(credentials);
+                    response = await Handler.Add(credentials);
 
-                    if (IsSaved)
-                        Write($"The Ftp server {credentials.HostName} was saved it");
+                    if (response.status)
+                        Write($"The Ftp server [{credentials.HostName}] was saved it");
                     else
                         Write("Ocurred a problem saving the credetials, try again.");
 
                     InsertBlankLine();
                     WaitAndClearScreen();
-                    Menu().RunSynchronously();
+                    await Menu();
 
+                    break;
+
+                case "3":
+
+                    WriteLine("\t \t ..MENU..");
+                    InsertBlankLine();
+                    response = await Handler.ReadAll();
+                    var FtpSevers = new List<DtoConnectioSever>();
+
+                    if (!response.Data.Equals(null))
+                    {
+
+                        WriteLine("Listing all the available servers :");
+
+                        foreach (var line in response.Data as string[])
+                        {
+                            var item = DtoConnectioSever.Map(line);
+                            WriteLine($"1.{item.HostName}");
+                            FtpSevers.Add(item);
+                        }
+                    }
+
+                    InsertBlankLine();
+                    Write("Do you want to return to the menu press a Non-numeric key OR If want to connect to one server from the list above, digit the number. ? :");
+                    var anserw = ReadLine().ToUpper();
+                    int ServerPosition;
+                    var IsCorrect = int.TryParse(anserw, out ServerPosition);
+
+                    if (!IsCorrect)
+                    {
+                        await Menu();
+                    }
+                    else
+                    {
+                        DtoConnectioSever server = null;
+
+                        try
+                        {
+                            server = FtpSevers[ServerPosition];
+                        }
+                        catch (Exception ex)
+                        {
+                            InsertBlankLine();
+                            WriteLine("The option is not available, returning to the menu...");
+                            WaitAndClearScreen();
+                            await Menu();
+                        }
+
+                        var client = Connection(server);
+
+                        if (client.IsConnected)
+                        {
+                            Write("Connected Successfully, hit enter...");
+                            WaitAndClearScreen();
+                            await MenuFtpOptions(client);
+                        }
+                        else
+                        {
+                            WriteLine("there Was a problem connecting with the server, try Later.");
+                            Clear();
+                            await Menu();
+                        }
+                    }
+
+                    break;
+
+                case "0":
+                    Clear();
+                    await Menu();
                     break;
 
                 default:
@@ -76,6 +150,7 @@ namespace src
                     break;
             }
         }
+
         private static async Task MenuFtpOptions(FTP client)
         {
             InsertBlankLine();

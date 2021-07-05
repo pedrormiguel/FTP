@@ -5,9 +5,9 @@ namespace src.Interfaces
 {
     public interface IPersistence
     {
-         Task<bool> Add(BaseCredentials credentials);
-         Task Read(BaseCredentials credentials);
-         Task Update(BaseCredentials credentials);
-         Task Delete(BaseCredentials credentials);
+        Task<Response> Add(BaseCredentials credentials);
+        Task<Response> ReadAll();
+        Task<Response> Update(BaseCredentials credentials);
+        Task<Response> Delete(BaseCredentials credentials);
     }
 }

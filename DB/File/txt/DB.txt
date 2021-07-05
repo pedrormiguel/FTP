@@ -1,4 +1,4 @@
-8c2b2e29-70b5-405b-b2bf-4e3314a2769c-p-p-p-21
-3e3d7282-eb2f-4b97-a291-054cb8262445-a-a-a-21
-d7716c49-95b1-45fe-97a8-a8b1dc4aad84-1-1-1-1
-dfccc1f0-8649-448f-83af-f62cfcd7f484-3-3-3-3
+6dc1612b-60a6-4bf0-81ed-c45bb78ad514;p;p;p;21
+b6e59e1b-3b92-4500-81b8-960a8a14b954;a;a;a;34
+1b9e4813-e5bc-4959-b171-eae182c899ce;c;c;c;32
+cd0c074d-91cc-4eea-83bb-2d0240677c3d;ftp://ftp.dlptest.com;dlpuser;rNrKYTX9g7z3RgJRmxWuGHbeu;21

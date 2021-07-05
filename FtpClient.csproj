@@ -9,4 +9,10 @@
     <PackageReference Include="FluentFTP" Version="34.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="DB\File\txt\DB.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DB\File\txt\DB.txt" />
+  </ItemGroup>
 </Project>

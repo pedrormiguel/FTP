@@ -1,3 +1,4 @@
+using System.Net;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -7,39 +8,65 @@ namespace src.Class
 {
     public class DbFileHandler : IPersistence
     {
-        private readonly string PATHDBFILE = @"./DB/File/txt/DB.txt";
-        public async Task<bool> Add(BaseCredentials credentials)
+        private readonly string PATHDBFILE;
+
+        public DbFileHandler()
         {
+            this.PATHDBFILE = GetPathFile();
+        }
+
+        private string GetPathFile()
+        {
+            string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string sFile = System.IO.Path.Combine(sCurrentDirectory, @"../../../DB/File/txt/DB.txt");
+            return Path.GetFullPath(sFile);
+        }
+
+        public async Task<Response> Add(BaseCredentials credentials)
+        {
+            var response = new Response();
+
             try
             {
-                 using StreamWriter file = new StreamWriter(PATHDBFILE, append:true);
-                 await file.WriteLineAsync(credentials.ToString());
+                using StreamWriter file = new StreamWriter(PATHDBFILE, append: true);
+                await file.WriteLineAsync(credentials.ToString());
+                response.status = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Console.WriteLine($"{ex.ToString()}");
-                return false;
+                response.Error = ex.ToString();
             }
 
-            return true;
+            return response;
         }
-        public async Task Delete(BaseCredentials credentials)
+
+        public async Task<Response> ReadAll()
+        {
+            var response = new Response();
+
+            try
+            {
+                var lines = await File.ReadAllLinesAsync(PATHDBFILE);
+                response.status = true;
+                response.Data = lines;
+            }
+            catch (Exception ex)
+            {
+                response.Error = ex.ToString();
+            }
+
+            return response;
+        }
+
+        public async Task<Response> Delete(BaseCredentials credentials)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-        public async Task Read(BaseCredentials credentials)
+        public async Task<Response> Update(BaseCredentials credentials)
         {
             throw new System.NotImplementedException();
         }
-        public async Task Update(BaseCredentials credentials)
-        {
-            throw new System.NotImplementedException();
-        }
-    
+
     }
 }
