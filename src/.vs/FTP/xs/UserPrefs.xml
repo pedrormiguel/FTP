@@ -1,0 +1,30 @@
+﻿<Properties StartupConfiguration="{EC04FBBE-4AD6-4CE3-8593-3861DCB149E8}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ConsoleApp/Utility/ConsoleUtility.cs">
+    <Files>
+      <File FileName="ConsoleApp/Program.cs" Line="17" Column="1" />
+      <File FileName="ConsoleApp/Class/Menu.cs" Line="249" Column="2" />
+      <File FileName="ConsoleApp/Utility/ConsoleUtility.cs" Line="33" Column="10" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="FTP" expanded="True">
+            <Node name="FTPConsole" expanded="True">
+              <Node name="Class" expanded="True" />
+              <Node name="Utility" expanded="True">
+                <Node name="ConsoleUtility.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.FTPConsole PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

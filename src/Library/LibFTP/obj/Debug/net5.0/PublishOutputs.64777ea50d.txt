@@ -1,0 +1,4 @@
+/Users/pedromiguelruiznunez/Projects/FtpClientConsole/Library/LibFTP/bin/Debug/net5.0/publish/LibFTP.dll
+/Users/pedromiguelruiznunez/Projects/FtpClientConsole/Library/LibFTP/bin/Debug/net5.0/publish/LibFTP.deps.json
+/Users/pedromiguelruiznunez/Projects/FtpClientConsole/Library/LibFTP/bin/Debug/net5.0/publish/LibFTP.pdb
+/Users/pedromiguelruiznunez/Projects/FtpClientConsole/Library/LibFTP/bin/Debug/net5.0/publish/FluentFTP.dll
