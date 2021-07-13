@@ -45,7 +45,7 @@ namespace ConsoleApp.Utility
             await menu();
         }
 
-        public static async Task RepeatOptions(Func<FTP, Task> menu, FTP client)
+        public static async Task RepeatOptions(Func<Ftp, Task> menu, Ftp client)
         {
             InsertBlankLine();
             WriteLine("Select a valid option");

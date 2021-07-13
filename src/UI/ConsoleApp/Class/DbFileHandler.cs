@@ -3,7 +3,7 @@ using System.Net;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using ConsoleApp.Interfaces;
+using FTPConsole.Interfaces;
 
 namespace ConsoleApp.Class
 {

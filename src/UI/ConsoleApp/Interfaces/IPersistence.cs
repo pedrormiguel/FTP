@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using ConsoleApp.Class;
 
-namespace ConsoleApp.Interfaces
+namespace FTPConsole.Interfaces
 {
     public interface IPersistence
     {

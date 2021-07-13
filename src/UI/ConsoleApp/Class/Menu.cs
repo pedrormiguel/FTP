@@ -141,9 +141,9 @@ namespace ConsoleApp.Class
 
             return connection;
         }
-        static FTP Connection(DtoConnectioSever credentials)
+        static Ftp Connection(DtoConnectioSever credentials)
         {
-            var client = new FTP(credentials.HostName, credentials.UserName, credentials.Password, credentials.Port);
+            var client = new Ftp(credentials.HostName, credentials.UserName, credentials.Password, credentials.Port);
             client.Connect();
 
             return client;
@@ -153,7 +153,7 @@ namespace ConsoleApp.Class
             Clear();
             await InitialPoint();
         }
-        public static async Task MenuFtpOptions(FTP client)
+        public static async Task MenuFtpOptions(Ftp client)
         {
             InsertBlankLine();
             WriteLine("\t \t ..MENU..");
