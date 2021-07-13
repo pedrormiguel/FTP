@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Library\LibFTP\LibFTP.csproj" />
+    <ProjectReference Include="..\Library\FTPLib\FTPLib.csproj" />
   </ItemGroup>
-  
 </Project>

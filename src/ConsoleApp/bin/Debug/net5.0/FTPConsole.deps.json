@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v5.0": {
       "FTPConsole/1.0.0": {
         "dependencies": {
-          "LibFTP": "1.0.0"
+          "FTPLib": "1.0.0"
         },
         "runtime": {
           "FTPConsole.dll": {}
@@ -236,12 +236,12 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "LibFTP/1.0.0": {
+      "FTPLib/1.0.0": {
         "dependencies": {
           "FluentFTP": "34.0.0"
         },
         "runtime": {
-          "LibFTP.dll": {}
+          "FTPLib.dll": {}
         }
       }
     }
@@ -441,7 +441,7 @@
       "path": "system.threading.tasks/4.3.0",
       "hashPath": "system.threading.tasks.4.3.0.nupkg.sha512"
     },
-    "LibFTP/1.0.0": {
+    "FTPLib/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

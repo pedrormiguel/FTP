@@ -1,3 +1,8 @@
+/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/obj/Debug/net5.0/FTPConsole.csproj.AssemblyReference.cache
+/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/obj/Debug/net5.0/FTPConsole.GeneratedMSBuildEditorConfig.editorconfig
+/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/obj/Debug/net5.0/FTPConsole.AssemblyInfoInputs.cache
+/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/obj/Debug/net5.0/FTPConsole.AssemblyInfo.cs
+/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/obj/Debug/net5.0/FTPConsole.csproj.CoreCompileInputs.cache
 /Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/bin/Debug/net5.0/FTPConsole.deps.json
 /Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/bin/Debug/net5.0/FTPConsole.runtimeconfig.json
 /Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/bin/Debug/net5.0/FTPConsole.runtimeconfig.dev.json
@@ -5,13 +10,8 @@
 /Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/bin/Debug/net5.0/ref/FTPConsole.dll
 /Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/bin/Debug/net5.0/FTPConsole.pdb
 /Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/bin/Debug/net5.0/FluentFTP.dll
-/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/bin/Debug/net5.0/LibFTP.dll
-/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/bin/Debug/net5.0/LibFTP.pdb
-/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/obj/Debug/net5.0/FTPConsole.csproj.AssemblyReference.cache
-/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/obj/Debug/net5.0/FTPConsole.GeneratedMSBuildEditorConfig.editorconfig
-/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/obj/Debug/net5.0/FTPConsole.AssemblyInfoInputs.cache
-/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/obj/Debug/net5.0/FTPConsole.AssemblyInfo.cs
-/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/obj/Debug/net5.0/FTPConsole.csproj.CoreCompileInputs.cache
+/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/bin/Debug/net5.0/FTPLib.dll
+/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/bin/Debug/net5.0/FTPLib.pdb
 /Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/obj/Debug/net5.0/FTPConsole.csproj.CopyComplete
 /Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/obj/Debug/net5.0/FTPConsole.dll
 /Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/obj/Debug/net5.0/ref/FTPConsole.dll

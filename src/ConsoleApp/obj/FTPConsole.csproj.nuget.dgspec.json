@@ -17,7 +17,7 @@
           "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "/Users/pedromiguelruiznunez/.nuget/NuGet/NuGet.Config"
+          "/Users/pedromiguelruiznunez/.config/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -29,8 +29,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Library/LibFTP/LibFTP.csproj": {
-                "projectPath": "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Library/LibFTP/LibFTP.csproj"
+              "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Library/FTPLib/FTPLib.csproj": {
+                "projectPath": "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Library/FTPLib/FTPLib.csproj"
               }
             }
           }
@@ -63,20 +63,20 @@
         }
       }
     },
-    "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Library/LibFTP/LibFTP.csproj": {
+    "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Library/FTPLib/FTPLib.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Library/LibFTP/LibFTP.csproj",
-        "projectName": "LibFTP",
-        "projectPath": "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Library/LibFTP/LibFTP.csproj",
+        "projectUniqueName": "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Library/FTPLib/FTPLib.csproj",
+        "projectName": "FTPLib",
+        "projectPath": "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Library/FTPLib/FTPLib.csproj",
         "packagesPath": "/Users/pedromiguelruiznunez/.nuget/packages/",
-        "outputPath": "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Library/LibFTP/obj/",
+        "outputPath": "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Library/FTPLib/obj/",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "/Users/pedromiguelruiznunez/.nuget/NuGet/NuGet.Config"
+          "/Users/pedromiguelruiznunez/.config/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"

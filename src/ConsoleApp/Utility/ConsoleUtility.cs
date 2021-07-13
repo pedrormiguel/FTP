@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using LibFTP;
+using FTPLib;
 using static System.Console;
 
 namespace ConsoleApp.Utility

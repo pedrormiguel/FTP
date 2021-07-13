@@ -369,17 +369,17 @@
           "ref/netstandard1.3/System.Threading.Tasks.dll": {}
         }
       },
-      "LibFTP/1.0.0": {
+      "FTPLib/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
           "FluentFTP": "34.0.0"
         },
         "compile": {
-          "bin/placeholder/LibFTP.dll": {}
+          "bin/placeholder/FTPLib.dll": {}
         },
         "runtime": {
-          "bin/placeholder/LibFTP.dll": {}
+          "bin/placeholder/FTPLib.dll": {}
         }
       }
     }
@@ -1903,15 +1903,15 @@
         "system.threading.tasks.nuspec"
       ]
     },
-    "LibFTP/1.0.0": {
+    "FTPLib/1.0.0": {
       "type": "project",
-      "path": "../Library/LibFTP/LibFTP.csproj",
-      "msbuildProject": "../Library/LibFTP/LibFTP.csproj"
+      "path": "../Library/FTPLib/FTPLib.csproj",
+      "msbuildProject": "../Library/FTPLib/FTPLib.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net5.0": [
-      "LibFTP >= 1.0.0"
+      "FTPLib >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -1931,7 +1931,7 @@
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/Users/pedromiguelruiznunez/.nuget/NuGet/NuGet.Config"
+        "/Users/pedromiguelruiznunez/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
@@ -1943,8 +1943,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Library/LibFTP/LibFTP.csproj": {
-              "projectPath": "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Library/LibFTP/LibFTP.csproj"
+            "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Library/FTPLib/FTPLib.csproj": {
+              "projectPath": "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Library/FTPLib/FTPLib.csproj"
             }
           }
         }

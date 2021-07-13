@@ -1,7 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LibFTP;
+using FTPLib;
 using static System.Console;
 using static ConsoleApp.Utility.ConsoleUtility;
 

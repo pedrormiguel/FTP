@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "/U41LAFjK5f71vsHTa8nVGbT4hFS4bI7zqYadM63+m+LfRcX/Xt6d/8s/WfYMfoa2b1+YgwVu+XUWx7TJn2EVA==",
+  "dgSpecHash": "mFfJ38yxgQjkavNHAnpEU4X77ygZ+Zke/h0pquvbm68W9awVVpJ00Y3WiRCjlj2iK5YuZYynICdWkIHqxACqwA==",
   "success": true,
   "projectFilePath": "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/FTPConsole.csproj",
   "expectedPackageFiles": [

@@ -4,26 +4,26 @@ using static System.Console;
 using FluentFTP;
 using System.Threading.Tasks;
 
-namespace LibFTP
+namespace FTPLib
 {
     public class FTP
     {
         private FtpClient _client;
         private NetworkCredential _credentials;
-        public bool IsConnected { get => _client.IsConnected;  }
+        public bool IsConnected { get => _client.IsConnected; }
 
         public FTP(string host, string user, string password, int port = 21)
         {
             _credentials = new NetworkCredential(userName: user, password: password);
 
-            _client = new FtpClient(host: host ,port: port, credentials: _credentials);
+            _client = new FtpClient(host: host, port: port, credentials: _credentials);
         }
 
         public bool Connect()
         {
             try
             {
-               var profile = _client.AutoDetect();
+                var profile = _client.AutoDetect();
 
                 _client.LoadProfile(profile[0]);
 
@@ -31,7 +31,7 @@ namespace LibFTP
             }
             catch (Exception ex)
             {
-                WriteLine("It's not Connected to the server");  
+                WriteLine("It's not Connected to the server");
                 WriteLine();
                 WriteLine($"Error's {ex.Data} \n {ex.Message} \n {ex.Source} {ex.TargetSite}");
             }
@@ -53,11 +53,11 @@ namespace LibFTP
         {
             WriteLine("\t Files on the remote server : \n");
 
-             foreach (FtpListItem item in await _client.GetListingAsync(folderPath))
+            foreach (FtpListItem item in await _client.GetListingAsync(folderPath))
             {
                 if (item.Type == FtpFileSystemObjectType.File)
                 {
-                    long size = _client.GetFileSize(item.FullName); 
+                    long size = _client.GetFileSize(item.FullName);
                     FtpHash hash = _client.GetChecksum(item.FullName);
 
                     WriteLine($"\t {item.FullName} - {item.OwnerPermissions} - {size}");
@@ -89,7 +89,7 @@ namespace LibFTP
         }
         public async Task DownloadFile(string localPathToDownload, string remotePathFile)
         {
-            await _client.DownloadFileAsync(localPathToDownload, remotePathFile); 
+            await _client.DownloadFileAsync(localPathToDownload, remotePathFile);
         }
     }
 }
