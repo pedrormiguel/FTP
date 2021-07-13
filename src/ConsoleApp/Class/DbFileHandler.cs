@@ -1,3 +1,4 @@
+using Microsoft.Win32.SafeHandles;
 using System.Net;
 using System;
 using System.IO;
@@ -9,6 +10,7 @@ namespace ConsoleApp.Class
     public class DbFileHandler : IPersistence
     {
         private readonly string PATHDBFILE;
+        private readonly string NAMEFILE = "DB.txt";
 
         public DbFileHandler()
         {
@@ -18,7 +20,14 @@ namespace ConsoleApp.Class
         private string GetPathFile()
         {
             string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string sFile = System.IO.Path.Combine(sCurrentDirectory, @"../../../DB/File/txt/DB.txt");
+            string sFile = System.IO.Path.Combine(sCurrentDirectory, $"../../../DB/File/txt/{NAMEFILE}");
+            return Path.GetFullPath(sFile);
+        }
+
+        private string GetPath()
+        {
+            string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string sFile = System.IO.Path.Combine(sCurrentDirectory, $"../../../DB/File/txt/");
             return Path.GetFullPath(sFile);
         }
 
@@ -60,13 +69,74 @@ namespace ConsoleApp.Class
 
         public async Task<Response> Delete(BaseCredentials credentials)
         {
-            throw new System.NotImplementedException();
+            var response = new Response();
+            string line;
+            var path = $"{GetPath()}/tempfile.txt";
+
+            try
+            {
+                using var sw = new StreamWriter(path);
+
+                using (var sr = new StreamReader(PATHDBFILE))
+                {
+                    while ((line = await sr.ReadLineAsync()) != null)
+                    {
+                        if (!line.Contains(credentials.ToString()))
+                        {
+                            await sw.WriteLineAsync(line);
+                        }
+                    }
+                }
+
+                response.status = true;
+
+                File.Replace(path, PATHDBFILE, null);
+            }
+            catch (Exception ex)
+            {
+                response.Error = ex.Message;
+            }
+
+            return response;
         }
 
         public async Task<Response> Update(BaseCredentials credentials)
         {
-            throw new System.NotImplementedException();
-        }
+            var response = new Response();
+            string line;
+            var path = $"{GetPath()}/tempfile.txt";
 
+            try
+            {
+                using var sw = new StreamWriter(path);
+
+                using (var sr = new StreamReader(PATHDBFILE))
+                {
+                    while ((line = await sr.ReadLineAsync()) != null)
+                    {
+                        var idLine = DtoConnectioSever.Map(line).Id.ToString();
+
+                        if (!idLine.Contains(credentials.Id.ToString()))
+                        {
+                            await sw.WriteLineAsync(line);
+                        }
+                        else
+                        {
+                            await sw.WriteAsync(credentials.ToString());
+                        }
+                    }
+                }
+
+                response.status = true;
+
+                File.Replace(path, PATHDBFILE, null);
+            }
+            catch (Exception ex)
+            {
+                response.Error = ex.Message;
+            }
+
+            return response;
+        }
     }
 }

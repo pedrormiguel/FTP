@@ -18,6 +18,14 @@ namespace ConsoleApp.Class
             Port = int.Parse(port);
         }
 
+        internal void Assing(string hostname, string username, string passwrod, int port)
+        {
+            HostName = hostname;
+            UserName = username;
+            Password = passwrod;
+            Port =  port;
+        }
+
         public override string ToString()
         {
             return $"{this.Id};{this.HostName};{this.UserName};{this.Password};{this.Port}";

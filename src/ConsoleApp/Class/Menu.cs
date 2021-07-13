@@ -22,13 +22,21 @@ namespace ConsoleApp.Class
                 case "2":
                     await RegisterNewServer();
                     break;
-                    
+
                 case "3":
                     await ListAllServer();
                     break;
 
+                case "4":
+                    await DeleteServer();
+                    break;
+
+                case "5":
+                    await UpdateServer();
+                    break;
+
                 case "0":
-                    ClearScreen();
+                    await ClearScreen();
                     break;
 
                 case "Q":
@@ -40,7 +48,6 @@ namespace ConsoleApp.Class
             }
         }
 
-        private static DbFileHandler Handler { get; set; } = new DbFileHandler();
         public static string MainMenu()
         {
             WriteLine("\t \t ..Menu..");
@@ -48,6 +55,8 @@ namespace ConsoleApp.Class
             WriteLine("1. Connect to a server.");
             WriteLine("2. Register new server.");
             WriteLine("3. List all the servers.");
+            WriteLine("4. Delete server.");
+            WriteLine("5. Update server.");
             WriteLine("0. Clear the screen.");
             WriteLine("Q. Exit.");
 
@@ -59,6 +68,8 @@ namespace ConsoleApp.Class
 
             return selection;
         }
+
+        private static DbFileHandler Handler { get; set; } = new DbFileHandler();
         public static async Task ConnectoToServer()
         {
             var output = false;
@@ -78,8 +89,16 @@ namespace ConsoleApp.Class
                 else
                 {
                     InsertBlankLine();
-                    WriteLine("Was a problem connecting with the server, try again");
-                    WaitAndClearScreen();
+                    Write("Was a problem connecting with the server, try again. Y/N : ");
+                    var input = ReadLine();
+
+                    if (input.ToUpper().Equals("N"))
+                    {
+                        Clear();
+                        await InitialPoint(); //TODO-Problem with the FLOW 
+                    }
+
+                    Clear();
                 }
 
             } while (!output);
@@ -87,6 +106,8 @@ namespace ConsoleApp.Class
         static DtoConnectioSever MenuConnection()
         {
             var connection = new DtoConnectioSever();
+            var IsValidPort = false;
+            int port = 21;
 
             InsertBlankLine();
             WriteLine("* Please fullfill with the correct FTP Information Server");
@@ -101,9 +122,21 @@ namespace ConsoleApp.Class
             Write("\t3.Password Server\t :");
             var passwrod = ReadLine();
 
-            Write("\t4.Port Server\t :");
-            var port = ReadLine();
-            InsertBlankLine();
+            do
+            {
+                Write("\t4.Port Server\t :");
+                var input = ReadLine();
+
+                IsValidPort = int.TryParse(input, out port);
+                InsertBlankLine();
+
+                if (IsValidPort == false)
+                    WriteLine("Digit a valid Number Port");
+
+                InsertBlankLine();
+
+
+            } while (!IsValidPort);
 
             connection.Assing(hostname, username, passwrod, port);
 
@@ -116,6 +149,11 @@ namespace ConsoleApp.Class
 
             return client;
         }
+        public static async Task ClearScreen()
+        {
+            Clear();
+            await InitialPoint();
+        }
         public static async Task MenuFtpOptions(FTP client)
         {
             InsertBlankLine();
@@ -125,16 +163,19 @@ namespace ConsoleApp.Class
             WriteLine("- FTP Options");
             InsertBlankLine();
 
-            WriteLine("\t1.Display all the files.");
-            WriteLine("\t2.Display all the folders.");
-            WriteLine("\t3.Upload a file.");
-            WriteLine("\t4.Download a file.");
-            WriteLine("\t0.Clear screen.");
+            WriteLine("\t1. Display all the files.");
+            WriteLine("\t2. Display all the folders.");
+            WriteLine("\t3. Upload a file.");
+            WriteLine("\t4. Download a file.");
+            WriteLine("\t0. Clear screen.");
+            WriteLine("\tM. Return to the menu.");
+            WriteLine("\tQ. Quit.");
+
             InsertBlankLine();
 
             var option = ReadOption();
 
-            switch (option)
+            switch (option.ToUpper())
             {
                 case "1":
                     InsertBlankLine();
@@ -188,6 +229,13 @@ namespace ConsoleApp.Class
                     await MenuFtpOptions(client);
                     break;
 
+                case "Q":
+                    return;
+
+                case "M":
+                    await InitialPoint();
+                    break;
+
                 default:
                     await RepeatOptions(MenuFtpOptions, client);
                     break;
@@ -206,12 +254,67 @@ namespace ConsoleApp.Class
 
             InsertBlankLine();
             WaitAndClearScreen();
-            MainMenu();
+            await InitialPoint();
         }
         public static async Task ListAllServer()
         {
+            InsertBlankLine();
             WriteLine("\t \t ..MENU..");
             InsertBlankLine();
+            List<DtoConnectioSever> FtpSevers = await GetAllServer();
+
+            Write("If you want to return to the menu press a Non-numeric key OR Press the number to connect to one server from the list above, digit the number. ? :");
+
+            var anserw = ReadLine().ToUpper();
+            int ServerPosition;
+            var IsCorrect = int.TryParse(anserw, out ServerPosition);
+
+            if (IsCorrect)
+            {
+                DtoConnectioSever server = null;
+
+                try
+                {
+                    server = FtpSevers[ServerPosition - 1];
+                }
+                catch
+                {
+                    InsertBlankLine();
+                    InsertBlankLine();
+
+                    WriteLine("The option is not available, returning to the menu...");
+                    WaitAndClearScreen();
+                    await InitialPoint();
+                }
+
+                InsertBlankLine();
+                var client = Connection(server);
+
+                if (client.IsConnected)
+                {
+
+                    InsertBlankLine();
+                    Write("Connected Successfully, hit enter...");
+                    WaitAndClearScreen();
+                    await MenuFtpOptions(client);
+                }
+                else
+                {
+                    InsertBlankLine();
+                    Write("there Was a problem connecting with the server, try Later....");
+                    WaitAndClearScreen();
+                    await InitialPoint();
+                }
+
+            }
+            else
+            {
+                await InitialPoint();
+            }
+        }
+
+        private static async Task<List<DtoConnectioSever>> GetAllServer()
+        {
             var response = await Handler.ReadAll();
             var FtpSevers = new List<DtoConnectioSever>();
             int counter = 0;
@@ -230,51 +333,132 @@ namespace ConsoleApp.Class
             }
 
             InsertBlankLine();
-            Write("Do you want to return to the menu press a Non-numeric key OR If want to connect to one server from the list above, digit the number. ? :");
-            var anserw = ReadLine().ToUpper();
-            int ServerPosition;
-            var IsCorrect = int.TryParse(anserw, out ServerPosition);
+            return FtpSevers;
+        }
 
-            if (!IsCorrect)
+        public static async Task DeleteServer()
+        {
+            var servers = await GetAllServer();
+
+            Write("Select the number of the server to delete ? :");
+            var input = ReadLine();
+
+            var response = await Handler.Delete(servers[int.Parse(input) - 1]);
+
+            if (response.status)
             {
-                MainMenu();
+                WriteLine("The server was deleted successfully");
             }
             else
             {
-                DtoConnectioSever server = null;
-
-                try
-                {
-                    server = FtpSevers[ServerPosition - 1];
-                }
-                catch (Exception ex)
-                {
-                    InsertBlankLine();
-                    WriteLine("The option is not available, returning to the menu...");
-                    WaitAndClearScreen();
-                    MainMenu();
-                }
-
-                var client = Connection(server);
-
-                if (client.IsConnected)
-                {
-                    Write("Connected Successfully, hit enter...");
-                    WaitAndClearScreen();
-                    await MenuFtpOptions(client);
-                }
-                else
-                {
-                    WriteLine("there Was a problem connecting with the server, try Later.");
-                    Clear();
-                    MainMenu();
-                }
+                WriteLine($"{response.Error}");
             }
+
+            await InitialPoint();
         }
-        public static void ClearScreen()
+
+        public static async Task UpdateServer()
         {
-            Clear();
-            MainMenu();
+            var servers = await GetAllServer();
+
+            Write("Select the number of the server to delete ? :");
+
+            var input = ReadLine();
+            var server = servers[int.Parse(input) - 1];
+
+
+            var editResponse = EditServer(input, ref server);
+            Response updatedResponse = new Response();
+
+            if (editResponse.status)
+                updatedResponse = await Handler.Update(editResponse.Data as BaseCredentials);
+
+            if (editResponse.status && updatedResponse.status)
+            {
+                WriteLine("The server was updated successfully");
+            }
+            else
+            {
+                WriteLine($"-- {editResponse.Error} -- \n \n -- {updatedResponse.Error} --");
+            }
+
+            await InitialPoint();
         }
+
+        public static Response EditServer(string option, ref DtoConnectioSever dto)
+        {
+            var response = new Response();
+
+            option = MenuEditServer();
+
+            switch (option)
+            {
+                case "1":
+                    Write("\t1.Hostname Server\t :");
+                    dto.HostName = ReadLine();
+                    response.status = true;
+                    break;
+
+                case "2":
+                    Write("\t2.Username Server\t :");
+                    dto.UserName = ReadLine();
+                    response.status = true;
+                    break;
+
+                case "3":
+                    Write("\t3.Password Server\t :");
+                    dto.Password = ReadLine();
+                    response.status = true;
+                    break;
+
+                case "4":
+
+                    int port = 21;
+                    var IsValidPort = false;
+                    do
+                    {
+                        Write("\t4.Port Server\t :");
+                        var input = ReadLine();
+
+                        IsValidPort = int.TryParse(input, out port);
+                        InsertBlankLine();
+
+                        if (IsValidPort == false)
+                            WriteLine("Digit a valid Number Port");
+
+                        InsertBlankLine();
+
+                    } while (!IsValidPort);
+                    dto.Port = port;
+                    response.status = true;
+                    break;
+
+                default:
+                    response.Error = "Not Valid option";
+                    break;
+            }
+
+            response.Data = dto;
+
+            return response;
+        }
+        public static string MenuEditServer()
+        {
+            WriteLine("\t \t ..Menu..");
+            WriteLine("Options\n");
+            WriteLine("\t1.Hostname Server\t :");
+            WriteLine("\t2.Username Server\t :");
+            WriteLine("\t3.Password Server\t :");
+            WriteLine("\t4.Port Server\t :");
+
+            WriteLine("-----------------------");
+            InsertBlankLine();
+
+            var selection = ReadOption();
+
+            return selection;
+        }
+
     }
+
 }

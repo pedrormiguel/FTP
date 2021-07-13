@@ -1,18 +1,17 @@
 ﻿<Properties StartupConfiguration="{EC04FBBE-4AD6-4CE3-8593-3861DCB149E8}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="ConsoleApp/Utility/ConsoleUtility.cs">
-    <Files>
-      <File FileName="ConsoleApp/Program.cs" Line="17" Column="1" />
-      <File FileName="ConsoleApp/Class/Menu.cs" Line="249" Column="2" />
-      <File FileName="ConsoleApp/Utility/ConsoleUtility.cs" Line="33" Column="10" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="FTP" expanded="True">
             <Node name="FTPConsole" expanded="True">
-              <Node name="Class" expanded="True" />
-              <Node name="Utility" expanded="True">
-                <Node name="ConsoleUtility.cs" selected="True" />
+              <Node name="Class" expanded="True">
+                <Node name="Menu.cs" selected="True" />
+              </Node>
+              <Node name="DB" expanded="True">
+                <Node name="File" expanded="True">
+                  <Node name="txt" expanded="True" />
+                </Node>
               </Node>
             </Node>
           </Node>
@@ -24,7 +23,17 @@
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/Class/Menu.cs" relfile="ConsoleApp/Class/Menu.cs" line="344" column="1" />
+      <Breakpoint file="/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/Class/DbFileHandler.cs" relfile="ConsoleApp/Class/DbFileHandler.cs" line="81" column="1" />
+      <Breakpoint file="/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/Class/DbFileHandler.cs" relfile="ConsoleApp/Class/DbFileHandler.cs" line="105" column="1" />
+      <Breakpoint file="/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/Class/Menu.cs" relfile="ConsoleApp/Class/Menu.cs" line="443" column="1" />
+      <Breakpoint file="/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/Class/Menu.cs" relfile="ConsoleApp/Class/Menu.cs" line="399" column="1" />
+      <Breakpoint file="/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/Class/Menu.cs" relfile="ConsoleApp/Class/Menu.cs" line="406" column="1" />
+      <Breakpoint file="/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/Class/DbFileHandler.cs" relfile="ConsoleApp/Class/DbFileHandler.cs" line="125" column="1" />
+      <Breakpoint file="/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/Class/DbFileHandler.cs" relfile="ConsoleApp/Class/DbFileHandler.cs" line="121" column="1" />
+      <Breakpoint file="/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/ConsoleApp/Class/DbFileHandler.cs" relfile="ConsoleApp/Class/DbFileHandler.cs" line="130" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>

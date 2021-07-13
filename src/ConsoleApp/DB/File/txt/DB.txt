@@ -1,4 +1,1 @@
-6dc1612b-60a6-4bf0-81ed-c45bb78ad514;p;p;p;21
-b6e59e1b-3b92-4500-81b8-960a8a14b954;a;a;a;34
-1b9e4813-e5bc-4959-b171-eae182c899ce;c;c;c;32
-cd0c074d-91cc-4eea-83bb-2d0240677c3d;ftp://ftp.dlptest.com;dlpuser;rNrKYTX9g7z3RgJRmxWuGHbeu;21
+d5a79b45-a16d-4842-9707-2cdb9888ad4f;ftp://ftp.dlptest.com;dlpuser;rNrKYTX9g7z3RgJRmxWuGHbeu;21
