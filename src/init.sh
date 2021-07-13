@@ -1,4 +1,4 @@
 clear
 
-dotnet run watch -p ConsoleApp/FTPConsole.csproj 
+dotnet run watch -p UI/ConsoleApp/FTPConsole.csproj 
 
