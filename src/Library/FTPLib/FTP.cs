@@ -6,19 +6,16 @@ using System.Threading.Tasks;
 
 namespace FTPLib
 {
-    public class FTP
+    public class Ftp
     {
-        private FtpClient _client;
-        private NetworkCredential _credentials;
-        public bool IsConnected { get => _client.IsConnected; }
-
-        public FTP(string host, string user, string password, int port = 21)
+        private readonly FtpClient _client;
+        
+        //private NetworkCredential _credentials;
+        public bool IsConnected => _client.IsConnected;
+        public Ftp(string host, string user, string password, int port = 21)
         {
-            _credentials = new NetworkCredential(userName: user, password: password);
-
-            _client = new FtpClient(host: host, port: port, credentials: _credentials);
+            _client = new FtpClient(host:host, user:user, pass:password, port:21);
         }
-
         public bool Connect()
         {
             try
@@ -87,6 +84,7 @@ namespace FTPLib
 
             return false;
         }
+        
         public async Task DownloadFile(string localPathToDownload, string remotePathFile)
         {
             await _client.DownloadFileAsync(localPathToDownload, remotePathFile);
