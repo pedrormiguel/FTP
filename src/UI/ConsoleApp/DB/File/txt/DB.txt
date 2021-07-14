@@ -1,1 +1,2 @@
 d5a79b45-a16d-4842-9707-2cdb9888ad4f;ftp://ftp.dlptest.com;dlpuser;rNrKYTX9g7z3RgJRmxWuGHbeu;21
+ed4d7c42-6381-42be-b796-f768931cdd74;demo.wftpserver.com;demo;demo;21
