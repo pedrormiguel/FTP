@@ -3,7 +3,9 @@ using System.Net;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using FTPConsole.Class.Dto;
 using FTPConsole.Interfaces;
+using FTPLib.Class.Common;
 
 namespace ConsoleApp.Class
 {
@@ -39,7 +41,7 @@ namespace ConsoleApp.Class
             {
                 using StreamWriter file = new StreamWriter(PATHDBFILE, append: true);
                 await file.WriteLineAsync(credentials.ToString());
-                response.status = true;
+                response.Status = true;
             }
             catch (Exception ex)
             {
@@ -56,7 +58,7 @@ namespace ConsoleApp.Class
             try
             {
                 var lines = await File.ReadAllLinesAsync(PATHDBFILE);
-                response.status = true;
+                response.Status = true;
                 response.Data = lines;
             }
             catch (Exception ex)
@@ -88,7 +90,7 @@ namespace ConsoleApp.Class
                     }
                 }
 
-                response.status = true;
+                response.Status = true;
 
                 File.Replace(path, PATHDBFILE, null);
             }
@@ -127,7 +129,7 @@ namespace ConsoleApp.Class
                     }
                 }
 
-                response.status = true;
+                response.Status = true;
 
                 File.Replace(path, PATHDBFILE, null);
             }

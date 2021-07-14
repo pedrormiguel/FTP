@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using FTPLib;
+using FTPLib.Class;
 using Xunit;
 using Shouldly;
 
@@ -20,9 +21,9 @@ namespace TestFtpLib
         {
             //Arrange
             //Act
-            var isConnect = _client.Connect();
+            var response = _client.Connect();
             //Assert
-            isConnect.ShouldBeTrue();
+            response.Status.ShouldBeTrue();
         }
 
         [Fact]
@@ -32,19 +33,19 @@ namespace TestFtpLib
             var client = new Ftp("", "", "");
 
             //Act
-            var isConnect = client.Connect();
+            var response = client.Connect();
 
             //Assert
-            isConnect.ShouldBeFalse();
+            response.Status.ShouldBeFalse();
         }
 
         [Fact]
-        public void Should_ListItems_Successful()
+        public async Task Should_ListItems_Successful()
         {
             //Arrange
 
             //Act
-            var line = _client.ListItems();
+            var response = await _client.GetListItems();
 
             //Assert
         }

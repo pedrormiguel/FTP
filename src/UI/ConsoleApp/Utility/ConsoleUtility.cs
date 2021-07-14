@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using FTPLib;
+using FTPLib.Class;
 using static System.Console;
 
-namespace ConsoleApp.Utility
+namespace FTPConsole.Utility
 {
     public static class ConsoleUtility
     {

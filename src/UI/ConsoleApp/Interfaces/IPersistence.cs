@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using ConsoleApp.Class;
+using FTPLib.Class.Common;
 
 namespace FTPConsole.Interfaces
 {
