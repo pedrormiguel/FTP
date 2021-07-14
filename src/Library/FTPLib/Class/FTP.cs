@@ -1,4 +1,3 @@
-using System.Net;
 using System;
 using static System.Console;
 using FluentFTP;
@@ -38,6 +37,8 @@ namespace FTPLib
         public async Task ListItems()
         {
             var directory = await _client.GetNameListingAsync();
+            
+            
 
             WriteLine("Files on the remote server : \n");
 
