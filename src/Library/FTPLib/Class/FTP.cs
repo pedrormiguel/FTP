@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using static System.Console;
 using FluentFTP;
 using System.Threading.Tasks;
 using FluentFTP.Helpers;
@@ -18,9 +17,9 @@ namespace FTPLib.Class
         {
             _client = new FtpClient(host:host, user:user, pass:password, port:21);
         }
-        public Response Connect()
+        public Response<bool> Connect()
         {
-            var response = new Response();
+            var response = new Response<bool>();
             
             try
             {
@@ -40,9 +39,9 @@ namespace FTPLib.Class
 
             return response;
         }
-        public async Task<Response> GetListItems()
+        public async Task<Response<string[]>> GetListItems()
         {
-            var response = new Response();
+            var response = new Response<string[]>();
 
             try
             {
@@ -51,8 +50,7 @@ namespace FTPLib.Class
             }
             catch (Exception e)
             {
-                WriteLine(e);
-                throw;
+                response.ErrorMapException(e);
             }
             
             // WriteLine("Files on the remote server : \n");
@@ -64,11 +62,11 @@ namespace FTPLib.Class
 
             return response;
         }
-        public async Task<Response> GetListItemsFiles(string folderPath)
+        public async Task<Response<IEnumerable<DtoItem>>> GetListItemsFiles(string folderPath)
         {
             // WriteLine("\t Files on the remote server : \n");
             
-            var response = new Response();
+            var response = new Response<IEnumerable<DtoItem>>();
             var directory = new List<DtoItem>();
 
             try
@@ -97,9 +95,9 @@ namespace FTPLib.Class
 
             return response;
         }
-        public async Task<Response> UploadFile(string localPath, string remotePath)
+        public async Task<Response<string>> UploadFile(string localPath, string remotePath)
         {
-            var response = new Response();
+            var response = new Response<string>();
             var status = FtpStatus.Failed;
             
             if (!_client.IsConnected)
@@ -125,9 +123,9 @@ namespace FTPLib.Class
 
             return response;
         }
-        public async Task<Response> DownloadFile(string localPathToDownload, string remotePathFile)
+        public async Task<Response<string>> DownloadFile(string localPathToDownload, string remotePathFile)
         {
-            var response = new Response();
+            var response = new Response<string>();
             var status = FtpStatus.Failed;
     
             try
@@ -148,11 +146,9 @@ namespace FTPLib.Class
         {
             var response = status switch
             {
-                FtpStatus.Failed =>
-                    "The upload or download failed with an error transferring, or the source file did not exist",
+                FtpStatus.Failed  =>"The upload or download failed with an error transferring, or the source file did not exist",
                 FtpStatus.Success => "The upload or download completed successfully",
-                FtpStatus.Skipped =>
-                    "The upload or download was skipped because the file already existed on the target",
+                FtpStatus.Skipped =>"The upload or download was skipped because the file already existed on the target",
                 _ => "Not was successful."
             };
 

@@ -373,7 +373,7 @@ namespace FTPConsole.Class
 
 
             var editResponse = EditServer(input, ref server);
-            Response updatedResponse = new Response();
+            Response<string> updatedResponse = new Response<string>();
 
             if (editResponse.Status)
                 updatedResponse = await Handler.Update(editResponse.Data as BaseCredentials);
@@ -389,10 +389,9 @@ namespace FTPConsole.Class
 
             await InitialPoint();
         }
-
-        public static Response EditServer(string option, ref DtoConnectioSever dto)
+        public static Response<DtoConnectioSever> EditServer(string option, ref DtoConnectioSever dto)
         {
-            var response = new Response();
+            var response = new Response<DtoConnectioSever>();
 
             option = MenuEditServer();
 
@@ -417,7 +416,6 @@ namespace FTPConsole.Class
                     break;
 
                 case "4":
-
                     int port = 21;
                     var IsValidPort = false;
                     do
@@ -463,7 +461,6 @@ namespace FTPConsole.Class
 
             return selection;
         }
-
     }
 
 }

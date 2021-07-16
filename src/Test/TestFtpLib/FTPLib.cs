@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using FTPLib;
 using FTPLib.Class;
 using Xunit;
 using Shouldly;
@@ -12,8 +11,7 @@ namespace TestFtpLib
 
         public FtpLib()
         {
-            _client = new Ftp(host: "ftp://ftp.dlptest.com", user: "dlpuser", password: "rNrKYTX9g7z3RgJRmxWuGHbeu",
-                port: 21);
+            _client = new Ftp(host: "ftp://ftp.dlptest.com", user: "dlpuser", password: "rNrKYTX9g7z3RgJRmxWuGHbeu",port: 21);
         }
 
         [Fact]
@@ -22,6 +20,7 @@ namespace TestFtpLib
             //Arrange
             //Act
             var response = _client.Connect();
+            
             //Assert
             response.Status.ShouldBeTrue();
         }
@@ -43,11 +42,15 @@ namespace TestFtpLib
         public async Task Should_ListItems_Successful()
         {
             //Arrange
+            var client = new Ftp(host:"demo.wftpserver.com", "demo", "demo", 21);
+            client.Connect();
 
             //Act
-            var response = await _client.GetListItems();
+            var response = await client.GetListItems();
 
             //Assert
+            var items = response.Data;
+            items.Length.ShouldBe(2);
         }
     }
 }
