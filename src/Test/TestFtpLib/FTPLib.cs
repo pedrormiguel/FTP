@@ -42,7 +42,7 @@ namespace TestFtpLib
         public async Task Should_ListItems_Successful()
         {
             //Arrange
-            var client = new Ftp(host:"demo.wftpserver.com", "demo", "demo", 21);
+            var client = new Ftp(host:"demo.wftpserver.com", "demo", "demo");
             client.Connect();
 
             //Act
