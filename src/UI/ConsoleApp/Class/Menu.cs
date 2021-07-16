@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FTPLib;
+using ConsoleApp.Class;
+using FTPConsole.Class.Dto;
+using FTPLib.Class;
+using FTPLib.Class.Common;
 using static System.Console;
-using static ConsoleApp.Utility.ConsoleUtility;
+using static FTPConsole.Utility.ConsoleUtility;
 
-namespace ConsoleApp.Class
+namespace FTPConsole.Class
 {
     public static class Menu
     {
@@ -15,7 +18,7 @@ namespace ConsoleApp.Class
             switch (selection)
             {
                 case "1":
-                    await ConnectoToServer();
+                    await ConnectToServer();
                     break;
 
                 case "2":
@@ -47,7 +50,7 @@ namespace ConsoleApp.Class
             }
         }
 
-        public static string MainMenu()
+        private static string MainMenu()
         {
             WriteLine("\t \t ..Menu..");
             WriteLine("Options\n");
@@ -69,7 +72,8 @@ namespace ConsoleApp.Class
         }
 
         private static DbFileHandler Handler { get; set; } = new DbFileHandler();
-        public static async Task ConnectoToServer()
+
+        private static async Task ConnectToServer()
         {
             var output = false;
 
@@ -141,19 +145,21 @@ namespace ConsoleApp.Class
 
             return connection;
         }
-        static FTP Connection(DtoConnectioSever credentials)
+        static Ftp Connection(DtoConnectioSever credentials)
         {
-            var client = new FTP(credentials.HostName, credentials.UserName, credentials.Password, credentials.Port);
+            var client = new Ftp(credentials.HostName, credentials.UserName, credentials.Password, credentials.Port);
             client.Connect();
 
             return client;
         }
-        public static async Task ClearScreen()
+
+        private static async Task ClearScreen()
         {
             Clear();
             await InitialPoint();
         }
-        public static async Task MenuFtpOptions(FTP client)
+
+        private static async Task MenuFtpOptions(Ftp client)
         {
             InsertBlankLine();
             WriteLine("\t \t ..MENU..");
@@ -178,7 +184,7 @@ namespace ConsoleApp.Class
             {
                 case "1":
                     InsertBlankLine();
-                    await client.ListItems();
+                    await client.GetListItems();
 
                     InsertBlankLine();
                     InsertBlankLine();
@@ -192,7 +198,7 @@ namespace ConsoleApp.Class
 
                     Write("Insert the path to look up or leave empty for the root: ");
                     var output = ReadLine();
-                    await client.ListItemsFiles(output);
+                    await client.GetListItemsFiles(output);
 
                     WriteLine("Hit a key to return to the menu.");
                     ReadKey();
@@ -210,9 +216,9 @@ namespace ConsoleApp.Class
                     var remotePath = ReadLine();
                     InsertBlankLine();
 
-                    var ouput = await client.UploadFile(localPath, remotePath);
+                    var response = await client.UploadFile(localPath, remotePath);
 
-                    if (ouput)
+                    if (response.Status)
                         WriteLine("File successfully uploaded.");
                     else
                         WriteLine("File not successfully uploaded.");
@@ -246,7 +252,7 @@ namespace ConsoleApp.Class
 
             var response = await Handler.Add(credentials);
 
-            if (response.status)
+            if (response.Status)
                 Write($"The Ftp server [{credentials.HostName}] was saved it");
             else
                 Write("Ocurred a problem saving the credetials, try again.");
@@ -344,7 +350,7 @@ namespace ConsoleApp.Class
 
             var response = await Handler.Delete(servers[int.Parse(input) - 1]);
 
-            if (response.status)
+            if (response.Status)
             {
                 WriteLine("The server was deleted successfully");
             }
@@ -367,12 +373,12 @@ namespace ConsoleApp.Class
 
 
             var editResponse = EditServer(input, ref server);
-            Response updatedResponse = new Response();
+            Response<string> updatedResponse = new Response<string>();
 
-            if (editResponse.status)
+            if (editResponse.Status)
                 updatedResponse = await Handler.Update(editResponse.Data as BaseCredentials);
 
-            if (editResponse.status && updatedResponse.status)
+            if (editResponse.Status && updatedResponse.Status)
             {
                 WriteLine("The server was updated successfully");
             }
@@ -383,10 +389,9 @@ namespace ConsoleApp.Class
 
             await InitialPoint();
         }
-
-        public static Response EditServer(string option, ref DtoConnectioSever dto)
+        public static Response<DtoConnectioSever> EditServer(string option, ref DtoConnectioSever dto)
         {
-            var response = new Response();
+            var response = new Response<DtoConnectioSever>();
 
             option = MenuEditServer();
 
@@ -395,23 +400,22 @@ namespace ConsoleApp.Class
                 case "1":
                     Write("\t1.Hostname Server\t :");
                     dto.HostName = ReadLine();
-                    response.status = true;
+                    response.Status = true;
                     break;
 
                 case "2":
                     Write("\t2.Username Server\t :");
                     dto.UserName = ReadLine();
-                    response.status = true;
+                    response.Status = true;
                     break;
 
                 case "3":
                     Write("\t3.Password Server\t :");
                     dto.Password = ReadLine();
-                    response.status = true;
+                    response.Status = true;
                     break;
 
                 case "4":
-
                     int port = 21;
                     var IsValidPort = false;
                     do
@@ -429,7 +433,7 @@ namespace ConsoleApp.Class
 
                     } while (!IsValidPort);
                     dto.Port = port;
-                    response.status = true;
+                    response.Status = true;
                     break;
 
                 default:
@@ -457,7 +461,6 @@ namespace ConsoleApp.Class
 
             return selection;
         }
-
     }
 
 }

@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using FTPLib;
+using FTPLib.Class;
 using static System.Console;
 
-namespace ConsoleApp.Utility
+namespace FTPConsole.Utility
 {
     public static class ConsoleUtility
     {
@@ -45,7 +45,7 @@ namespace ConsoleApp.Utility
             await menu();
         }
 
-        public static async Task RepeatOptions(Func<FTP, Task> menu, FTP client)
+        public static async Task RepeatOptions(Func<Ftp, Task> menu, Ftp client)
         {
             InsertBlankLine();
             WriteLine("Select a valid option");

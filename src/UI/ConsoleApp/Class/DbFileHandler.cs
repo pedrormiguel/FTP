@@ -1,9 +1,10 @@
-using Microsoft.Win32.SafeHandles;
-using System.Net;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using ConsoleApp.Interfaces;
+using FTPConsole.Class.Dto;
+using FTPConsole.Interfaces;
+using FTPLib.Class.Common;
+using System.Collections.Generic;
 
 namespace ConsoleApp.Class
 {
@@ -31,15 +32,15 @@ namespace ConsoleApp.Class
             return Path.GetFullPath(sFile);
         }
 
-        public async Task<Response> Add(BaseCredentials credentials)
+        public async Task<Response<bool>> Add(BaseCredentials credentials)
         {
-            var response = new Response();
+            var response = new Response<bool>();
 
             try
             {
                 using StreamWriter file = new StreamWriter(PATHDBFILE, append: true);
                 await file.WriteLineAsync(credentials.ToString());
-                response.status = true;
+                response.Status = true;
             }
             catch (Exception ex)
             {
@@ -49,27 +50,28 @@ namespace ConsoleApp.Class
             return response;
         }
 
-        public async Task<Response> ReadAll()
+        public async Task<Response<IEnumerable<string>>> ReadAll()
         {
-            var response = new Response();
+            var response = new Response<IEnumerable<string>>();
 
             try
             {
                 var lines = await File.ReadAllLinesAsync(PATHDBFILE);
-                response.status = true;
-                response.Data = lines;
+                response.Status = true;
+                response.Data   = lines;
             }
             catch (Exception ex)
             {
-                response.Error = ex.ToString();
+                response.ErrorMapException(ex);
+
             }
 
             return response;
         }
 
-        public async Task<Response> Delete(BaseCredentials credentials)
+        public async Task<Response<string>> Delete(BaseCredentials credentials)
         {
-            var response = new Response();
+            var response = new Response<string>();
             string line;
             var path = $"{GetPath()}/tempfile.txt";
 
@@ -85,24 +87,28 @@ namespace ConsoleApp.Class
                         {
                             await sw.WriteLineAsync(line);
                         }
+                        else 
+                        {
+                            response.Data = line;
+                        }
                     }
                 }
 
-                response.status = true;
+                response.Status = true;
 
                 File.Replace(path, PATHDBFILE, null);
             }
             catch (Exception ex)
             {
-                response.Error = ex.Message;
+                response.ErrorMapException(ex);
             }
 
             return response;
         }
 
-        public async Task<Response> Update(BaseCredentials credentials)
+        public async Task<Response<string>> Update(BaseCredentials credentials)
         {
-            var response = new Response();
+            var response = new Response<string>();
             string line;
             var path = $"{GetPath()}/tempfile.txt";
 
@@ -122,18 +128,19 @@ namespace ConsoleApp.Class
                         }
                         else
                         {
-                            await sw.WriteAsync(credentials.ToString());
+                            var newLine = credentials.ToString();
+                            await sw.WriteAsync(newLine);
+                            response.Data = newLine;
                         }
                     }
                 }
 
-                response.status = true;
-
+                response.Status = true;
                 File.Replace(path, PATHDBFILE, null);
             }
             catch (Exception ex)
             {
-                response.Error = ex.Message;
+                response.ErrorMapException(ex);
             }
 
             return response;

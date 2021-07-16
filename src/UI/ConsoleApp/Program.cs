@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using static ConsoleApp.Utility.ConsoleUtility;
-using static ConsoleApp.Class.Menu;
+using static FTPConsole.Utility.ConsoleUtility;
+using static FTPConsole.Class.Menu;
 
 namespace ConsoleApp
 {

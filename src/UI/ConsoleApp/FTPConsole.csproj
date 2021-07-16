@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <None Remove="DB\File\txt\DB.txt" />
+    <None Remove="Class\Dto\" />
+    <None Remove="Class\Common\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,5 +17,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Library\FTPLib\FTPLib.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Class\Dto\" />
+    <Folder Include="Class\Common\" />
   </ItemGroup>
 </Project>

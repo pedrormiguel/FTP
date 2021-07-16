@@ -1,7 +1,7 @@
 using System;
 using ConsoleApp.Class;
 
-namespace ConsoleApp.Class
+namespace FTPConsole.Class.Dto
 {
     public class DtoConnectioSever : BaseCredentials
     {
