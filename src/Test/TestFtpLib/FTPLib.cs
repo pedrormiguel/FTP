@@ -49,8 +49,7 @@ namespace TestFtpLib
             var response = await client.GetListItems();
 
             //Assert
-            var items = response.Data;
-            items.Length.ShouldBe(2);
+            response.Data.Length.ShouldBe(2);
         }
     }
 }
