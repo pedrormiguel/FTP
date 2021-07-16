@@ -1,34 +1,35 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using ConsoleApp.Class;
 using FTPConsole.Class.Dto;
 using FTPConsole.Interfaces;
 using FTPLib.Class.Common;
-using System.Collections.Generic;
 
-namespace ConsoleApp.Class
+namespace FTPConsole.Class
 {
     public class DbFileHandler : IPersistence
     {
-        private readonly string PATHDBFILE;
-        private readonly string NAMEFILE = "DB.txt";
+        private readonly string _pathdbfile;
+        private const string NameFile = "DB.txt";
 
         public DbFileHandler()
         {
-            this.PATHDBFILE = GetPathFile();
+            this._pathdbfile = GetPathFile();
         }
 
         private string GetPathFile()
         {
-            string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string sFile = System.IO.Path.Combine(sCurrentDirectory, $"../../../DB/File/txt/{NAMEFILE}");
+            var sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var sFile = System.IO.Path.Combine(sCurrentDirectory, $"../../../DB/File/txt/{NameFile}");
             return Path.GetFullPath(sFile);
         }
 
         private string GetPath()
         {
-            string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string sFile = System.IO.Path.Combine(sCurrentDirectory, $"../../../DB/File/txt/");
+            var sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var sFile = System.IO.Path.Combine(sCurrentDirectory, $"../../../DB/File/txt/");
             return Path.GetFullPath(sFile);
         }
 
@@ -38,7 +39,7 @@ namespace ConsoleApp.Class
 
             try
             {
-                using StreamWriter file = new StreamWriter(PATHDBFILE, append: true);
+                await using var file = new StreamWriter(_pathdbfile, append: true);
                 await file.WriteLineAsync(credentials.ToString());
                 response.Status = true;
             }
@@ -56,7 +57,7 @@ namespace ConsoleApp.Class
 
             try
             {
-                var lines = await File.ReadAllLinesAsync(PATHDBFILE);
+                var lines = await File.ReadAllLinesAsync(_pathdbfile);
                 response.Status = true;
                 response.Data   = lines;
             }
@@ -72,15 +73,15 @@ namespace ConsoleApp.Class
         public async Task<Response<string>> Delete(BaseCredentials credentials)
         {
             var response = new Response<string>();
-            string line;
             var path = $"{GetPath()}/tempfile.txt";
 
             try
             {
                 using var sw = new StreamWriter(path);
 
-                using (var sr = new StreamReader(PATHDBFILE))
+                using (var sr = new StreamReader(_pathdbfile))
                 {
+                    string line;
                     while ((line = await sr.ReadLineAsync()) != null)
                     {
                         if (!line.Contains(credentials.ToString()))
@@ -96,7 +97,7 @@ namespace ConsoleApp.Class
 
                 response.Status = true;
 
-                File.Replace(path, PATHDBFILE, null);
+                File.Replace(path, _pathdbfile, null);
             }
             catch (Exception ex)
             {
@@ -109,15 +110,15 @@ namespace ConsoleApp.Class
         public async Task<Response<string>> Update(BaseCredentials credentials)
         {
             var response = new Response<string>();
-            string line;
             var path = $"{GetPath()}/tempfile.txt";
 
             try
             {
                 using var sw = new StreamWriter(path);
 
-                using (var sr = new StreamReader(PATHDBFILE))
+                using (var sr = new StreamReader(_pathdbfile))
                 {
+                    string line;
                     while ((line = await sr.ReadLineAsync()) != null)
                     {
                         var idLine = DtoConnectioSever.Map(line).Id.ToString();
@@ -136,7 +137,7 @@ namespace ConsoleApp.Class
                 }
 
                 response.Status = true;
-                File.Replace(path, PATHDBFILE, null);
+                File.Replace(path, _pathdbfile, null);
             }
             catch (Exception ex)
             {
