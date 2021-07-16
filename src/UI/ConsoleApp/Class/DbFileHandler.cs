@@ -13,6 +13,7 @@ namespace FTPConsole.Class
     {
         private readonly string _pathdbfile;
         private const string NameFile = "DB.txt";
+        private const string Tempfile = "TEMPFILE.txt";
 
         public DbFileHandler()
         {
@@ -73,7 +74,7 @@ namespace FTPConsole.Class
         public async Task<Response<string>> Delete(BaseCredentials credentials)
         {
             var response = new Response<string>();
-            var path = $"{GetPath()}/tempfile.txt";
+            var path = $"{GetPath()}/{Tempfile}";
 
             try
             {
@@ -110,7 +111,7 @@ namespace FTPConsole.Class
         public async Task<Response<string>> Update(BaseCredentials credentials)
         {
             var response = new Response<string>();
-            var path = $"{GetPath()}/tempfile.txt";
+            var path = $"{GetPath()}/{Tempfile}";
 
             try
             {
