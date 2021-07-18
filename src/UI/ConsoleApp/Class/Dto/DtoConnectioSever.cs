@@ -23,7 +23,7 @@ namespace FTPConsole.Class.Dto
             HostName = hostname;
             UserName = username;
             Password = passwrod;
-            Port =  port;
+            Port = port;
         }
 
         public override string ToString()
@@ -34,6 +34,7 @@ namespace FTPConsole.Class.Dto
         public static DtoConnectioSever Map(string Line)
         {
             var credentials = Line.Split(";");
+
 
             return new DtoConnectioSever
             {

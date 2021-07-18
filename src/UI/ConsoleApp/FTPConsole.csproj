@@ -16,10 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Library\FTPLib\FTPLib.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Class\Dto\" />
     <Folder Include="Class\Common\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\Library\FTPLib\FTPLib.csproj" />
   </ItemGroup>
 </Project>
