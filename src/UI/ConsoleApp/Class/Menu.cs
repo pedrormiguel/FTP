@@ -213,9 +213,9 @@ namespace FTPConsole.Class
                     break;
             }
         }
-
-
-
+        
+        
+        
         public static Ftp Connection(DtoConnectioSever credentials)
         {
             var client = new Ftp(credentials.HostName, credentials.UserName, credentials.Password, credentials.Port);
