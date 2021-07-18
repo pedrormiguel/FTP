@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{37F4E1B1-A002-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TEST", "TEST", "{45DEA111-EA69-4C1A-B8DF-4DFFB4D33937}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFtpLib", "Test\TestFtpLib\TestFtpLib.csproj", "{A20E7DFF-EE1C-4029-A392-08D669851DCF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLibrary", "Test\TestLibrary\TestFtpLib.csproj", "{A20E7DFF-EE1C-4029-A392-08D669851DCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

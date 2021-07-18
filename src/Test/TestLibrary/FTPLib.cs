@@ -3,7 +3,7 @@ using FTPLib.Class;
 using Xunit;
 using Shouldly;
 
-namespace TestFtpLib
+namespace TestLibrary
 {
     public class FtpLib
     {
