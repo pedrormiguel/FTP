@@ -17,6 +17,7 @@ namespace FTPLib.Class
         {
             _client = new FtpClient(host:host, user:user, pass:password, port:21);
         }
+
         public Response<bool> Connect()
         {
             var response = new Response<bool>();
@@ -32,6 +33,7 @@ namespace FTPLib.Class
             {
                 response.ErrorMapException(ex);
                 
+                //TODO
                 // WriteLine("It's not Connected to the server");
                 // WriteLine();
                 // WriteLine($"Error's {ex.Data} \n {ex.Message} \n {ex.Source} {ex.TargetSite}");
@@ -39,6 +41,7 @@ namespace FTPLib.Class
 
             return response;
         }
+        
         public async Task<Response<string[]>> GetListItems()
         {
             var response = new Response<string[]>();
@@ -123,6 +126,7 @@ namespace FTPLib.Class
 
             return response;
         }
+
         public async Task<Response<string>> DownloadFile(string localPathToDownload, string remotePathFile)
         {
             var response = new Response<string>();
@@ -142,6 +146,7 @@ namespace FTPLib.Class
             
             return response;
         }
+        
         private string GetStatus(FtpStatus status)
         {
             var response = status switch

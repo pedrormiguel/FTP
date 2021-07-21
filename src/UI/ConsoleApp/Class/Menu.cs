@@ -213,9 +213,41 @@ namespace FTPConsole.Class
                     break;
             }
         }
-        
-        
-        
+
+
+        private static async Task ConnectToServer()
+        {
+            var output = false;
+
+            do
+            {
+                var credetials = MenuConnection();
+                var clientFtp = Connection(credetials);
+                output = clientFtp.IsConnected;
+
+                if (output)
+                {
+                    Write("Connected Successfully, hit enter...");
+                    WaitAndClearScreen();
+                    await MenuFtpOptions(clientFtp); //TODO Monitoring difference between  and await;
+                }
+                else
+                {
+                    InsertBlankLine();
+                    Write("Was a problem connecting with the server, try again. Y/N : ");
+                    var input = ReadLine();
+
+                    if (input.ToUpper().Equals("N"))
+                    {
+                        Clear();
+                        await InitialPoint(); //TODO-Problem with the FLOW 
+                    }
+
+                    Clear();
+                }
+
+            } while (!output);
+        }
         public static Ftp Connection(DtoConnectioSever credentials)
         {
             var client = new Ftp(credentials.HostName, credentials.UserName, credentials.Password, credentials.Port);
@@ -237,6 +269,28 @@ namespace FTPConsole.Class
             InsertBlankLine();
             WaitAndClearScreen();
             await InitialPoint();
+        }
+        private static async Task<List<DtoConnectioSever>> GetAllServer()
+        {
+            var response = await Handler.ReadAll();
+            var FtpSevers = new List<DtoConnectioSever>();
+            int counter = 0;
+
+            if (!response.Data.Equals(null))
+            {
+                WriteLine("Listing all the available servers :");
+
+                foreach (var line in response.Data as string[])
+                {
+                    counter++;
+                    var item = DtoConnectioSever.Map(line);
+                    WriteLine($"{counter}.{item.HostName}");
+                    FtpSevers.Add(item);
+                }
+            }
+
+            InsertBlankLine();
+            return FtpSevers;
         }
         public static async Task ListAllServer()
         {
@@ -294,28 +348,7 @@ namespace FTPConsole.Class
                 await InitialPoint();
             }
         }
-        private static async Task<List<DtoConnectioSever>> GetAllServer()
-        {
-            var response = await Handler.ReadAll();
-            var FtpSevers = new List<DtoConnectioSever>();
-            int counter = 0;
 
-            if (!response.Data.Equals(null))
-            {
-                WriteLine("Listing all the available servers :");
-
-                foreach (var line in response.Data as string[])
-                {
-                    counter++;
-                    var item = DtoConnectioSever.Map(line);
-                    WriteLine($"{counter}.{item.HostName}");
-                    FtpSevers.Add(item);
-                }
-            }
-
-            InsertBlankLine();
-            return FtpSevers;
-        }
         public static async Task DeleteServer()
         {
             var servers = await GetAllServer();
@@ -418,39 +451,6 @@ namespace FTPConsole.Class
             response.Data = dto;
 
             return response;
-        }
-        private static async Task ConnectToServer()
-        {
-            var output = false;
-
-            do
-            {
-                var credetials = MenuConnection();
-                var clientFtp = Connection(credetials);
-                output = clientFtp.IsConnected;
-
-                if (output)
-                {
-                    Write("Connected Successfully, hit enter...");
-                    WaitAndClearScreen();
-                    await MenuFtpOptions(clientFtp); //TODO Monitoring difference between  and await;
-                }
-                else
-                {
-                    InsertBlankLine();
-                    Write("Was a problem connecting with the server, try again. Y/N : ");
-                    var input = ReadLine();
-
-                    if (input.ToUpper().Equals("N"))
-                    {
-                        Clear();
-                        await InitialPoint(); //TODO-Problem with the FLOW 
-                    }
-
-                    Clear();
-                }
-
-            } while (!output);
         }
         public static async Task ClearScreen()
         {
