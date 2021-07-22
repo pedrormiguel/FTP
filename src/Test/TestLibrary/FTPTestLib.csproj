@@ -24,4 +24,8 @@
     <ProjectReference Include="..\..\Library\FTPLib\FTPLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="download" />
+  </ItemGroup>
+
 </Project>
