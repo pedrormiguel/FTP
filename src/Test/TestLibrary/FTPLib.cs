@@ -1,5 +1,6 @@
 using System.IO;
 using System.Threading.Tasks;
+using FluentFTP;
 using FTPLib.Class;
 using Shouldly;
 using Xunit;
@@ -79,20 +80,38 @@ namespace FTPTestLib
         {
             //Arrange
             var pathDirectory = "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Test/TestLibrary/download";
-            var localPathToDownload = $"{pathDirectory}/test.jpg";
+            var localPathToDownload = $"{pathDirectory}/Summer.jpg";
             var remotePathFile = "/download/Summer.jpg";
             var client = new Ftp(host:"demo.wftpserver.com", "demo", "demo");
 
-            //ACT
+            //Act
             client.Connect();
             var response = await client.DownloadFile(localPathToDownload,remotePathFile);
 
             //Assert
-            response.Data.ShouldBe("The upload or download completed successfully");
+            response.Data.ShouldBe("The upload or download was skipped because the file already existed on the target");
             response.Status.ShouldBeTrue();
-            response.Error.ShouldBeNullOrWhiteSpace();
-            File.Exists(localPathToDownload).ShouldBeTrue();
-            File.Delete(localPathToDownload);
+            response.Error.ShouldBeNullOrEmpty();
         }
+    
+        [Fact]
+        public async Task Should_DownloadFile_WithNonExistingFile()
+        {
+            //Arrange
+            var pathDirectory = "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Test/TestLibrary/download";
+            var localPathToDownload = $"{pathDirectory}/test.jpg";
+            var remotePathFile = "/download/FileDoesnotExist.jpg";
+            var client = new Ftp(host:"demo.wftpserver.com", "demo", "demo");
+
+            //Act 
+            client.Connect();
+            var response = await client.DownloadFile(localPathToDownload, remotePathFile);
+
+            //Assert
+            response.Data.ShouldBe("The upload or download failed with an error transferring, or the source file did not exist");
+            response.Status.ShouldBeFalse();
+            response.Error.ShouldBeNullOrEmpty();
+        }
+
     }
 }
