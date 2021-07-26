@@ -151,9 +151,9 @@ namespace FTPLib.Class
         {
             var response = status switch
             {
-                FtpStatus.Failed  =>"The upload or download failed with an error transferring, or the source file did not exist",
-                FtpStatus.Success => "The upload or download completed successfully",
-                FtpStatus.Skipped =>"The upload or download was skipped because the file already existed on the target",
+                FtpStatus.Failed  => FtpStatusResponse.Failed,
+                FtpStatus.Success => FtpStatusResponse.Success,
+                FtpStatus.Skipped => FtpStatusResponse.Skipped,
                 _ => "Not was successful."
             };
 
