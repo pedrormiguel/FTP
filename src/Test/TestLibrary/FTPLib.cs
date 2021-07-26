@@ -4,6 +4,7 @@ using FluentFTP;
 using FTPLib.Class;
 using Shouldly;
 using Xunit;
+using FTPLib.Class.Common;
 
 namespace FTPTestLib
 {
@@ -68,7 +69,7 @@ namespace FTPTestLib
             var response = await client.DownloadFile(localPathToDownload,remotePathFile);
 
             //Assert
-            response.Data.ShouldBe("The upload or download completed successfully");
+            response.Data.ShouldBe(FtpStatusResponse.Success);
             response.Status.ShouldBeTrue();
             response.Error.ShouldBeNullOrWhiteSpace();
             File.Exists(localPathToDownload).ShouldBeTrue();
@@ -89,7 +90,7 @@ namespace FTPTestLib
             var response = await client.DownloadFile(localPathToDownload,remotePathFile);
 
             //Assert
-            response.Data.ShouldBe("The upload or download was skipped because the file already existed on the target");
+            response.Data.ShouldBe(FtpStatusResponse.Skipped);
             response.Status.ShouldBeTrue();
             response.Error.ShouldBeNullOrEmpty();
         }
@@ -108,7 +109,7 @@ namespace FTPTestLib
             var response = await client.DownloadFile(localPathToDownload, remotePathFile);
 
             //Assert
-            response.Data.ShouldBe("The upload or download failed with an error transferring, or the source file did not exist");
+            response.Data.ShouldBe(FtpStatusResponse.Failed);
             response.Status.ShouldBeFalse();
             response.Error.ShouldBeNullOrEmpty();
         }
