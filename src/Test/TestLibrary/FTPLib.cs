@@ -1,9 +1,11 @@
+using System.IO;
 using System.Threading.Tasks;
+using FluentFTP;
 using FTPLib.Class;
-using Xunit;
 using Shouldly;
+using Xunit;
 
-namespace TestLibrary
+namespace FTPTestLib
 {
     public class FtpLib
     {
@@ -51,5 +53,65 @@ namespace TestLibrary
             //Assert
             response.Data.Length.ShouldBe(2);
         }
+
+        [Fact]
+        public async Task Should_DownloadFile_Successful()
+        {
+            //Arrange
+            var pathDirectory = "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Test/TestLibrary/download";
+            var localPathToDownload = $"{pathDirectory}/test.jpg";
+            var remotePathFile = "/download/Winter.jpg";
+            var client = new Ftp(host:"demo.wftpserver.com", "demo", "demo");
+
+            //ACT
+            client.Connect();
+            var response = await client.DownloadFile(localPathToDownload,remotePathFile);
+
+            //Assert
+            response.Data.ShouldBe("The upload or download completed successfully");
+            response.Status.ShouldBeTrue();
+            response.Error.ShouldBeNullOrWhiteSpace();
+            File.Exists(localPathToDownload).ShouldBeTrue();
+            File.Delete(localPathToDownload);
+        }
+        
+        [Fact]
+        public async Task Should_DownloadFile_SkippedFile()
+        {
+            //Arrange
+            var pathDirectory = "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Test/TestLibrary/download";
+            var localPathToDownload = $"{pathDirectory}/Summer.jpg";
+            var remotePathFile = "/download/Summer.jpg";
+            var client = new Ftp(host:"demo.wftpserver.com", "demo", "demo");
+
+            //Act
+            client.Connect();
+            var response = await client.DownloadFile(localPathToDownload,remotePathFile);
+
+            //Assert
+            response.Data.ShouldBe("The upload or download was skipped because the file already existed on the target");
+            response.Status.ShouldBeTrue();
+            response.Error.ShouldBeNullOrEmpty();
+        }
+    
+        [Fact]
+        public async Task Should_DownloadFile_WithNonExistingFile()
+        {
+            //Arrange
+            var pathDirectory = "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Test/TestLibrary/download";
+            var localPathToDownload = $"{pathDirectory}/test.jpg";
+            var remotePathFile = "/download/FileDoesnotExist.jpg";
+            var client = new Ftp(host:"demo.wftpserver.com", "demo", "demo");
+
+            //Act 
+            client.Connect();
+            var response = await client.DownloadFile(localPathToDownload, remotePathFile);
+
+            //Assert
+            response.Data.ShouldBe("The upload or download failed with an error transferring, or the source file did not exist");
+            response.Status.ShouldBeFalse();
+            response.Error.ShouldBeNullOrEmpty();
+        }
+
     }
 }
