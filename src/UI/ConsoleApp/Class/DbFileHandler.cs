@@ -19,7 +19,6 @@ namespace FTPConsole.Class
         {
             this._pathdbfile = GetPathFile();
         }
-
         private string GetPathFile()
         {
             var sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
