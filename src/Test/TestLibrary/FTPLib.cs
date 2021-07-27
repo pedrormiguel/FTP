@@ -21,6 +21,7 @@ namespace FTPTestLib
         public void Should_Connect_Successful()
         {
             //Arrange
+            
             //Act
             var response = _client.Connect();
             

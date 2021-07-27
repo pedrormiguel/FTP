@@ -185,11 +185,27 @@ namespace FTPConsole.Class
 
                     var response = await client.UploadFile(localPath, remotePath);
 
-                    if (response.Status)
-                        WriteLine("File successfully uploaded.");
-                    else
-                        WriteLine("File not successfully uploaded.");
+                    WriteLine(response.Data);
+                    InsertBlankLine();
+                    WriteLine("Hit a key to return to the menu.");
+                    ReadKey();
+                    await MenuFtpOptions(client);
+                    break;
 
+                case "4":
+                    InsertBlankLine();
+
+                    Write("Insert the local path to download the file :");
+                    var localPathOfFile = ReadLine();
+                    InsertBlankLine();
+
+                    Write("Insert the remote path where the file is :");
+                    var remotePathOfFile = ReadLine();
+                    InsertBlankLine();
+
+                    var downloadFileResponse = await client.DownloadFile(localPathOfFile,remotePathOfFile);
+                    
+                    WriteLine(downloadFileResponse.Data);
                     InsertBlankLine();
                     WriteLine("Hit a key to return to the menu.");
                     ReadKey();
