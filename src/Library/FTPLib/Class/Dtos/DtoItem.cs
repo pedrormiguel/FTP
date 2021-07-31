@@ -6,9 +6,9 @@ namespace FTPLib.Class.Dtos
         public string OwnerPermissions { get; set; }
         public long Size { get; set; }
 
-        public DtoItem Map(string fullName, string ownerPermissions, long size)
+        public static DtoItem Map(string fullName, string ownerPermissions, long size)
         {
-            return new DtoItem() {FullName = fullName, Size = size, OwnerPermissions = ownerPermissions};
+            return new DtoItem() { FullName = fullName, Size = size, OwnerPermissions = ownerPermissions };
         }
     }
 }
