@@ -51,6 +51,7 @@ namespace FTPConsole.Class
                     break;
             }
         }
+
         private static string MainMenu()
         {
             WriteLine("\t \t ..Menu..");
@@ -71,6 +72,7 @@ namespace FTPConsole.Class
 
             return selection;
         }
+
         static DtoConnectioSever MenuConnection()
         {
             var connection = new DtoConnectioSever();
@@ -110,6 +112,7 @@ namespace FTPConsole.Class
 
             return connection;
         }
+
         public static string MenuEditServer()
         {
             WriteLine("\t \t ..Menu..");
@@ -126,6 +129,7 @@ namespace FTPConsole.Class
 
             return selection;
         }
+
         private static async Task MenuFtpOptions(Ftp client)
         {
             InsertBlankLine();
@@ -150,66 +154,19 @@ namespace FTPConsole.Class
             switch (option.ToUpper())
             {
                 case "1":
-                    InsertBlankLine();
-                    await client.GetListItems();
-
-                    InsertBlankLine();
-                    InsertBlankLine();
-                    WriteLine("Hit a key to return to the menu.");
-                    ReadKey();
-                    await MenuFtpOptions(client);
+                    await DisplayAllTheFiles(client);
                     break;
 
                 case "2":
-                    InsertBlankLine();
-
-                    Write("Insert the path to look up or leave empty for the root: ");
-                    var output = ReadLine();
-                    await client.GetListItemsFiles(output);
-
-                    WriteLine("Hit a key to return to the menu.");
-                    ReadKey();
-                    await MenuFtpOptions(client);
+                    await DisplayAllTheFilesCustomPath(client);
                     break;
 
                 case "3":
-                    InsertBlankLine();
-
-                    Write("Insert the local path :");
-                    var localPath = ReadLine();
-                    InsertBlankLine();
-
-                    Write("Insert the remote path :");
-                    var remotePath = ReadLine();
-                    InsertBlankLine();
-
-                    var response = await client.UploadFile(localPath, remotePath);
-
-                    WriteLine(response.Data);
-                    InsertBlankLine();
-                    WriteLine("Hit a key to return to the menu.");
-                    ReadKey();
-                    await MenuFtpOptions(client);
+                    await UploadFile(client);
                     break;
 
                 case "4":
-                    InsertBlankLine();
-
-                    Write("Insert the local path to download the file :");
-                    var localPathOfFile = ReadLine();
-                    InsertBlankLine();
-
-                    Write("Insert the remote path where the file is :");
-                    var remotePathOfFile = ReadLine();
-                    InsertBlankLine();
-
-                    var downloadFileResponse = await client.DownloadFile(localPathOfFile, remotePathOfFile);
-
-                    WriteLine(downloadFileResponse.Data);
-                    InsertBlankLine();
-                    WriteLine("Hit a key to return to the menu.");
-                    ReadKey();
-                    await MenuFtpOptions(client);
+                    await DownloadFile(client);
                     break;
 
                 case "0":
@@ -230,22 +187,124 @@ namespace FTPConsole.Class
             }
         }
 
+        private static async Task DownloadFile(Ftp client)
+        {
+            InsertBlankLine();
+
+            Write("Insert the local path to download the file :");
+            var localPathOfFile = ReadLine();
+            InsertBlankLine();
+
+            Write("Insert the remote path where the file is :");
+            var remotePathOfFile = ReadLine();
+            InsertBlankLine();
+
+            var downloadFileResponse = await client.DownloadFile(localPathOfFile, remotePathOfFile);
+
+            WriteLine(downloadFileResponse.Data);
+            InsertBlankLine();
+            WriteLine("Hit a key to return to the menu.");
+            ReadKey();
+            await MenuFtpOptions(client);
+        }
+
+        private static async Task UploadFile(Ftp client)
+        {
+            InsertBlankLine();
+
+            Write("Insert the local path :");
+            var localPath = ReadLine();
+            InsertBlankLine();
+
+            Write("Insert the remote path :");
+            var remotePath = ReadLine();
+            InsertBlankLine();
+            WriteLine("Uploading File....");
+
+            var responseUploadFile = await client.UploadFile(localPath, remotePath);
+
+            if (!responseUploadFile.Status)
+                WriteLine($"{responseUploadFile.Error}");
+
+            WriteLine(responseUploadFile.Data);
+            InsertBlankLine();
+            WriteLine("Hit a key to return to the menu.");
+            ReadKey();
+            await MenuFtpOptions(client);
+        }
+
+        private static async Task DisplayAllTheFilesCustomPath(Ftp client)
+        {
+            InsertBlankLine();
+
+            Write("Insert the path to look up or leave empty for the root: ");
+            var output = ReadLine();
+            var response = await client.GetListItemsFiles(output);
+
+            if (response.Status)
+            {
+                WriteLine("Files on the remote server : \n");
+
+                foreach (var item in response.Data)
+                {
+                    WriteLine($"- {item.FullName} {item.Size} {item.OwnerPermissions}");
+                }
+            }
+            else
+            {
+                WriteLine($"{response.Error}");
+            }
+
+            InsertBlankLine();
+            WriteLine("Hit a key to return to the menu.");
+            ReadKey();
+            await MenuFtpOptions(client);
+        }
+
+        private static async Task DisplayAllTheFiles(Ftp client)
+        {
+            InsertBlankLine();
+            var response = await client.GetListItems();
+
+            if (response.Status)
+            {
+
+                WriteLine("Files on the remote server : \n");
+
+                foreach (var item in response.Data)
+                {
+                    WriteLine($"- {item}");
+                }
+            }
+            else
+            {
+                WriteLine($"{response.Error}");
+            }
+
+            InsertBlankLine();
+            InsertBlankLine();
+            WriteLine("Hit a key to return to the menu.");
+            ReadKey();
+            await MenuFtpOptions(client);
+        }
 
         private static async Task ConnectToServer()
         {
-            var output = false;
+            bool output;
 
             do
             {
                 var credetials = MenuConnection();
+
                 var clientFtp = Connection(credetials);
+
                 output = clientFtp.IsConnected;
 
                 if (output)
                 {
                     Write("Connected Successfully, hit enter...");
                     WaitAndClearScreen();
-                    await MenuFtpOptions(clientFtp); //TODO Monitoring difference between  and await;
+                    await MenuFtpOptions(clientFtp);
                 }
                 else
                 {
@@ -257,7 +316,7 @@ namespace FTPConsole.Class
                     {
                         Clear();
                         output = true;
-                        await InitialPoint(); //TODO-Problem with the FLOW 
+                        await InitialPoint();
                     }
 
                     Clear();
@@ -265,13 +324,23 @@ namespace FTPConsole.Class
 
             } while (!output);
         }
+
         public static Ftp Connection(DtoConnectioSever credentials)
         {
+            Response<bool> response;
+
             var client = new Ftp(credentials.HostName, credentials.UserName, credentials.Password, credentials.Port);
-            client.Connect();
+            response = client.Connect();
+
+            if (!response.Data)
+            {
+                WriteLine("It's not Connected to the server");
+                WriteLine();
+            }
 
             return client;
         }
+
         public static async Task RegisterNewServer()
         {
             var credentials = MenuConnection();
@@ -287,6 +356,7 @@ namespace FTPConsole.Class
             WaitAndClearScreen();
             await InitialPoint();
         }
+
         private static async Task<List<DtoConnectioSever>> GetAllServer()
         {
             var response = await Handler.ReadAll();
@@ -309,6 +379,7 @@ namespace FTPConsole.Class
             InsertBlankLine();
             return FtpSevers;
         }
+
         public static async Task ListAllServer()
         {
             InsertBlankLine();
@@ -386,6 +457,7 @@ namespace FTPConsole.Class
 
             await InitialPoint();
         }
+
         public static async Task UpdateServer()
         {
             var servers = await GetAllServer();
@@ -413,6 +485,7 @@ namespace FTPConsole.Class
 
             await InitialPoint();
         }
+
         public static Response<DtoConnectioSever> EditServer(string option, ref DtoConnectioSever dto)
         {
             var response = new Response<DtoConnectioSever>();
@@ -469,6 +542,7 @@ namespace FTPConsole.Class
 
             return response;
         }
+
         public static async Task ClearScreen()
         {
             Clear();

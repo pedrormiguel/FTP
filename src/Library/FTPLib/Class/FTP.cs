@@ -32,11 +32,6 @@ namespace FTPLib.Class
             catch (Exception ex)
             {
                 response.ErrorMapException(ex);
-
-                //TODO
-                // WriteLine("It's not Connected to the server");
-                // WriteLine();
-                // WriteLine($"Error's {ex.Data} \n {ex.Message} \n {ex.Source} {ex.TargetSite}");
             }
 
             return response;
@@ -50,25 +45,18 @@ namespace FTPLib.Class
             {
                 var directory = await _client.GetNameListingAsync();
                 response.Data = directory;
+                response.Status = true;
             }
             catch (Exception e)
             {
                 response.ErrorMapException(e);
             }
 
-            // WriteLine("Files on the remote server : \n");
-            //
-            // foreach (var item in directory)
-            // {
-            //     WriteLine($"- {item}");
-            // }
-
             return response;
         }
+
         public async Task<Response<IEnumerable<DtoItem>>> GetListItemsFiles(string folderPath)
         {
-            // WriteLine("\t Files on the remote server : \n");
-
             var response = new Response<IEnumerable<DtoItem>>();
             var directory = new List<DtoItem>();
 
@@ -79,17 +67,13 @@ namespace FTPLib.Class
                 foreach (FtpListItem item in items)
                 {
                     if (item.Type == FtpFileSystemObjectType.File)
-                    {
-                        // long size    =  _client.GetFileSize(item.FullName);
-                        // FtpHash hash = _client.GetChecksum(item.FullName);
                         directory.Add(DtoItem.Map(item.FullName, item.OwnerPermissions.ToString(), item.Size));
-                        //WriteLine($"\t {item.FullName} - {item.OwnerPermissions} - {size}");
-                    }
-
-                    //DateTime time = _client.GetModifiedTime(item.FullName);
 
                     response.Data = directory;
                 }
+
+                response.Status = true;
+
             }
             catch (Exception e)
             {
@@ -98,6 +82,7 @@ namespace FTPLib.Class
 
             return response;
         }
+
         public async Task<Response<string>> UploadFile(string localPath, string remotePath)
         {
             var response = new Response<string>();
@@ -109,8 +94,6 @@ namespace FTPLib.Class
                 return response;
             }
 
-            //WriteLine("Uploading File");
-
             try
             {
                 status = await _client.UploadFileAsync(localPath, remotePath, createRemoteDir: true);
@@ -118,7 +101,6 @@ namespace FTPLib.Class
             catch (Exception ex)
             {
                 response.ErrorMapException(ex);
-                //WriteLine($"Error's {ex.Data} \n {ex.Message} \n {ex.Source} {ex.TargetSite}");
             }
 
             response.Data = GetStatus(status);
@@ -130,6 +112,7 @@ namespace FTPLib.Class
         public async Task<Response<string>> DownloadFile(string localPathToDownload, string remotePathFile)
         {
             var response = new Response<string>();
+
             var status = FtpStatus.Failed;
 
             try
