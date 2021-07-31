@@ -54,6 +54,7 @@ namespace FTPLib.Class
 
             return response;
         }
+
         public async Task<Response<IEnumerable<DtoItem>>> GetListItemsFiles(string folderPath)
         {
             var response = new Response<IEnumerable<DtoItem>>();
@@ -81,6 +82,7 @@ namespace FTPLib.Class
 
             return response;
         }
+
         public async Task<Response<string>> UploadFile(string localPath, string remotePath)
         {
             var response = new Response<string>();
@@ -110,6 +112,7 @@ namespace FTPLib.Class
         public async Task<Response<string>> DownloadFile(string localPathToDownload, string remotePathFile)
         {
             var response = new Response<string>();
+
             var status = FtpStatus.Failed;
 
             try
