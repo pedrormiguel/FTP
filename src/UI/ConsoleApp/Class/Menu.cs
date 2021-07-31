@@ -203,8 +203,8 @@ namespace FTPConsole.Class
                     var remotePathOfFile = ReadLine();
                     InsertBlankLine();
 
-                    var downloadFileResponse = await client.DownloadFile(localPathOfFile,remotePathOfFile);
-                    
+                    var downloadFileResponse = await client.DownloadFile(localPathOfFile, remotePathOfFile);
+
                     WriteLine(downloadFileResponse.Data);
                     InsertBlankLine();
                     WriteLine("Hit a key to return to the menu.");
@@ -256,6 +256,7 @@ namespace FTPConsole.Class
                     if (input.ToUpper().Equals("N"))
                     {
                         Clear();
+                        output = true;
                         await InitialPoint(); //TODO-Problem with the FLOW 
                     }
 
