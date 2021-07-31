@@ -14,17 +14,17 @@ namespace FTPTestLib
 
         public FtpLib()
         {
-            _client = new Ftp(host: "ftp://ftp.dlptest.com", user: "dlpuser", password: "rNrKYTX9g7z3RgJRmxWuGHbeu",port: 21);
+            _client = new Ftp(host: "ftp://ftp.dlptest.com", user: "dlpuser", password: "rNrKYTX9g7z3RgJRmxWuGHbeu", port: 21);
         }
 
         [Fact]
         public void Should_Connect_Successful()
         {
             //Arrange
-            
+
             //Act
             var response = _client.Connect();
-            
+
             //Assert
             response.Status.ShouldBeTrue();
         }
@@ -46,7 +46,7 @@ namespace FTPTestLib
         public async Task Should_ListItems_Successful()
         {
             //Arrange
-            var client = new Ftp(host:"demo.wftpserver.com", "demo", "demo");
+            var client = new Ftp(host: "demo.wftpserver.com", "demo", "demo");
             client.Connect();
 
             //Act
@@ -63,11 +63,11 @@ namespace FTPTestLib
             var pathDirectory = "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Test/TestLibrary/download";
             var localPathToDownload = $"{pathDirectory}/test.jpg";
             var remotePathFile = "/download/Winter.jpg";
-            var client = new Ftp(host:"demo.wftpserver.com", "demo", "demo");
+            var client = new Ftp(host: "demo.wftpserver.com", "demo", "demo");
 
             //ACT
             client.Connect();
-            var response = await client.DownloadFile(localPathToDownload,remotePathFile);
+            var response = await client.DownloadFile(localPathToDownload, remotePathFile);
 
             //Assert
             response.Data.ShouldBe(FtpStatusResponse.Success);
@@ -76,7 +76,7 @@ namespace FTPTestLib
             File.Exists(localPathToDownload).ShouldBeTrue();
             File.Delete(localPathToDownload);
         }
-        
+
         [Fact]
         public async Task Should_DownloadFile_SkippedFile()
         {
@@ -84,18 +84,18 @@ namespace FTPTestLib
             var pathDirectory = "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Test/TestLibrary/download";
             var localPathToDownload = $"{pathDirectory}/Summer.jpg";
             var remotePathFile = "/download/Summer.jpg";
-            var client = new Ftp(host:"demo.wftpserver.com", "demo", "demo");
+            var client = new Ftp(host: "demo.wftpserver.com", "demo", "demo");
 
             //Act
             client.Connect();
-            var response = await client.DownloadFile(localPathToDownload,remotePathFile);
+            var response = await client.DownloadFile(localPathToDownload, remotePathFile);
 
             //Assert
             response.Data.ShouldBe(FtpStatusResponse.Skipped);
             response.Status.ShouldBeTrue();
             response.Error.ShouldBeNullOrEmpty();
         }
-    
+
         [Fact]
         public async Task Should_DownloadFile_WithNonExistingFile()
         {
@@ -103,7 +103,7 @@ namespace FTPTestLib
             var pathDirectory = "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Test/TestLibrary/download";
             var localPathToDownload = $"{pathDirectory}/test.jpg";
             var remotePathFile = "/download/FileDoesnotExist.jpg";
-            var client = new Ftp(host:"demo.wftpserver.com", "demo", "demo");
+            var client = new Ftp(host: "demo.wftpserver.com", "demo", "demo");
 
             //Act 
             client.Connect();
@@ -114,6 +114,5 @@ namespace FTPTestLib
             response.Status.ShouldBeFalse();
             response.Error.ShouldBeNullOrEmpty();
         }
-
     }
 }
