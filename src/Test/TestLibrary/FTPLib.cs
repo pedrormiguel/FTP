@@ -1,6 +1,5 @@
 using System.IO;
 using System.Threading.Tasks;
-using FluentFTP;
 using FTPLib.Class;
 using Shouldly;
 using Xunit;
