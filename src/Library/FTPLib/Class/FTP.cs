@@ -92,8 +92,6 @@ namespace FTPLib.Class
                 return response;
             }
 
-            //WriteLine("Uploading File");
-
             try
             {
                 status = await _client.UploadFileAsync(localPath, remotePath, createRemoteDir: true);
@@ -101,7 +99,6 @@ namespace FTPLib.Class
             catch (Exception ex)
             {
                 response.ErrorMapException(ex);
-                //WriteLine($"Error's {ex.Data} \n {ex.Message} \n {ex.Source} {ex.TargetSite}");
             }
 
             response.Data = GetStatus(status);

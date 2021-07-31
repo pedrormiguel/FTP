@@ -158,7 +158,7 @@ namespace FTPConsole.Class
                     break;
 
                 case "2":
-                    await DisplayAllTheFilesCustompath(client);
+                    await DisplayAllTheFilesCustomPath(client);
                     break;
 
                 case "3":
@@ -166,23 +166,7 @@ namespace FTPConsole.Class
                     break;
 
                 case "4":
-                    InsertBlankLine();
-
-                    Write("Insert the local path to download the file :");
-                    var localPathOfFile = ReadLine();
-                    InsertBlankLine();
-
-                    Write("Insert the remote path where the file is :");
-                    var remotePathOfFile = ReadLine();
-                    InsertBlankLine();
-
-                    var downloadFileResponse = await client.DownloadFile(localPathOfFile, remotePathOfFile);
-
-                    WriteLine(downloadFileResponse.Data);
-                    InsertBlankLine();
-                    WriteLine("Hit a key to return to the menu.");
-                    ReadKey();
-                    await MenuFtpOptions(client);
+                    await DownloadFile(client);
                     break;
 
                 case "0":
@@ -203,6 +187,27 @@ namespace FTPConsole.Class
             }
         }
 
+        private static async Task DownloadFile(Ftp client)
+        {
+            InsertBlankLine();
+
+            Write("Insert the local path to download the file :");
+            var localPathOfFile = ReadLine();
+            InsertBlankLine();
+
+            Write("Insert the remote path where the file is :");
+            var remotePathOfFile = ReadLine();
+            InsertBlankLine();
+
+            var downloadFileResponse = await client.DownloadFile(localPathOfFile, remotePathOfFile);
+
+            WriteLine(downloadFileResponse.Data);
+            InsertBlankLine();
+            WriteLine("Hit a key to return to the menu.");
+            ReadKey();
+            await MenuFtpOptions(client);
+        }
+
         private static async Task UploadFile(Ftp client)
         {
             InsertBlankLine();
@@ -218,6 +223,9 @@ namespace FTPConsole.Class
 
             var responseUploadFile = await client.UploadFile(localPath, remotePath);
 
+            if (!responseUploadFile.Status)
+                WriteLine($"{responseUploadFile.Error}");
+
             WriteLine(responseUploadFile.Data);
             InsertBlankLine();
             WriteLine("Hit a key to return to the menu.");
@@ -225,7 +233,7 @@ namespace FTPConsole.Class
             await MenuFtpOptions(client);
         }
 
-        private static async Task DisplayAllTheFilesCustompath(Ftp client)
+        private static async Task DisplayAllTheFilesCustomPath(Ftp client)
         {
             InsertBlankLine();
 
@@ -279,7 +287,6 @@ namespace FTPConsole.Class
             ReadKey();
             await MenuFtpOptions(client);
         }
-
 
         private static async Task ConnectToServer()
         {
