@@ -15,13 +15,13 @@ namespace FTPLib.Class
         public bool IsConnected => _client.IsConnected;
         public Ftp(string host, string user, string password, int port = 21)
         {
-            _client = new FtpClient(host:host, user:user, pass:password, port:21);
+            _client = new FtpClient(host: host, user: user, pass: password, port: 21);
         }
 
         public Response<bool> Connect()
         {
             var response = new Response<bool>();
-            
+
             try
             {
                 var profile = _client.AutoDetect();
@@ -32,7 +32,7 @@ namespace FTPLib.Class
             catch (Exception ex)
             {
                 response.ErrorMapException(ex);
-                
+
                 //TODO
                 // WriteLine("It's not Connected to the server");
                 // WriteLine();
@@ -41,7 +41,7 @@ namespace FTPLib.Class
 
             return response;
         }
-        
+
         public async Task<Response<string[]>> GetListItems()
         {
             var response = new Response<string[]>();
@@ -55,7 +55,7 @@ namespace FTPLib.Class
             {
                 response.ErrorMapException(e);
             }
-            
+
             // WriteLine("Files on the remote server : \n");
             //
             // foreach (var item in directory)
@@ -68,7 +68,7 @@ namespace FTPLib.Class
         public async Task<Response<IEnumerable<DtoItem>>> GetListItemsFiles(string folderPath)
         {
             // WriteLine("\t Files on the remote server : \n");
-            
+
             var response = new Response<IEnumerable<DtoItem>>();
             var directory = new List<DtoItem>();
 
@@ -82,12 +82,12 @@ namespace FTPLib.Class
                     {
                         // long size    =  _client.GetFileSize(item.FullName);
                         // FtpHash hash = _client.GetChecksum(item.FullName);
-                        directory.Add(new DtoItem().Map(item.FullName, item.OwnerPermissions.ToString(), item.Size));
+                        directory.Add(DtoItem.Map(item.FullName, item.OwnerPermissions.ToString(), item.Size));
                         //WriteLine($"\t {item.FullName} - {item.OwnerPermissions} - {size}");
                     }
 
                     //DateTime time = _client.GetModifiedTime(item.FullName);
-                    
+
                     response.Data = directory;
                 }
             }
@@ -102,13 +102,13 @@ namespace FTPLib.Class
         {
             var response = new Response<string>();
             var status = FtpStatus.Failed;
-            
+
             if (!_client.IsConnected)
             {
                 response.Error = "It's not connected";
                 return response;
             }
-            
+
             //WriteLine("Uploading File");
 
             try
@@ -131,7 +131,7 @@ namespace FTPLib.Class
         {
             var response = new Response<string>();
             var status = FtpStatus.Failed;
-    
+
             try
             {
                 status = await _client.DownloadFileAsync(localPathToDownload, remotePathFile);
@@ -140,18 +140,18 @@ namespace FTPLib.Class
             {
                 response.ErrorMapException(e);
             }
-            
+
             response.Data = GetStatus(status);
             response.Status = status.IsSuccess();
-            
+
             return response;
         }
-        
+
         private string GetStatus(FtpStatus status)
         {
             var response = status switch
             {
-                FtpStatus.Failed  => FtpStatusResponse.Failed,
+                FtpStatus.Failed => FtpStatusResponse.Failed,
                 FtpStatus.Success => FtpStatusResponse.Success,
                 FtpStatus.Skipped => FtpStatusResponse.Skipped,
                 _ => "Not was successful."
