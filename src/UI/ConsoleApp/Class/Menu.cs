@@ -51,6 +51,7 @@ namespace FTPConsole.Class
                     break;
             }
         }
+
         private static string MainMenu()
         {
             WriteLine("\t \t ..Menu..");
@@ -71,6 +72,7 @@ namespace FTPConsole.Class
 
             return selection;
         }
+
         static DtoConnectioSever MenuConnection()
         {
             var connection = new DtoConnectioSever();
@@ -110,6 +112,7 @@ namespace FTPConsole.Class
 
             return connection;
         }
+
         public static string MenuEditServer()
         {
             WriteLine("\t \t ..Menu..");
@@ -126,6 +129,7 @@ namespace FTPConsole.Class
 
             return selection;
         }
+
         private static async Task MenuFtpOptions(Ftp client)
         {
             InsertBlankLine();
@@ -231,21 +235,26 @@ namespace FTPConsole.Class
         }
 
 
+
+
+
         private static async Task ConnectToServer()
         {
-            var output = false;
+            bool output;
 
             do
             {
                 var credetials = MenuConnection();
+
                 var clientFtp = Connection(credetials);
+
                 output = clientFtp.IsConnected;
 
                 if (output)
                 {
                     Write("Connected Successfully, hit enter...");
                     WaitAndClearScreen();
-                    await MenuFtpOptions(clientFtp); //TODO Monitoring difference between  and await;
+                    await MenuFtpOptions(clientFtp);
                 }
                 else
                 {
@@ -257,7 +266,7 @@ namespace FTPConsole.Class
                     {
                         Clear();
                         output = true;
-                        await InitialPoint(); //TODO-Problem with the FLOW 
+                        await InitialPoint();
                     }
 
                     Clear();
@@ -265,13 +274,23 @@ namespace FTPConsole.Class
 
             } while (!output);
         }
+
         public static Ftp Connection(DtoConnectioSever credentials)
         {
+            Response<bool> response;
+
             var client = new Ftp(credentials.HostName, credentials.UserName, credentials.Password, credentials.Port);
-            client.Connect();
+            response = client.Connect();
+
+            if (!response.Data)
+            {
+                WriteLine("It's not Connected to the server");
+                WriteLine();
+            }
 
             return client;
         }
+
         public static async Task RegisterNewServer()
         {
             var credentials = MenuConnection();
@@ -287,6 +306,7 @@ namespace FTPConsole.Class
             WaitAndClearScreen();
             await InitialPoint();
         }
+
         private static async Task<List<DtoConnectioSever>> GetAllServer()
         {
             var response = await Handler.ReadAll();
@@ -309,6 +329,7 @@ namespace FTPConsole.Class
             InsertBlankLine();
             return FtpSevers;
         }
+
         public static async Task ListAllServer()
         {
             InsertBlankLine();
@@ -386,6 +407,7 @@ namespace FTPConsole.Class
 
             await InitialPoint();
         }
+
         public static async Task UpdateServer()
         {
             var servers = await GetAllServer();
@@ -413,6 +435,7 @@ namespace FTPConsole.Class
 
             await InitialPoint();
         }
+
         public static Response<DtoConnectioSever> EditServer(string option, ref DtoConnectioSever dto)
         {
             var response = new Response<DtoConnectioSever>();
@@ -469,6 +492,7 @@ namespace FTPConsole.Class
 
             return response;
         }
+
         public static async Task ClearScreen()
         {
             Clear();

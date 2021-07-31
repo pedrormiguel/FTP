@@ -32,11 +32,6 @@ namespace FTPLib.Class
             catch (Exception ex)
             {
                 response.ErrorMapException(ex);
-
-                //TODO
-                // WriteLine("It's not Connected to the server");
-                // WriteLine();
-                // WriteLine($"Error's {ex.Data} \n {ex.Message} \n {ex.Source} {ex.TargetSite}");
             }
 
             return response;
