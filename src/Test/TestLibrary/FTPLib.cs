@@ -54,6 +54,8 @@ namespace FTPTestLib
 
             //Assert
             response.Data.Length.ShouldBe(2);
+            response.Status.ShouldBeTrue();
+            response.Error.ShouldBeNullOrEmpty();
         }
 
         [Fact]
