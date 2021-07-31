@@ -154,14 +154,7 @@ namespace FTPConsole.Class
             switch (option.ToUpper())
             {
                 case "1":
-                    InsertBlankLine();
-                    await client.GetListItems();
-
-                    InsertBlankLine();
-                    InsertBlankLine();
-                    WriteLine("Hit a key to return to the menu.");
-                    ReadKey();
-                    await MenuFtpOptions(client);
+                    await DisplayAllTheFiles(client);
                     break;
 
                 case "2":
@@ -187,9 +180,9 @@ namespace FTPConsole.Class
                     var remotePath = ReadLine();
                     InsertBlankLine();
 
-                    var response = await client.UploadFile(localPath, remotePath);
+                    var responseUploadFile = await client.UploadFile(localPath, remotePath);
 
-                    WriteLine(response.Data);
+                    WriteLine(responseUploadFile.Data);
                     InsertBlankLine();
                     WriteLine("Hit a key to return to the menu.");
                     ReadKey();
@@ -234,9 +227,32 @@ namespace FTPConsole.Class
             }
         }
 
+        private static async Task DisplayAllTheFiles(Ftp client)
+        {
+            InsertBlankLine();
+            var response = await client.GetListItems();
 
+            if (response.Status)
+            {
 
+                WriteLine("Files on the remote server : \n");
 
+                foreach (var item in response.Data)
+                {
+                    WriteLine($"- {item}");
+                }
+            }
+            else
+            {
+                WriteLine($"{response.Error}");
+            }
+
+            InsertBlankLine();
+            InsertBlankLine();
+            WriteLine("Hit a key to return to the menu.");
+            ReadKey();
+            await MenuFtpOptions(client);
+        }
 
         private static async Task ConnectToServer()
         {

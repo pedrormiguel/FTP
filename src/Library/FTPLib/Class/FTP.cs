@@ -51,13 +51,6 @@ namespace FTPLib.Class
                 response.ErrorMapException(e);
             }
 
-            // WriteLine("Files on the remote server : \n");
-            //
-            // foreach (var item in directory)
-            // {
-            //     WriteLine($"- {item}");
-            // }
-
             return response;
         }
         public async Task<Response<IEnumerable<DtoItem>>> GetListItemsFiles(string folderPath)
