@@ -45,6 +45,7 @@ namespace FTPLib.Class
             {
                 var directory = await _client.GetNameListingAsync();
                 response.Data = directory;
+                response.Status = true;
             }
             catch (Exception e)
             {
@@ -55,8 +56,6 @@ namespace FTPLib.Class
         }
         public async Task<Response<IEnumerable<DtoItem>>> GetListItemsFiles(string folderPath)
         {
-            // WriteLine("\t Files on the remote server : \n");
-
             var response = new Response<IEnumerable<DtoItem>>();
             var directory = new List<DtoItem>();
 
@@ -67,17 +66,13 @@ namespace FTPLib.Class
                 foreach (FtpListItem item in items)
                 {
                     if (item.Type == FtpFileSystemObjectType.File)
-                    {
-                        // long size    =  _client.GetFileSize(item.FullName);
-                        // FtpHash hash = _client.GetChecksum(item.FullName);
                         directory.Add(DtoItem.Map(item.FullName, item.OwnerPermissions.ToString(), item.Size));
-                        //WriteLine($"\t {item.FullName} - {item.OwnerPermissions} - {size}");
-                    }
-
-                    //DateTime time = _client.GetModifiedTime(item.FullName);
 
                     response.Data = directory;
                 }
+
+                response.Status = true;
+
             }
             catch (Exception e)
             {
