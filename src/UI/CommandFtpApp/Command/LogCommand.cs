@@ -6,7 +6,7 @@ using CliFx.Infrastructure;
 
 namespace CommandFtpApp.Command
 {
-    [Command]
+    [Command("LOG")]
     public class LogCommand : ICommand
     {
         [CommandParameter(0, Description = "Value whose logarithm is to be found.")]

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using FTPLib.Class;
 using CliFx;
@@ -7,7 +8,7 @@ using CliFx.Infrastructure;
 
 namespace CommandFtpApp.Command
 {
-    [Command("FTP", Description = "Connect to a server")]
+    [Command("FTP Connect", Description = "Connect to a server")]
     public class FTPCommand : ICommand
     {
         [CommandOption("Server", shortName: 's', IsRequired = true, Description = "Url of the FTP Server.")]
@@ -19,10 +20,10 @@ namespace CommandFtpApp.Command
         [CommandOption("Password", shortName: 'p', IsRequired = true, Description = "Password of user credential.")]
         public string Password { get; init; }
 
-        [CommandOption("Port", Description = "Port of the server.")]
+        [CommandOption("Port",Description = "Port of the server.")]
         public string Port { get; init; } = "21";
 
-        public ValueTask ExecuteAsync(IConsole console)
+        public  ValueTask ExecuteAsync(IConsole console)
         {
             var isNumber = int.TryParse(Port, out var intPort);
 
@@ -41,9 +42,6 @@ namespace CommandFtpApp.Command
     [Command("FTP Display")]
     public class FTPCommandDisplay : ICommand
     {
-        [CommandOption("test", 't')]
-        public string test { get; set; } = null;
-
         public ValueTask ExecuteAsync(IConsole console)
         {
             console.Output.WriteLine("Displaying");
