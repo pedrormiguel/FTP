@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using FluentFTP;
 using System.Threading.Tasks;
+using FluentFTP;
 using FluentFTP.Helpers;
 using FTPLib.Class.Common;
 using FTPLib.Class.Dtos;
