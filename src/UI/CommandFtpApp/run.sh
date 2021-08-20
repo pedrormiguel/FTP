@@ -1,3 +1,3 @@
 dotnet build
 clear
-dotnet run bin/Debug/net3.0/CommandFtpApp.dll
+dotnet bin/Debug/net5.0/CommandFtpApp.dll -h
