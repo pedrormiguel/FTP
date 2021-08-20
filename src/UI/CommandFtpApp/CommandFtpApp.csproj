@@ -9,4 +9,8 @@
     <PackageReference Include="CliFx" Version="2.0.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Library\FTPLib\FTPLib.csproj" />
+  </ItemGroup>
+
 </Project>
