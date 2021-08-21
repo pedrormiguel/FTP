@@ -7,9 +7,9 @@ using FTPLib.Class.Dto;
 using FTPLib.Class.Entities;
 using FTPPersistence.Interfaces;
 
-namespace FTPPersistence.Class
+namespace FTPPersistence.Repository
 {
-    public class DbFileHandler : IPersistence
+    public class DbFileHandler
     {
         private readonly string _pathDbFile;
         private const string NameFile = "DB.txt";
