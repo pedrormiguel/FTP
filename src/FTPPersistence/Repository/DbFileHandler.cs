@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using FTPLib.Class.Common;
 using FTPLib.Class.Dto;
 using FTPLib.Class.Entities;
-using FTPPersistence.Interfaces;
 
 namespace FTPPersistence.Repository
 {
@@ -22,14 +21,14 @@ namespace FTPPersistence.Repository
         private string GetPathFile()
         {
             var sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var sFile = System.IO.Path.Combine(sCurrentDirectory, $"../../../DB/File/txt/{NameFile}");
+            var sFile = Path.Combine(sCurrentDirectory, $"../../../DB/File/txt/{NameFile}");
             return Path.GetFullPath(sFile);
         }
 
         private string GetPath()
         {
             var sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var sFile = System.IO.Path.Combine(sCurrentDirectory, $"../../../DB/File/txt/");
+            var sFile = Path.Combine(sCurrentDirectory, $"../../../DB/File/txt/");
             return Path.GetFullPath(sFile);
         }
 
@@ -38,10 +37,10 @@ namespace FTPPersistence.Repository
             var response = new Response<bool>();
 
             try
-            { 
-                using (var file = new StreamWriter(_pathDbFile, append: true) )
+            {
+                await using (var file = new StreamWriter(_pathDbFile, append: true) )
                 {
-                    await file.WriteLineAsync(credentials.ToString());
+                     await file.WriteLineAsync(credentials.ToString());
                 }
                 
                 response.Status = true;
