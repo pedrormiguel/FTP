@@ -13,15 +13,20 @@ namespace FTPPersistence.Repository
         private readonly string _pathDbFile;
         private const string NameFile = "DB.txt";
         private const string TempFile = "TEMPFILE.txt";
+        private readonly string _routeOfFile;
 
         public DbFileHandler()
         {
-            this._pathDbFile = GetPathFile();
+            _pathDbFile = GetPathFile();
+            _routeOfFile = $"../../../DB/File/txt/{NameFile}";
+            if (!File.Exists(_routeOfFile))
+                File.CreateText(_routeOfFile);
         }
+        
         private string GetPathFile()
         {
             var sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var sFile = Path.Combine(sCurrentDirectory, $"../../../DB/File/txt/{NameFile}");
+            var sFile = Path.Combine(sCurrentDirectory, _routeOfFile);
             return Path.GetFullPath(sFile);
         }
 
