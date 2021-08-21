@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ConsoleApp.Class;
+using FTPConsole.Class.Common;
 using FTPConsole.Class.Dto;
 using FTPLib.Class;
 using FTPLib.Class.Common;
 using static System.Console;
 using static FTPConsole.Utility.ConsoleUtility;
+using BaseCredentials = FTPConsole.Class.Common.BaseCredentials;
 
 namespace FTPConsole.Class
 {

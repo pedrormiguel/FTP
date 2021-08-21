@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using FluentFTP;
 using FluentFTP.Helpers;
 using FTPLib.Class.Common;
-using FTPLib.Class.Dtos;
+using FTPLib.Class.Dto;
 using FTPLib.Interfaces;
 
 namespace FTPLib.Class
@@ -132,13 +132,23 @@ namespace FTPLib.Class
 
         private string GetStatus(FtpStatus status)
         {
-            var response = status switch
+            string response;
+            
+            switch (status)
             {
-                FtpStatus.Failed => FtpStatusResponse.Failed,
-                FtpStatus.Success => FtpStatusResponse.Success,
-                FtpStatus.Skipped => FtpStatusResponse.Skipped,
-                _ => "Not was successful."
-            };
+                case FtpStatus.Failed:
+                    response = FtpStatusResponse.Failed;
+                    break;
+                case FtpStatus.Success:
+                    response = FtpStatusResponse.Success;
+                    break;
+                case FtpStatus.Skipped:
+                    response = FtpStatusResponse.Skipped;
+                    break;
+                default:
+                    response = "Not was successful.";
+                    break;
+            }
 
             return response;
         }

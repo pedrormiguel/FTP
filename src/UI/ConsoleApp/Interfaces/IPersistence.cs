@@ -2,8 +2,9 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ConsoleApp.Class;
+using FTPConsole.Class.Common;
 using FTPLib.Class.Common;
+using BaseCredentials = FTPConsole.Class.Common.BaseCredentials;
 
 namespace FTPConsole.Interfaces
 {

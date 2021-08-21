@@ -1,12 +1,12 @@
 using System;
 
-namespace FTPConsole.Class.Common
+namespace FTPLib.Class.Entities
 {
-    public class BaseCredentials
+    public abstract class BaseEntity
     {
         public Guid Id { get; set;}
 
-        public BaseCredentials()
+        protected BaseEntity()
         {
             Id = Guid.NewGuid();
         }

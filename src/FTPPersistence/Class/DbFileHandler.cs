@@ -2,22 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using FTPConsole.Class.Dto;
-using FTPConsole.Interfaces;
 using FTPLib.Class.Common;
-using BaseCredentials = FTPConsole.Class.Common.BaseCredentials;
+using FTPLib.Class.Dto;
+using FTPLib.Class.Entities;
+using FTPPersistence.Interfaces;
 
-namespace FTPConsole.Class
+namespace FTPPersistence.Class
 {
     public class DbFileHandler : IPersistence
     {
-        private readonly string _pathdbfile;
+        private readonly string _pathDbFile;
         private const string NameFile = "DB.txt";
-        private const string Tempfile = "TEMPFILE.txt";
+        private const string TempFile = "TEMPFILE.txt";
 
         public DbFileHandler()
         {
-            this._pathdbfile = GetPathFile();
+            this._pathDbFile = GetPathFile();
         }
         private string GetPathFile()
         {
@@ -33,14 +33,17 @@ namespace FTPConsole.Class
             return Path.GetFullPath(sFile);
         }
 
-        public async Task<Response<bool>> Add(BaseCredentials credentials)
+        public async Task<Response<bool>> Add(BaseEntity credentials)
         {
             var response = new Response<bool>();
 
             try
-            {
-                await using var file = new StreamWriter(_pathdbfile, append: true);
-                await file.WriteLineAsync(credentials.ToString());
+            { 
+                using (var file = new StreamWriter(_pathDbFile, append: true) )
+                {
+                    await file.WriteLineAsync(credentials.ToString());
+                }
+                
                 response.Status = true;
             }
             catch (Exception ex)
@@ -57,29 +60,31 @@ namespace FTPConsole.Class
 
             try
             {
-                var lines = await File.ReadAllLinesAsync(_pathdbfile);
+                var lines =  await Task.Run( () => File.ReadAllLines(_pathDbFile));
                 response.Status = true;
                 response.Data   = lines;
             }
             catch (Exception ex)
             {
                 response.ErrorMapException(ex);
+
             }
 
             return response;
         }
 
-        public async Task<Response<string>> Delete(BaseCredentials credentials)
+        public async Task<Response<string>> Delete(BaseEntity credentials)
         {
             var response = new Response<string>();
-            var path = $"{GetPath()}/{Tempfile}";
+            var path = $"{GetPath()}/{TempFile}";
 
             try
             {
-                using var sw = new StreamWriter(path);
 
-                using (var sr = new StreamReader(_pathdbfile))
+                using (var sr = new StreamReader(_pathDbFile))
                 {
+                    var sw = new StreamWriter(path);
+
                     string line;
                     while ((line = await sr.ReadLineAsync()) != null)
                     {
@@ -96,7 +101,7 @@ namespace FTPConsole.Class
 
                 response.Status = true;
 
-                File.Replace(path, _pathdbfile, null);
+                File.Replace(path, _pathDbFile, null);
             }
             catch (Exception ex)
             {
@@ -106,21 +111,21 @@ namespace FTPConsole.Class
             return response;
         }
 
-        public async Task<Response<string>> Update(BaseCredentials credentials)
+        public async Task<Response<string>> Update(BaseEntity credentials)
         {
             var response = new Response<string>();
-            var path = $"{GetPath()}/{Tempfile}";
+            var path = $"{GetPath()}/{TempFile}";
 
             try
             {
-                using var sw = new StreamWriter(path);
-
-                using (var sr = new StreamReader(_pathdbfile))
+                using (var sr = new StreamReader(_pathDbFile))
                 {
+                    var sw = new StreamWriter(path);
+
                     string line;
                     while ((line = await sr.ReadLineAsync()) != null)
                     {
-                        var idLine = DtoConnectioSever.Map(line).Id.ToString();
+                        var idLine = DtoConnectionSever.Map(line).Id.ToString();
 
                         if (!idLine.Contains(credentials.Id.ToString()))
                         {
@@ -136,7 +141,7 @@ namespace FTPConsole.Class
                 }
 
                 response.Status = true;
-                File.Replace(path, _pathdbfile, null);
+                File.Replace(path, _pathDbFile, null);
             }
             catch (Exception ex)
             {

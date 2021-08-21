@@ -1,4 +1,4 @@
-namespace FTPLib.Class.Dtos
+namespace FTPLib.Class.Dto
 {
     public class DtoItem
     {
