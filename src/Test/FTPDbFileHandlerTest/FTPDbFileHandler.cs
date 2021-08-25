@@ -50,7 +50,7 @@ namespace FTPDbFileHandlerTest
             output.ShouldBeTrue();
         }
 
-        private bool A()
+        private bool ValidateAndCleanFile()
         {
             bool output = false;
 
