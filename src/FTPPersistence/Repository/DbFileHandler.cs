@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using CORE.Domain.Common;
 using FTPLib.Class.Common;
 using FTPLib.Class.Dto;
-using FTPLib.Class.Entities;
 
 namespace FTPPersistence.Repository
 {
@@ -13,16 +13,27 @@ namespace FTPPersistence.Repository
         private readonly string _pathDbFile;
         private const string NameFile = "DB.txt";
         private const string TempFile = "TEMPFILE.txt";
+        private readonly string _routeOfDirectory = "../../../DB/File/txt/";
+
+        private readonly string _currentDirectory;
+        private readonly string _fullrouteOfDirectory;
         private readonly string _routeOfFile;
 
         public DbFileHandler()
         {
-            _pathDbFile = GetPathFile();
-            _routeOfFile = $"../../../DB/File/txt/{NameFile}";
+            _currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            _fullrouteOfDirectory = Path.Combine(_currentDirectory, _routeOfDirectory);
+            _routeOfFile = $"{_fullrouteOfDirectory}{NameFile}";
+
             if (!File.Exists(_routeOfFile))
-                File.CreateText(_routeOfFile);
+            {
+                Directory.CreateDirectory(_fullrouteOfDirectory);
+                File.Create(_routeOfFile).DisposeAsync();
+            }
+
+            _pathDbFile = GetPathFile();
         }
-        
+
         private string GetPathFile()
         {
             var sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -43,11 +54,11 @@ namespace FTPPersistence.Repository
 
             try
             {
-                await using (var file = new StreamWriter(_pathDbFile, append: true) )
+                await using (var file = new StreamWriter(_pathDbFile, append: true))
                 {
-                     await file.WriteLineAsync(credentials.ToString());
+                    await file.WriteLineAsync(credentials.ToString());
                 }
-                
+
                 response.Status = true;
             }
             catch (Exception ex)
@@ -64,9 +75,9 @@ namespace FTPPersistence.Repository
 
             try
             {
-                var lines =  await Task.Run( () => File.ReadAllLines(_pathDbFile));
+                var lines = await Task.Run(() => File.ReadAllLines(_pathDbFile));
                 response.Status = true;
-                response.Data   = lines;
+                response.Data = lines;
             }
             catch (Exception ex)
             {
@@ -96,7 +107,7 @@ namespace FTPPersistence.Repository
                         {
                             await sw.WriteLineAsync(line);
                         }
-                        else 
+                        else
                         {
                             response.Data = line;
                         }
