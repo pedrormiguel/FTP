@@ -52,14 +52,12 @@ namespace FTPDbFileHandlerTest
 
         private bool ValidateAndCleanFile()
         {
-            bool output = false;
-
             if (!File.Exists(_pathOFile))
                 return false;
             
             File.Delete(_pathOFile);
             Directory.Delete(_pathOfDirectory);
-            output = File.Exists(_pathOFile) && Directory.Exists(_pathOFile);
+            var output = File.Exists(_pathOFile) || Directory.Exists(_pathOfDirectory);
 
             return !output;
         }
