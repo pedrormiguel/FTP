@@ -10,15 +10,17 @@ namespace FTPDbFileHandlerTest
     public class FtpDbFileHandler
     {
         private readonly DbFileHandler _dbFileHandler;
-        private const string PathOFile = "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Test/FTPDbFileHandlerTest/DB/File/txt/DB.txt";
-
+        private readonly string _pathOFile;
+        private readonly string _pathOfDirectory;
         public FtpDbFileHandler()
         {
             _dbFileHandler = new DbFileHandler();
+            _pathOFile = _dbFileHandler.PathDbFile;
+            _pathOfDirectory = _dbFileHandler.fullRouteOfDirectory;
         }
         
         [Fact]
-        public async Task Should_CreateRouteFile()
+        public void Should_CreateRouteFile()
         {
             ////Arrange
             //var dbFile = new DbFileHandler();
@@ -26,7 +28,7 @@ namespace FTPDbFileHandlerTest
             //Act
 
             //Assert
-            var output = await ValidateAndCleanFile();
+            var output = ValidateAndCleanFile();
             output.ShouldBeTrue();
         }
 
@@ -44,19 +46,20 @@ namespace FTPDbFileHandlerTest
             response.Error.ShouldBeNullOrEmpty();
             response.Status.ShouldBeTrue();
 
-            var output = await ValidateAndCleanFile();
+            var output = ValidateAndCleanFile();
             output.ShouldBeTrue();
         }
 
-        private async Task<bool> ValidateAndCleanFile()
+        private bool ValidateAndCleanFile()
         {
             bool output = false;
 
-            if (!File.Exists(PathOFile))
+            if (!File.Exists(_pathOFile))
                 return false;
-
-            await Task.Run(() => File.Delete(PathOFile));
-            output = File.Exists(PathOFile);
+            
+            File.Delete(_pathOFile);
+            Directory.Delete(_pathOfDirectory);
+            output = File.Exists(_pathOFile) && Directory.Exists(_pathOFile);
 
             return !output;
         }
