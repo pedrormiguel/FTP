@@ -1,9 +1,9 @@
 using System.IO;
 using System.Threading.Tasks;
 using FTPLib.Class;
+using FTPLib.Class.Common;
 using Shouldly;
 using Xunit;
-using FTPLib.Class.Common;
 
 namespace FTPTestLib
 {
@@ -26,7 +26,7 @@ namespace FTPTestLib
 
             //Assert
             response.Status.ShouldBeTrue();
-            
+
         }
 
         [Fact]
