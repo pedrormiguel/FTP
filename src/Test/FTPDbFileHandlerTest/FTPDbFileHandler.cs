@@ -18,12 +18,12 @@ namespace FTPDbFileHandlerTest
             _pathOFile = _dbFileHandler.PathDbFile;
             _pathOfDirectory = _dbFileHandler.fullRouteOfDirectory;
         }
-        
+
         [Fact]
         public void Should_CreateRouteFile()
         {
             ////Arrange
-            //var dbFile = new DbFileHandler();
+
 
             //Act
 
@@ -36,7 +36,6 @@ namespace FTPDbFileHandlerTest
         public async Task Should_Add_Success()
         {
             //Arrange
-            //var dbFile = new DbFileHandler();
             var credential = new Credential() { UserName = "TESTUser", HostName = "TESTHost", Password = ">TESTPass", Port = 21 };
 
             //Act
@@ -54,7 +53,7 @@ namespace FTPDbFileHandlerTest
         {
             if (!File.Exists(_pathOFile))
                 return false;
-            
+
             File.Delete(_pathOFile);
             Directory.Delete(_pathOfDirectory);
             var output = File.Exists(_pathOFile) || Directory.Exists(_pathOfDirectory);
