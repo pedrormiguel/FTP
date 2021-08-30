@@ -24,7 +24,6 @@ namespace FTPDbFileHandlerTest
         {
             ////Arrange
 
-
             //Act
 
             //Assert
@@ -47,6 +46,24 @@ namespace FTPDbFileHandlerTest
 
             var output = ValidateAndCleanFile();
             output.ShouldBeTrue();
+        }
+
+        [Fact]
+        public async Task Should_Add_Failer()
+        {
+            //Arrange
+
+            var credential = new Credential();
+
+            //Act
+
+            var response = await _dbFileHandler.Add(credential);
+
+            //Assert
+            response.Error.ShouldNotBeNullOrEmpty();
+            response.Data.ShouldBeFalse();
+            response.Status.ShouldBeFalse();
+
         }
 
         private bool ValidateAndCleanFile()
