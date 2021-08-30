@@ -27,8 +27,7 @@ namespace FTPDbFileHandlerTest
             //Act
 
             //Assert
-            var output = ValidateAndCleanFile();
-            output.ShouldBeTrue();
+            ValidateAndCleanFile().ShouldBeTrue();
         }
 
         [Fact]
@@ -43,9 +42,7 @@ namespace FTPDbFileHandlerTest
             //Assert
             response.Error.ShouldBeNullOrEmpty();
             response.Status.ShouldBeTrue();
-
-            var output = ValidateAndCleanFile();
-            output.ShouldBeTrue();
+            ValidateAndCleanFile().ShouldBeTrue();
         }
 
         [Fact]
@@ -63,6 +60,8 @@ namespace FTPDbFileHandlerTest
             response.Error.ShouldNotBeNullOrEmpty();
             response.Data.ShouldBeFalse();
             response.Status.ShouldBeFalse();
+
+            ValidateAndCleanFile().ShouldBeTrue();
 
         }
 
