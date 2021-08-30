@@ -6,6 +6,14 @@
 
     <ItemGroup>
       <Folder Include="Application\Feature\Credetials" />
+      <Folder Include="Domain\Validation\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Domain\Validation\" />
+      <None Remove="FluentValidation" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="10.3.3" />
+    </ItemGroup>
 </Project>
