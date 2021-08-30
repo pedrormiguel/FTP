@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using CORE.Domain.Common;
+using CORE.Domain.Entities;
+using CORE.Domain.Validation;
 using FTPLib.Class.Common;
 using FTPLib.Class.Dto;
 
@@ -11,7 +13,7 @@ namespace FTPPersistence.Repository
     public class DbFileHandler
     {
         public string PathDbFile { get; }
-        public string fullRouteOfDirectory { get;  }
+        public string fullRouteOfDirectory { get; }
         private const string NameFile = "DB.txt";
         private const string TempFile = "TEMPFILE.txt";
         private readonly string _routeOfDirectory = "../../../DB/File/txt/";
@@ -49,6 +51,18 @@ namespace FTPPersistence.Repository
         public async Task<Response<bool>> Add(BaseEntity credentials)
         {
             var response = new Response<bool>();
+            var credential = (Credential)credentials;
+            var validator = new CredentialValidator();
+            var IsValid = validator.Validate(credential);
+
+            if (!IsValid.IsValid)
+            {
+                response.Error = IsValid.Errors.ToString();
+                response.Status = IsValid.IsValid;
+                response.Data = false;
+
+                return response;
+            }
 
             try
             {
