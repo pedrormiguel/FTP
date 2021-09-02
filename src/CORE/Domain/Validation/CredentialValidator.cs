@@ -11,6 +11,10 @@ namespace CORE.Domain.Validation
                                     .NotNull()
                                     .WithMessage("HostName cannot be Empty");
 
+            RuleFor(x => x.Id).NotEmpty()
+                              .NotNull()
+                              .WithMessage("Id cannot be Empty");
+
             RuleFor(x => x.UserName).NotEmpty().WithMessage("UserName cannot be Empty");
 
             RuleFor(x => x.Password).NotEmpty().WithMessage("Password cannot be Empty");
