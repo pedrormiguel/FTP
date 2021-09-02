@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using CORE.Domain.Common;
 using CORE.Domain.Entities;
@@ -57,8 +58,12 @@ namespace FTPPersistence.Repository
 
             if (!IsValid.IsValid)
             {
-                response.Error = IsValid.Errors.ToString();
-                response.Status = IsValid.IsValid;
+                foreach (var item in IsValid.Errors)
+                {
+                    response.ValidationErrors.Add(item.ErrorMessage);
+                }
+
+                response.Success = IsValid.IsValid;
                 response.Data = false;
 
                 return response;
@@ -71,11 +76,11 @@ namespace FTPPersistence.Repository
                     await file.WriteLineAsync(credentials.ToString());
                 }
 
-                response.Status = true;
+                response.Success = true;
             }
             catch (Exception ex)
             {
-                response.Error = ex.ToString();
+                response.ErrorMapException(ex);
             }
 
             return response;
@@ -88,7 +93,7 @@ namespace FTPPersistence.Repository
             try
             {
                 var lines = await Task.Run(() => File.ReadAllLines(PathDbFile));
-                response.Status = true;
+                response.Success = true;
                 response.Data = lines;
             }
             catch (Exception ex)
@@ -126,7 +131,7 @@ namespace FTPPersistence.Repository
                     }
                 }
 
-                response.Status = true;
+                response.Success = true;
 
                 File.Replace(path, PathDbFile, null);
             }
@@ -167,7 +172,7 @@ namespace FTPPersistence.Repository
                     }
                 }
 
-                response.Status = true;
+                response.Success = true;
                 File.Replace(path, PathDbFile, null);
             }
             catch (Exception ex)
