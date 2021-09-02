@@ -20,13 +20,13 @@ namespace FTPDbFileHandlerTest
         }
 
         [Fact]
-        public void Should_CreateRouteFile()
+        public void Should_CreateRouteFile_WhenInstantiateTheDbFileHandler()
         {
             ////Arrange
 
             //Act
 
-            //Assert
+            //Assert ( it's using the intance of the ctor )
             ValidateAndCleanFile().ShouldBeTrue();
         }
 
@@ -41,28 +41,28 @@ namespace FTPDbFileHandlerTest
 
             //Assert
             response.Error.ShouldBeNullOrEmpty();
-            response.Status.ShouldBeTrue();
+            response.Success.ShouldBeTrue();
             ValidateAndCleanFile().ShouldBeTrue();
         }
 
         [Fact]
-        public async Task Should_Add_Failer()
+        public async Task Should_Add_Fail_WhenCredentialIsNotValid()
         {
             //Arrange
 
-            var credential = new Credential();
+            var credential = new Credential() { Port = 0 };
 
             //Act
 
             var response = await _dbFileHandler.Add(credential);
 
             //Assert
-            response.Error.ShouldNotBeNullOrEmpty();
+            response.Error.ShouldBeNullOrEmpty();
             response.Data.ShouldBeFalse();
-            response.Status.ShouldBeFalse();
-
+            response.Success.ShouldBeFalse();
+            response.ValidationErrors.Count.Equals(6);
+            
             ValidateAndCleanFile().ShouldBeTrue();
-
         }
 
         private bool ValidateAndCleanFile()
