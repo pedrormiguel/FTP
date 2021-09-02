@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CORE.Application.Responses
 {
-    public class BaseResponse<T> where T : class
+    public class BaseResponse<T>
     {
         public BaseResponse()
         {
@@ -15,7 +15,7 @@ namespace CORE.Application.Responses
             Success = true;
             Message = message;
         }
-        
+
         public BaseResponse(string message, bool success)
         {
             Success = success;
@@ -24,6 +24,6 @@ namespace CORE.Application.Responses
 
         public bool Success { get; set; }
         public string Message { get; set; }
-        public List<string> ValidationErrors { get; set; }
+        public List<string> ValidationErrors { get; set; } = new List<string>();
     }
 }
