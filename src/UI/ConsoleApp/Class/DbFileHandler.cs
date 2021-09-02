@@ -13,7 +13,7 @@ namespace FTPConsole.Class
     {
         private readonly string _pathdbfile;
         private const string NameFile = "DB.txt";
-        private const string Tempfile = "TEMPFILE.txt";
+        private const string TempFile = "TEMPFILE.txt";
 
         public DbFileHandler()
         {
@@ -41,11 +41,11 @@ namespace FTPConsole.Class
             {
                 await using var file = new StreamWriter(_pathdbfile, append: true);
                 await file.WriteLineAsync(credentials.ToString());
-                response.Status = true;
+                response.Success = true;
             }
             catch (Exception ex)
             {
-                response.Error = ex.ToString();
+                response.Message = ex.ToString();
             }
 
             return response;
@@ -58,8 +58,8 @@ namespace FTPConsole.Class
             try
             {
                 var lines = await File.ReadAllLinesAsync(_pathdbfile);
-                response.Status = true;
-                response.Data   = lines;
+                response.Success = true;
+                response.Data = lines;
             }
             catch (Exception ex)
             {
@@ -72,11 +72,11 @@ namespace FTPConsole.Class
         public async Task<Response<string>> Delete(BaseCredentials credentials)
         {
             var response = new Response<string>();
-            var path = $"{GetPath()}/{Tempfile}";
+            var path = $"{GetPath()}/{TempFile}";
 
             try
             {
-                using var sw = new StreamWriter(path);
+                await using var sw = new StreamWriter(path);
 
                 using (var sr = new StreamReader(_pathdbfile))
                 {
@@ -87,14 +87,14 @@ namespace FTPConsole.Class
                         {
                             await sw.WriteLineAsync(line);
                         }
-                        else 
+                        else
                         {
                             response.Data = line;
                         }
                     }
                 }
 
-                response.Status = true;
+                response.Success = true;
 
                 File.Replace(path, _pathdbfile, null);
             }
@@ -109,7 +109,7 @@ namespace FTPConsole.Class
         public async Task<Response<string>> Update(BaseCredentials credentials)
         {
             var response = new Response<string>();
-            var path = $"{GetPath()}/{Tempfile}";
+            var path = $"{GetPath()}/{TempFile}";
 
             try
             {
@@ -135,7 +135,7 @@ namespace FTPConsole.Class
                     }
                 }
 
-                response.Status = true;
+                response.Success = true;
                 File.Replace(path, _pathdbfile, null);
             }
             catch (Exception ex)
