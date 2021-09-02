@@ -1,3 +1,0 @@
-ed4d7c42-6381-42be-b796-f768931cdd74;demo.wftpserver.com;demo;demo;21
-77c209e2-85e2-414c-ab78-c6ce1276184e;test.rebex.net;demo;password;21
-1aa8f04e-7dec-4871-b77a-b79cd89927ff;ftp://ftp.dlptest.com;dlpuser;rNrKYTX9g7z3RgJRmxWuGHbeu;21
