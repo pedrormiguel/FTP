@@ -25,7 +25,7 @@ namespace FTPTestLib
             var response = _client.Connect();
 
             //Assert
-            response.Status.ShouldBeTrue();
+            response.Success.ShouldBeTrue();
 
         }
 
@@ -39,7 +39,7 @@ namespace FTPTestLib
             var response = client.Connect();
 
             //Assert
-            response.Status.ShouldBeFalse();
+            response.Success.ShouldBeFalse();
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace FTPTestLib
 
             //Assert
             response.Data.Length.ShouldBe(2);
-            response.Status.ShouldBeTrue();
+            response.Success.ShouldBeTrue();
             response.Error.ShouldBeNullOrEmpty();
         }
 
@@ -73,7 +73,7 @@ namespace FTPTestLib
 
             //Assert
             response.Data.ShouldBe(FtpStatusResponse.Success);
-            response.Status.ShouldBeTrue();
+            response.Success.ShouldBeTrue();
             response.Error.ShouldBeNullOrWhiteSpace();
             File.Exists(localPathToDownload).ShouldBeTrue();
             File.Delete(localPathToDownload);
@@ -94,7 +94,7 @@ namespace FTPTestLib
 
             //Assert
             response.Data.ShouldBe(FtpStatusResponse.Skipped);
-            response.Status.ShouldBeTrue();
+            response.Success.ShouldBeTrue();
             response.Error.ShouldBeNullOrEmpty();
         }
 
@@ -113,7 +113,7 @@ namespace FTPTestLib
 
             //Assert
             response.Data.ShouldBe(FtpStatusResponse.Failed);
-            response.Status.ShouldBeFalse();
+            response.Success.ShouldBeFalse();
             response.Error.ShouldBeNullOrEmpty();
         }
     }
