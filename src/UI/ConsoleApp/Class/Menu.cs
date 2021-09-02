@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FTPConsole.Class.Common;
@@ -74,14 +75,14 @@ namespace FTPConsole.Class
             return selection;
         }
 
-        static DtoConnectioSever MenuConnection()
+        private static DtoConnectioSever MenuConnection()
         {
             var connection = new DtoConnectioSever();
-            var IsValidPort = false;
-            int port = 21;
+            var isValidPort = false;
+            var port = 21;
 
             InsertBlankLine();
-            WriteLine("* Please fullfill with the correct FTP Information Server");
+            WriteLine("* Please full fill with the correct FTP Information Server");
             InsertBlankLine();
 
             Write("\t1.\tHostname Server\t :");
@@ -91,30 +92,30 @@ namespace FTPConsole.Class
             var username = ReadLine();
 
             Write("\t3.\tPassword Server\t :");
-            var passwrod = ReadLine();
+            var password = ReadLine();
 
             do
             {
                 Write("\t4.\tPort Server\t :");
                 var input = ReadLine();
 
-                IsValidPort = int.TryParse(input, out port);
+                isValidPort = int.TryParse(input, out port);
                 InsertBlankLine();
 
-                if (IsValidPort == false)
+                if (isValidPort == false)
                     WriteLine("Digit a valid Number Port");
 
                 InsertBlankLine();
 
 
-            } while (!IsValidPort);
+            } while (!isValidPort);
 
-            connection.Assing(hostname, username, passwrod, port);
+            connection.Assing(hostname, username, password, port);
 
             return connection;
         }
 
-        public static string MenuEditServer()
+        private static string MenuEditServer()
         {
             WriteLine("\t \t ..Menu..");
             WriteLine("Options\n");
@@ -224,7 +225,7 @@ namespace FTPConsole.Class
 
             var responseUploadFile = await client.UploadFile(localPath, remotePath);
 
-            if (!responseUploadFile.Status)
+            if (!responseUploadFile.Success)
                 WriteLine($"{responseUploadFile.Error}");
 
             WriteLine(responseUploadFile.Data);
@@ -242,7 +243,7 @@ namespace FTPConsole.Class
             var output = ReadLine();
             var response = await client.GetListItemsFiles(output);
 
-            if (response.Status)
+            if (response.Success)
             {
                 WriteLine("Files on the remote server : \n");
 
@@ -267,7 +268,7 @@ namespace FTPConsole.Class
             InsertBlankLine();
             var response = await client.GetListItems();
 
-            if (response.Status)
+            if (response.Success)
             {
 
                 WriteLine("Files on the remote server : \n");
@@ -295,9 +296,9 @@ namespace FTPConsole.Class
 
             do
             {
-                var credetials = MenuConnection();
+                var credential = MenuConnection();
 
-                var clientFtp = Connection(credetials);
+                var clientFtp = Connection(credential);
 
                 output = clientFtp.IsConnected;
 
@@ -313,7 +314,7 @@ namespace FTPConsole.Class
                     Write("Was a problem connecting with the server, try again. Y/N : ");
                     var input = ReadLine();
 
-                    if (input.ToUpper().Equals("N"))
+                    if (input != null && input.ToUpper().Equals("N"))
                     {
                         Clear();
                         output = true;
@@ -326,32 +327,27 @@ namespace FTPConsole.Class
             } while (!output);
         }
 
-        public static Ftp Connection(DtoConnectioSever credentials)
+        private static Ftp Connection(DtoConnectioSever credentials)
         {
-            Response<bool> response;
-
             var client = new Ftp(credentials.HostName, credentials.UserName, credentials.Password, credentials.Port);
-            response = client.Connect();
+            var response = client.Connect();
 
-            if (!response.Data)
-            {
-                WriteLine("It's not Connected to the server");
-                WriteLine();
-            }
+            if (response.Data) return client;
+            WriteLine("It's not Connected to the server");
+            WriteLine();
 
             return client;
         }
 
-        public static async Task RegisterNewServer()
+        private static async Task RegisterNewServer()
         {
             var credentials = MenuConnection();
 
             var response = await Handler.Add(credentials);
 
-            if (response.Status)
-                Write($"The Ftp server [{credentials.HostName}] was saved it");
-            else
-                Write("Ocurred a problem saving the credetials, try again.");
+            Write(response.Success
+                ? $"The Ftp server [{credentials.HostName}] was saved it"
+                : "Occurred a problem saving the credential, try again.");
 
             InsertBlankLine();
             WaitAndClearScreen();
@@ -361,46 +357,45 @@ namespace FTPConsole.Class
         private static async Task<List<DtoConnectioSever>> GetAllServer()
         {
             var response = await Handler.ReadAll();
-            var FtpSevers = new List<DtoConnectioSever>();
-            int counter = 0;
+            var ftpSevers = new List<DtoConnectioSever>();
+            var counter = 0;
 
             if (!response.Data.Equals(null))
             {
                 WriteLine("Listing all the available servers :");
 
-                foreach (var line in response.Data as string[])
+                foreach (var line in (string[])response.Data)
                 {
                     counter++;
                     var item = DtoConnectioSever.Map(line);
                     WriteLine($"{counter}.{item.HostName}");
-                    FtpSevers.Add(item);
+                    ftpSevers.Add(item);
                 }
             }
 
             InsertBlankLine();
-            return FtpSevers;
+            return ftpSevers;
         }
 
-        public static async Task ListAllServer()
+        private static async Task ListAllServer()
         {
             InsertBlankLine();
             WriteLine("\t \t ..MENU..");
             InsertBlankLine();
-            List<DtoConnectioSever> FtpSevers = await GetAllServer();
+            var ftpSevers = await GetAllServer();
 
             Write("If you want to return to the menu press a Non-numeric key OR Press the number to connect to one server from the list above, digit the number. ? :");
 
-            var anserw = ReadLine().ToUpper();
-            int ServerPosition;
-            var IsCorrect = int.TryParse(anserw, out ServerPosition);
+            var answer = ReadLine()?.ToUpper();
+            var isCorrect = int.TryParse(answer, out var serverPosition);
 
-            if (IsCorrect)
+            if (isCorrect)
             {
                 DtoConnectioSever server = null;
 
                 try
                 {
-                    server = FtpSevers[ServerPosition - 1];
+                    server = ftpSevers[serverPosition - 1];
                 }
                 catch
                 {
@@ -438,56 +433,55 @@ namespace FTPConsole.Class
             }
         }
 
-        public static async Task DeleteServer()
+        private static async Task DeleteServer()
         {
             var servers = await GetAllServer();
 
             Write("Select the number of the server to delete ? :");
             var input = ReadLine();
 
-            var response = await Handler.Delete(servers[int.Parse(input) - 1]);
+            if (input != null)
+            {
+                var response = await Handler.Delete(servers[int.Parse(input) - 1]);
 
-            if (response.Status)
-            {
-                WriteLine("The server was deleted successfully");
-            }
-            else
-            {
-                WriteLine($"{response.Error}");
+                WriteLine(response.Success ? "The server was deleted successfully" : $"{response.Error}");
             }
 
             await InitialPoint();
         }
 
-        public static async Task UpdateServer()
+        private static async Task UpdateServer()
         {
             var servers = await GetAllServer();
 
             Write("Select the number of the server to delete ? :");
 
             var input = ReadLine();
-            var server = servers[int.Parse(input) - 1];
-
-
-            var editResponse = EditServer(input, ref server);
-            Response<string> updatedResponse = new Response<string>();
-
-            if (editResponse.Status)
-                updatedResponse = await Handler.Update(editResponse.Data as BaseCredentials);
-
-            if (editResponse.Status && updatedResponse.Status)
+            if (input != null)
             {
-                WriteLine("The server was updated successfully");
-            }
-            else
-            {
-                WriteLine($"-- {editResponse.Error} -- \n \n -- {updatedResponse.Error} --");
+                var server = servers[int.Parse(input) - 1];
+
+
+                var editResponse = EditServer(input, ref server);
+                Response<string> updatedResponse = new Response<string>();
+
+                if (editResponse.Success)
+                    updatedResponse = await Handler.Update(editResponse.Data as BaseCredentials);
+
+                if (editResponse.Success && updatedResponse.Success)
+                {
+                    WriteLine("The server was updated successfully");
+                }
+                else
+                {
+                    WriteLine($"-- {editResponse.Error} -- \n \n -- {updatedResponse.Error} --");
+                }
             }
 
             await InitialPoint();
         }
 
-        public static Response<DtoConnectioSever> EditServer(string option, ref DtoConnectioSever dto)
+        private static Response<DtoConnectioSever> EditServer(string option, ref DtoConnectioSever dto)
         {
             var response = new Response<DtoConnectioSever>();
 
@@ -498,44 +492,44 @@ namespace FTPConsole.Class
                 case "1":
                     Write("\t1.Hostname Server\t :");
                     dto.HostName = ReadLine();
-                    response.Status = true;
+                    response.Success = true;
                     break;
 
                 case "2":
                     Write("\t2.Username Server\t :");
                     dto.UserName = ReadLine();
-                    response.Status = true;
+                    response.Success = true;
                     break;
 
                 case "3":
                     Write("\t3.Password Server\t :");
                     dto.Password = ReadLine();
-                    response.Status = true;
+                    response.Success = true;
                     break;
 
                 case "4":
-                    int port = 21;
-                    var IsValidPort = false;
+                    var port = 21;
+                    var isValidPort = false;
                     do
                     {
                         Write("\t4.Port Server\t :");
                         var input = ReadLine();
 
-                        IsValidPort = int.TryParse(input, out port);
+                        isValidPort = int.TryParse(input, out port);
                         InsertBlankLine();
 
-                        if (IsValidPort == false)
+                        if (isValidPort == false)
                             WriteLine("Digit a valid Number Port");
 
                         InsertBlankLine();
 
-                    } while (!IsValidPort);
+                    } while (!isValidPort);
                     dto.Port = port;
-                    response.Status = true;
+                    response.Success = true;
                     break;
 
                 default:
-                    response.Error = "Not Valid option";
+                    response.Message = "Not Valid option";
                     break;
             }
 
@@ -544,7 +538,7 @@ namespace FTPConsole.Class
             return response;
         }
 
-        public static async Task ClearScreen()
+        private static async Task ClearScreen()
         {
             Clear();
             await InitialPoint();
