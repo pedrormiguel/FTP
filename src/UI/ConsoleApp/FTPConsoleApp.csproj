@@ -7,13 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="DB\File\txt\DB.txt" />
     <None Remove="Class\Dto\" />
     <None Remove="Class\Common\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="DB\File\txt\DB.txt" />
   </ItemGroup>
 
   <ItemGroup>
