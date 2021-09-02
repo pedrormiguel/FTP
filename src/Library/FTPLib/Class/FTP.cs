@@ -27,7 +27,7 @@ namespace FTPLib.Class
                 var profile = _client.AutoDetect();
                 _client.LoadProfile(profile[0]);
                 _client.Connect();
-                response.Status = true;
+                response.Success = true;
             }
             catch (Exception ex)
             {
@@ -45,7 +45,7 @@ namespace FTPLib.Class
             {
                 var directory = await _client.GetNameListingAsync();
                 response.Data = directory;
-                response.Status = true;
+                response.Success = true;
             }
             catch (Exception e)
             {
@@ -72,7 +72,7 @@ namespace FTPLib.Class
                     response.Data = directory;
                 }
 
-                response.Status = true;
+                response.Success = true;
 
             }
             catch (Exception e)
@@ -90,7 +90,7 @@ namespace FTPLib.Class
 
             if (!_client.IsConnected)
             {
-                response.Error = "It's not connected";
+                response.Message = "It's not connected";
                 return response;
             }
 
@@ -104,7 +104,7 @@ namespace FTPLib.Class
             }
 
             response.Data = GetStatus(status);
-            response.Status = status.IsSuccess();
+            response.Success = status.IsSuccess();
 
             return response;
         }
@@ -125,7 +125,7 @@ namespace FTPLib.Class
             }
 
             response.Data = GetStatus(status);
-            response.Status = status.IsSuccess();
+            response.Success = status.IsSuccess();
 
             return response;
         }
@@ -133,7 +133,7 @@ namespace FTPLib.Class
         private string GetStatus(FtpStatus status)
         {
             string response;
-            
+
             switch (status)
             {
                 case FtpStatus.Failed:
