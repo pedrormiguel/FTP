@@ -5,8 +5,7 @@ using FTPLib.Class;
 using FTPLib.Class.Common;
 using static System.Console;
 using static FTPConsole.Utility.ConsoleUtility;
-using BaseCredentials = FTPConsole.Class.Common.BaseCredentials;
-using FTPPersistence.Repository;
+ using FTPPersistence.Repository;
 
 namespace FTPConsole.Class
 {
