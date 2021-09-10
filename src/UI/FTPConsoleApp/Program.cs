@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
-using static FTPConsole.Utility.ConsoleUtility;
 using static FTPConsole.Class.Menu;
 
-namespace ConsoleApp
+namespace FTPConsole
 {
     class Program
     {

@@ -1,4 +1,4 @@
- using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FTPConsole.Class.Dto;
 using FTPLib.Class;
@@ -6,12 +6,13 @@ using FTPLib.Class.Common;
 using static System.Console;
 using static FTPConsole.Utility.ConsoleUtility;
 using BaseCredentials = FTPConsole.Class.Common.BaseCredentials;
+using FTPPersistence.Repository;
 
 namespace FTPConsole.Class
 {
     public static class Menu
     {
-        private static DbFileHandler Handler { get; set; } = new DbFileHandler();
+        private static DbFileHandler Handler { get; } = new DbFileHandler();
 
         public static async Task InitialPoint()
         {

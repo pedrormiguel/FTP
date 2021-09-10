@@ -17,6 +17,11 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\..\FTPPersistence\FTPPersistence.csproj" />
     <ProjectReference Include="..\..\Library\FTPLib\FTPLib.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Remove="Class\DbFileHandler.cs" />
   </ItemGroup>
 </Project>
