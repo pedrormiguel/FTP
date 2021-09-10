@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
+ using System.Collections.Generic;
 using System.Threading.Tasks;
-using FTPConsole.Class.Common;
 using FTPConsole.Class.Dto;
 using FTPLib.Class;
 using FTPLib.Class.Common;
