@@ -74,9 +74,9 @@ namespace FTPConsole.Class
             return selection;
         }
 
-        private static DtoConnectioSever MenuConnection()
+        private static DtoConnectionSever MenuConnection()
         {
-            var connection = new DtoConnectioSever();
+            var connection = new DtoConnectionSever();
             var isValidPort = false;
             var port = 21;
 
@@ -326,7 +326,7 @@ namespace FTPConsole.Class
             } while (!output);
         }
 
-        private static Ftp Connection(DtoConnectioSever credentials)
+        private static Ftp Connection(DtoConnectionSever credentials)
         {
             var client = new Ftp(credentials.HostName, credentials.UserName, credentials.Password, credentials.Port);
             var response = client.Connect();
@@ -353,10 +353,10 @@ namespace FTPConsole.Class
             await InitialPoint();
         }
 
-        private static async Task<List<DtoConnectioSever>> GetAllServer()
+        private static async Task<List<DtoConnectionSever>> GetAllServer()
         {
             var response = await Handler.ReadAll();
-            var ftpSevers = new List<DtoConnectioSever>();
+            var ftpSevers = new List<DtoConnectionSever>();
             var counter = 0;
 
             if (!response.Data.Equals(null))
@@ -366,7 +366,7 @@ namespace FTPConsole.Class
                 foreach (var line in (string[])response.Data)
                 {
                     counter++;
-                    var item = DtoConnectioSever.Map(line);
+                    var item = DtoConnectionSever.Map(line);
                     WriteLine($"{counter}.{item.HostName}");
                     ftpSevers.Add(item);
                 }
@@ -390,7 +390,7 @@ namespace FTPConsole.Class
 
             if (isCorrect)
             {
-                DtoConnectioSever server = null;
+                DtoConnectionSever server = null;
 
                 try
                 {
@@ -465,7 +465,7 @@ namespace FTPConsole.Class
                 Response<string> updatedResponse = new Response<string>();
 
                 if (editResponse.Success)
-                    updatedResponse = await Handler.Update(editResponse.Data as BaseCredentials);
+                    updatedResponse = await Handler.Update(editResponse.Data);
 
                 if (editResponse.Success && updatedResponse.Success)
                 {
@@ -480,9 +480,9 @@ namespace FTPConsole.Class
             await InitialPoint();
         }
 
-        private static Response<DtoConnectioSever> EditServer(string option, ref DtoConnectioSever dto)
+        private static Response<DtoConnectionSever> EditServer(string option, ref DtoConnectionSever dto)
         {
-            var response = new Response<DtoConnectioSever>();
+            var response = new Response<DtoConnectionSever>();
 
             option = MenuEditServer();
 
