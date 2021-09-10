@@ -1,15 +1,10 @@
 using System;
-using FTPConsole.Class.Common;
+using CORE.Domain.Entities;
 
 namespace FTPConsole.Class.Dto
 {
-    public class DtoConnectioSever : BaseCredentials
+    public class DtoConnectionSever : Credential
     {
-        public string HostName { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public int Port { get; set; } = 21;
-
         internal void Assing(string hostname, string username, string passwrod, string port)
         {
             HostName = hostname;
@@ -26,17 +21,11 @@ namespace FTPConsole.Class.Dto
             Port = port;
         }
 
-        public override string ToString()
+        public static DtoConnectionSever Map(string line)
         {
-            return $"{this.Id};{this.HostName};{this.UserName};{this.Password};{this.Port}";
-        }
+            var credentials = line.Split(";");
 
-        public static DtoConnectioSever Map(string Line)
-        {
-            var credentials = Line.Split(";");
-
-
-            return new DtoConnectioSever
+            return new DtoConnectionSever
             {
                 Id = Guid.Parse(credentials[0]),
                 HostName = credentials[1],
