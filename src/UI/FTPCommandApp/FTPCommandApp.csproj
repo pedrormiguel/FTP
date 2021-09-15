@@ -8,10 +8,19 @@
 
   <ItemGroup>
     <PackageReference Include="CliFx" Version="2.0.6" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Library\FTPLib\FTPLib.csproj" />
+    <ProjectReference Include="..\..\FTPPersistence\FTPPersistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Model\" />
+    <None Remove="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
+  </ItemGroup>
 </Project>
