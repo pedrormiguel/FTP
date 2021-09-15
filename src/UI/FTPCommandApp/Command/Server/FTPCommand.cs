@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using FTPLib.Class;
 using CliFx;
@@ -20,10 +19,10 @@ namespace CommandFtpApp.Command
         [CommandOption("Password", shortName: 'p', IsRequired = true, Description = "Password of user credential.")]
         public string Password { get; init; }
 
-        [CommandOption("Port",Description = "Port of the server.")]
+        [CommandOption("Port", Description = "Port of the server.")]
         public string Port { get; init; } = "21";
 
-        public  ValueTask ExecuteAsync(IConsole console)
+        public ValueTask ExecuteAsync(IConsole console)
         {
             var isNumber = int.TryParse(Port, out var intPort);
 
