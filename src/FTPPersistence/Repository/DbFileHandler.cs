@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using CORE.Domain.Common;
 using CORE.Domain.Entities;
 using CORE.Domain.Validation;
 using FTPLib.Class.Common;
 using FTPLib.Class.Dto;
+using FTPPersistence.Interfaces;
 
 namespace FTPPersistence.Repository
 {
-    public class DbFileHandler
+    public class DbFileHandler : IDbFile
     {
         public string PathDbFile { get; }
         public string fullRouteOfDirectory { get; }
