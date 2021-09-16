@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Class\Dto" />
     <Folder Include="Class\Dto\" />
     <Folder Include="Class\Common\" />
   </ItemGroup>
