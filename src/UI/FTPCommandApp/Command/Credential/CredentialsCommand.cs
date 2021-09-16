@@ -2,21 +2,21 @@ using CliFx;
 using CliFx.Attributes;
 using CliFx.Infrastructure;
 using System.Threading.Tasks;
-
-using FTPPersistence.Repository;
 using Credentials = CORE.Domain.Entities.Credential;
-using Microsoft.Extensions.Options;
+using FTPPersistence.Interfaces;
+using Autofac;
 
 namespace CommandFtpApp.Command.Credential
 {
     [Command("Credentials Add", Description = "Add new ftp server with credential")]
     public class CredentialsCommand : ICommand
     {
-        private DbFileHandler _dbFile;
+        private readonly IDbFile _dbFile;
 
         public CredentialsCommand()
         {
-            _dbFile = new DbFileHandler();
+            using var scope = Program.Container.BeginLifetimeScope();
+            _dbFile = scope.Resolve<IDbFile>();
         }
 
         [CommandOption("Server", shortName: 's', IsRequired = true, Description = "Url of the FTP Server.")]
