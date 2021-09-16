@@ -14,9 +14,9 @@ namespace CommandFtpApp.Command.Credential
     {
         private DbFileHandler _dbFile;
 
-        public CredentialsCommand(IOptions<DbFileHandler> dbFileHandler)
+        public CredentialsCommand()
         {
-            _dbFile = dbFileHandler.Value;
+            _dbFile = new DbFileHandler();
         }
 
         [CommandOption("Server", shortName: 's', IsRequired = true, Description = "Url of the FTP Server.")]
