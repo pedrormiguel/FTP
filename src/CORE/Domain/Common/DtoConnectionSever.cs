@@ -1,11 +1,11 @@
 using System;
 using CORE.Domain.Entities;
 
-namespace FTPConsole.Class.Dto
+namespace CORE.Domain.Common
 {
     public class DtoConnectionSever : Credential
     {
-        internal void Assing(string hostname, string username, string passwrod, string port)
+        public void Assing(string hostname, string username, string passwrod, string port)
         {
             HostName = hostname;
             UserName = username;
@@ -13,7 +13,7 @@ namespace FTPConsole.Class.Dto
             Port = int.Parse(port);
         }
 
-        internal void Assing(string hostname, string username, string passwrod, int port)
+        public void Assing(string hostname, string username, string passwrod, int port)
         {
             HostName = hostname;
             UserName = username;
@@ -23,7 +23,7 @@ namespace FTPConsole.Class.Dto
 
         public static DtoConnectionSever Map(string line)
         {
-            var credentials = line.Split(";");
+            var credentials = line.Split(';');
 
             return new DtoConnectionSever
             {

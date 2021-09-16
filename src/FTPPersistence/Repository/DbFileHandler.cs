@@ -8,6 +8,7 @@ using CORE.Domain.Validation;
 using FTPLib.Class.Common;
 using FTPLib.Class.Dto;
 using FTPPersistence.Interfaces;
+using DtoConnectionSever = CORE.Domain.Common.DtoConnectionSever;
 
 namespace FTPPersistence.Repository
 {
