@@ -15,7 +15,7 @@ namespace FTPPersistence.Repository
     public class DbFileHandler : IDbFile
     {
         public string PathDbFile { get; }
-        public string fullRouteOfDirectory { get; }
+        public string FullRouteOfDirectory { get; }
         private const string NameFile = "DB.txt";
         private const string TempFile = "TEMPFILE.txt";
         private readonly string _routeOfDirectory = "../../../DB/File/txt/";
@@ -24,12 +24,12 @@ namespace FTPPersistence.Repository
         public DbFileHandler()
         {
             var currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            fullRouteOfDirectory = Path.Combine(currentDirectory, _routeOfDirectory);
-            _routeOfFile = $"{fullRouteOfDirectory}{NameFile}";
+            FullRouteOfDirectory = Path.Combine(currentDirectory, _routeOfDirectory);
+            _routeOfFile = $"{FullRouteOfDirectory}{NameFile}";
 
             if (!File.Exists(_routeOfFile))
             {
-                Directory.CreateDirectory(fullRouteOfDirectory);
+                Directory.CreateDirectory(FullRouteOfDirectory);
                 File.Create(_routeOfFile).DisposeAsync();
             }
 
@@ -55,16 +55,16 @@ namespace FTPPersistence.Repository
             var response = new Response<bool>();
             var credential = (Credential)credentials;
             var validator = new CredentialValidator();
-            var IsValid = validator.Validate(credential);
+            var isValid = validator.Validate(credential);
 
-            if (!IsValid.IsValid)
+            if (!isValid.IsValid)
             {
-                foreach (var item in IsValid.Errors)
+                foreach (var item in isValid.Errors)
                 {
                     response.ValidationErrors.Add(item.ErrorMessage);
                 }
 
-                response.Success = IsValid.IsValid;
+                response.Success = isValid.IsValid;
                 response.Data = false;
 
                 return response;
@@ -109,15 +109,14 @@ namespace FTPPersistence.Repository
         public async Task<Response<string>> Delete(BaseEntity credentials)
         {
             var response = new Response<string>();
-            var path = $"{GetPath()}/{TempFile}";
+            var tempPah = $"{FullRouteOfDirectory}{TempFile}";
 
             try
             {
-
                 using (var sr = new StreamReader(PathDbFile))
                 {
-                    var sw = new StreamWriter(path);
-
+                    await using var sw = new StreamWriter(tempPah, true);
+                    
                     string line;
                     while ((line = await sr.ReadLineAsync()) != null)
                     {
@@ -134,7 +133,7 @@ namespace FTPPersistence.Repository
 
                 response.Success = true;
 
-                File.Replace(path, PathDbFile, null);
+                File.Replace(tempPah, PathDbFile, null);
             }
             catch (Exception ex)
             {
@@ -147,13 +146,13 @@ namespace FTPPersistence.Repository
         public async Task<Response<string>> Update(BaseEntity credentials)
         {
             var response = new Response<string>();
-            var path = $"{GetPath()}/{TempFile}";
+            var path = $"{FullRouteOfDirectory}{TempFile}";
 
             try
             {
                 using (var sr = new StreamReader(PathDbFile))
                 {
-                    var sw = new StreamWriter(path);
+                    await using var sw = new StreamWriter(path, true);
 
                     string line;
                     while ((line = await sr.ReadLineAsync()) != null)
@@ -167,7 +166,7 @@ namespace FTPPersistence.Repository
                         else
                         {
                             var newLine = credentials.ToString();
-                            await sw.WriteAsync(newLine);
+                            await sw.WriteLineAsync(newLine);
                             response.Data = newLine;
                         }
                     }
