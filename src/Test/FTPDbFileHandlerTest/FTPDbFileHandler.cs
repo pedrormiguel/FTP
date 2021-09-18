@@ -16,7 +16,7 @@ namespace FTPDbFileHandlerTest
         {
             _dbFileHandler = new DbFileHandler();
             _pathOFile = _dbFileHandler.PathDbFile;
-            _pathOfDirectory = _dbFileHandler.fullRouteOfDirectory;
+            _pathOfDirectory = _dbFileHandler.FullRouteOfDirectory;
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace FTPDbFileHandlerTest
             response.Data.ShouldBeFalse();
             response.Success.ShouldBeFalse();
             response.ValidationErrors.Count.Equals(6);
-            
+
             ValidateAndCleanFile().ShouldBeTrue();
         }
 
