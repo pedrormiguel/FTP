@@ -2,7 +2,7 @@
 
 Implemeting FTP Client
 
-![](https://vistr.dev/badge?repo=yourUsername.repoName)
+![](https://vistr.dev/badge?repo=pedrormiguel.FTP)
 
 FTP 
 
