@@ -34,7 +34,7 @@ namespace FTPDbFileHandlerTest
         public async Task Should_Add_Success()
         {
             //Arrange
-            var credential = new Credential() { UserName = "TESTUser", HostName = "TESTHost", Password = ">TESTPass", Port = 21 };
+            var credential = new Credential() { UserName = "TESTUser", HostName = "TESTHost", Password = "TESTPass", Port = 21 };
 
             //Act
             var response = await _dbFileHandler.Add(credential);
