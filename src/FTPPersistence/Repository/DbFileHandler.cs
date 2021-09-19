@@ -55,7 +55,7 @@ namespace FTPPersistence.Repository
             var response = new Response<bool>();
             var credential = (Credential)credentials;
             var validator = new CredentialValidator();
-            var isValid = validator.Validate(credential);
+            var isValid = await validator.ValidateAsync(credential);
 
             if (!isValid.IsValid)
             {
