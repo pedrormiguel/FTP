@@ -7,21 +7,21 @@ namespace CORE.Domain.Validation
     {
         public CredentialValidator()
         {
-            RuleFor(x => x.HostName).NotEmpty()
-                                    .NotNull()
-                                    .WithMessage("HostName cannot be Empty");
+            RuleFor(x => x.HostName)
+                .NotEmpty()
+                .NotNull().WithMessage(x => $"{nameof(x.HostName)} must not be null.");
+            
+            RuleFor(x => x.Id)
+                .NotEmpty()
+                .NotNull();
+            
+            RuleFor(x => x.UserName).NotEmpty();
 
-            RuleFor(x => x.Id).NotEmpty()
-                              .NotNull()
-                              .WithMessage("Id cannot be Empty");
+            RuleFor(x => x.Password).NotEmpty();
 
-            RuleFor(x => x.UserName).NotEmpty().WithMessage("UserName cannot be Empty");
-
-            RuleFor(x => x.Password).NotEmpty().WithMessage("Password cannot be Empty");
-
-            RuleFor(x => x.Port).NotEmpty()
-                                .GreaterThan(0)
-                                .WithMessage("Port cannot be Empty");
+            RuleFor(x => x.Port)
+                .NotNull()
+                .GreaterThan(0);
         }
     }
 }
