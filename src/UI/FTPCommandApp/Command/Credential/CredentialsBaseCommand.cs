@@ -3,7 +3,6 @@ using CliFx.Attributes;
 using CliFx.Infrastructure;
 using System.Threading.Tasks;
 using FTPPersistence.Interfaces;
-using Autofac;
 using FTPLib.Class.Common;
 
 namespace CommandFtpApp.Command.Credential
@@ -11,12 +10,11 @@ namespace CommandFtpApp.Command.Credential
     [Command("Credentials")]
     public abstract class CredentialsBaseCommand : ICommand
     {
-        public readonly IDbFile _dbFile;
+        protected readonly IDbFile DbFile;
 
-        public CredentialsBaseCommand()
+        public CredentialsBaseCommand(IDbFile dbFile)
         {
-            using var scope = Program.Container.BeginLifetimeScope();
-            _dbFile = scope.Resolve<IDbFile>();
+            DbFile = dbFile;
         }
 
         [CommandOption("ID", shortName: 'I', IsRequired = false, Description = "ID of the credential.")]

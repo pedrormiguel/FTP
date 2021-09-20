@@ -7,15 +7,16 @@ using CliFx.Attributes;
 using CliFx.Infrastructure;
 using CORE.Domain.Common;
 using FTPLib.Class.Common;
+using FTPPersistence.Interfaces;
 
 namespace CommandFtpApp.Command.Credential
 {
     [Command("Credentials Delete", Description = "Delete credential server registered.")]
-    public class CredentialsCommandDelete : CredentialsBaseCommand, ICommand
+    public class CredentialsCommandDelete : CredentialsBaseCommand
     {
-        public async override ValueTask ExecuteAsync(IConsole console)
+        public override async ValueTask ExecuteAsync(IConsole console)
         {
-            var credentials = await _dbFile.ReadAll();
+            var credentials = await DbFile.ReadAll();
             console.WithColors(ConsoleColor.Yellow, ConsoleColor.Black);
 
             if (!credentials.Data.Any())
@@ -29,7 +30,7 @@ namespace CommandFtpApp.Command.Credential
             if (!string.IsNullOrEmpty(Id) && !string.IsNullOrEmpty(credentialSelected))
             {
                 var dto = DtoConnectionSever.Map(credentialSelected);
-                var response = await _dbFile.Delete(dto);
+                var response = await DbFile.Delete(dto);
 
                 if (response.Success)
                     await console.Output.WriteLineAsync($"Element deleted. {dto.HostName}");
@@ -40,6 +41,10 @@ namespace CommandFtpApp.Command.Credential
             }
             else
                 await console.Error.WriteLineAsync($"Not exist a credentials with that Id.");
+        }
+
+        public CredentialsCommandDelete(IDbFile dbFile) : base(dbFile)
+        {
         }
     }
 }

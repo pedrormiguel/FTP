@@ -5,19 +5,20 @@ using CliFx.Attributes;
 using CliFx.Infrastructure;
 using ConsoleTables;
 using CORE.Domain.Common;
+using FTPPersistence.Interfaces;
 
 namespace CommandFtpApp.Command.Credential
 {
     [Command("Credentials List", Description = "List all the registered credentials server.")]
-    public class CredentialsCommandList : CredentialsBaseCommand, ICommand
+    public class CredentialsCommandList : CredentialsBaseCommand
     {
-        private readonly string[] columns = new string[] { "ID", "HOSTNAME", "USERNAME", "PORT" };
+        private readonly string[] _columns = new string[] { "ID", "HOSTNAME", "USERNAME", "PORT" };
 
-        public async override ValueTask ExecuteAsync(IConsole console)
+        public override async ValueTask ExecuteAsync(IConsole console)
         {
-            var response = await _dbFile.ReadAll();
+            var response = await DbFile.ReadAll();
 
-            var table = new ConsoleTable(columns);
+            var table = new ConsoleTable(_columns);
             console.WithColors(ConsoleColor.Yellow, ConsoleColor.Black);
 
             await console.Output.WriteLineAsync("\nLIST OF ALL CREDENTIAL'S SERVER\n");
@@ -31,6 +32,10 @@ namespace CommandFtpApp.Command.Credential
 
             table.Write();
             await console.Output.WriteLineAsync();
+        }
+
+        public CredentialsCommandList(IDbFile dbFile) : base(dbFile)
+        {
         }
     }
 }
