@@ -1,18 +1,21 @@
 ﻿using System.Threading.Tasks;
-using Autofac;
 using CliFx;
+using CommandFtpApp.Command.Credential;
+using FTPPersistence.Interfaces;
+using FTPPersistence.Repository;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CommandFtpApp
 {
     static class Program
     {
-        public static IContainer Container { get; set; }
         public static async Task<int> Main(string[] args)
         {
-            Container = ContainerConfig.Configure();
-
+            var servicesProvider = ContainerConfig.Configure();
+            
             return await new CliApplicationBuilder()
             .AddCommandsFromThisAssembly()
+            .UseTypeActivator(servicesProvider.GetService)
             .Build()
             .RunAsync(args);
         }
