@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 
 namespace CORE.Application.Responses
 {
     public class BaseResponse<T>
     {
-        public BaseResponse()
+        protected BaseResponse()
         {
             Success = true;
         }

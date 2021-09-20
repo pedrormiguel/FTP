@@ -8,8 +8,8 @@ namespace FTPPersistence.Interfaces
     public interface IDbFile
     {
         Task<Response<bool>> Add(BaseEntity credentials);
-        Task<Response<string>> Delete(BaseEntity credentials);
         Task<Response<IEnumerable<string>>> ReadAll();
+        Task<Response<string>> Delete(BaseEntity credentials);
         Task<Response<string>> Update(BaseEntity credentials);
     }
 }
