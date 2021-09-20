@@ -41,6 +41,7 @@ namespace FTPCommandAppTest
 
             // Assert
             stdOut.ShouldBe("Adding credentials\nStatus of the request : True\n");
+            stdOut.ShouldContain("True");
         }
     }
 }
