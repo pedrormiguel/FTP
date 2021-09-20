@@ -1,9 +1,5 @@
 ﻿using System.Threading.Tasks;
 using CliFx;
-using CommandFtpApp.Command.Credential;
-using FTPPersistence.Interfaces;
-using FTPPersistence.Repository;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CommandFtpApp
 {
