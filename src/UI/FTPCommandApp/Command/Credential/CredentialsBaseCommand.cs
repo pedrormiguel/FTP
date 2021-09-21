@@ -18,7 +18,7 @@ namespace CommandFtpApp.Command.Credential
         }
 
         [CommandOption("ID", shortName: 'I', IsRequired = false, Description = "ID of the credential.")]
-        public string Id { get; init; }
+        public virtual string Id { get; init; }
 
         [CommandOption("Server", shortName: 's', IsRequired = false, Description = "Url of the FTP Server.")]
         public virtual string FtpServer { get; init; }
