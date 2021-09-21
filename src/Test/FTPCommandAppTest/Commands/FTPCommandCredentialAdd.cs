@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit;
 
-namespace FTPCommandAppTest
+namespace FTPCommandAppTest.Commands
 {
     public class FtpCommandCredentialAdd
     {
@@ -42,6 +42,24 @@ namespace FTPCommandAppTest
             // Assert
             stdOut.ShouldBe("Adding credentials\nStatus of the request : True\n");
             stdOut.ShouldContain("True");
+        }
+
+        [Fact]
+        public async Task Should_Add_Fail_WhenMissingTheServerParameters()
+        {
+            // Arrange
+            using var console = new FakeInMemoryConsole();
+            var command = new[] {"Credentials Add"};
+            var envVars = new Dictionary<string, string>();
+
+            // Act
+            await _app.UseConsole(console).Build().RunAsync(command,envVars);
+            var stdOut = console.ReadOutputString();
+
+            var requirements = "* -s|--Server       Url of the FTP Server. \n* -u|--User         Name of user credential. \n* -p|--Password     Password of user credential. \n  -I|--ID           ID of the credential. \n  --Port            Port of the server. Default: \"21\".\n  -h|--help         Shows help text. ";
+            
+            // Assert
+            stdOut.ShouldContain(requirements);
         }
     }
 }
