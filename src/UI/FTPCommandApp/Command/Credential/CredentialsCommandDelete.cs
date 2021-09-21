@@ -1,19 +1,24 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Autofac;
-using CliFx;
 using CliFx.Attributes;
 using CliFx.Infrastructure;
 using CORE.Domain.Common;
-using FTPLib.Class.Common;
 using FTPPersistence.Interfaces;
 
 namespace CommandFtpApp.Command.Credential
 {
+    
     [Command("Credentials Delete", Description = "Delete credential server registered.")]
     public class CredentialsCommandDelete : CredentialsBaseCommand
     {
+        public CredentialsCommandDelete(IDbFile dbFile) : base(dbFile)
+        {
+        }
+        
+        [CommandOption("ID", shortName: 'I', IsRequired = true, Description = "ID of the credential.")]
+        public override string Id { get; init; }
+        
         public override async ValueTask ExecuteAsync(IConsole console)
         {
             var credentials = await DbFile.ReadAll();
@@ -25,7 +30,7 @@ namespace CommandFtpApp.Command.Credential
                 return;
             }
 
-            var credentialSelected = credentials.Data.Where(x => x.Contains(Id)).FirstOrDefault();
+            var credentialSelected = credentials.Data.FirstOrDefault(x => x.Contains(Id));
 
             if (!string.IsNullOrEmpty(Id) && !string.IsNullOrEmpty(credentialSelected))
             {
@@ -41,10 +46,6 @@ namespace CommandFtpApp.Command.Credential
             }
             else
                 await console.Error.WriteLineAsync($"Not exist a credentials with that Id.");
-        }
-
-        public CredentialsCommandDelete(IDbFile dbFile) : base(dbFile)
-        {
         }
     }
 }
