@@ -14,8 +14,8 @@ namespace FTPPersistence.Repository
 {
     public class DbFileHandler : IDbFile
     {
-        public string PathDbFile { get; }
-        public string FullRouteOfDirectory { get; }
+        private string PathDbFile { get; }
+        private string FullRouteOfDirectory { get; }
         private const string NameFile = "DB.txt";
         private const string TempFile = "TEMPFILE.txt";
         private readonly string _routeOfDirectory = "../../../DB/File/txt/";
@@ -36,19 +36,14 @@ namespace FTPPersistence.Repository
             PathDbFile = GetPathFile();
         }
 
-        private string GetPathFile()
+        public string GetPathFile()
         {
             var sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             var sFile = Path.Combine(sCurrentDirectory, _routeOfFile);
             return Path.GetFullPath(sFile);
         }
 
-        private string GetPath()
-        {
-            var sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var sFile = Path.Combine(sCurrentDirectory, $"../../../DB/File/txt/");
-            return Path.GetFullPath(sFile);
-        }
+        public string GetPathDirectory() => FullRouteOfDirectory;
 
         public async Task<Response<bool>> Add(BaseEntity credentials)
         {
@@ -116,7 +111,7 @@ namespace FTPPersistence.Repository
                 using (var sr = new StreamReader(PathDbFile))
                 {
                     await using var sw = new StreamWriter(tempPah, true);
-                    
+
                     string line;
                     while ((line = await sr.ReadLineAsync()) != null)
                     {
