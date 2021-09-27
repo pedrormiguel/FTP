@@ -7,6 +7,8 @@ namespace FTPPersistence.Interfaces
 {
     public interface IDbFile
     {
+        string GetPathFile();
+        string GetPathDirectory();
         Task<Response<bool>> Add(BaseEntity credentials);
         Task<Response<IEnumerable<string>>> ReadAll();
         Task<Response<string>> Delete(BaseEntity credentials);
