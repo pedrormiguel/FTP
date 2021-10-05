@@ -1,8 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Autofac;
-using CliFx;
 using CliFx.Attributes;
 using CliFx.Infrastructure;
 using CORE.Domain.Common;
@@ -10,23 +8,20 @@ using FTPPersistence.Interfaces;
 
 namespace CommandFtpApp.Command.Credential
 {
+    
     [Command("Credentials Delete", Description = "Delete credential server registered.")]
-    public class CredentialsCommandDelete : ICommand
+    public class CredentialsCommandDelete : CredentialsBaseCommand
     {
-        private readonly IDbFile _dbFile;
-
-        public CredentialsCommandDelete()
+        public CredentialsCommandDelete(IDbFile dbFile) : base(dbFile)
         {
-            using var scope = Program.Container.BeginLifetimeScope();
-            _dbFile = scope.Resolve<IDbFile>();
         }
-
+        
         [CommandOption("ID", shortName: 'I', IsRequired = true, Description = "ID of the credential.")]
-        public string Id { get; init; }
-
-        public async ValueTask ExecuteAsync(IConsole console)
+        public override string Id { get; init; }
+        
+        public override async ValueTask ExecuteAsync(IConsole console)
         {
-            var credentials = await _dbFile.ReadAll();
+            var credentials = await DbFile.ReadAll();
             console.WithColors(ConsoleColor.Yellow, ConsoleColor.Black);
 
             if (!credentials.Data.Any())
@@ -35,23 +30,18 @@ namespace CommandFtpApp.Command.Credential
                 return;
             }
 
-            var credentialSelected = credentials.Data.Where(x => x.Contains(Id)).FirstOrDefault();
+            var credentialSelected = credentials.Data.FirstOrDefault(x => x.Contains(Id));
 
             if (!string.IsNullOrEmpty(Id) && !string.IsNullOrEmpty(credentialSelected))
             {
                 var dto = DtoConnectionSever.Map(credentialSelected);
-                var response = await _dbFile.Delete(dto);
+                var response = await DbFile.Delete(dto);
 
                 if (response.Success)
                     await console.Output.WriteLineAsync($"Element deleted. {dto.HostName}");
                 else
                 {
-                    await console.Error.WriteLineAsync($"Not was successful. Error  {response.Error}");
-
-                    foreach (var error in response.ValidationErrors)
-                    {
-                        await console.Error.WriteLineAsync($"*{response.Error}\n");
-                    }
+                    ShowError(console, response);
                 }
             }
             else

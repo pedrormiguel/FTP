@@ -1,18 +1,23 @@
-﻿using Autofac;
+﻿using CommandFtpApp.Command.Credential;
 using FTPPersistence.Interfaces;
 using FTPPersistence.Repository;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CommandFtpApp
 {
-    public class ContainerConfig
+    public static class ContainerConfig
     {
-        public static IContainer Configure()
+        public static ServiceProvider Configure()
         {
-            var builder = new ContainerBuilder();
+            var servicesCollection = new ServiceCollection();
+            
+            servicesCollection.AddSingleton<IDbFile, DbFileHandler>();
+            servicesCollection.AddTransient<CredentialsCommandAdd>();
+            servicesCollection.AddTransient<CredentialsCommandList>();
+            servicesCollection.AddTransient<CredentialsCommandDelete>();
+            servicesCollection.AddTransient<CredentialCommandUpdate>();
 
-            builder.RegisterType<DbFileHandler>().As<IDbFile>().SingleInstance();
-
-            return builder.Build();
+            return servicesCollection.BuildServiceProvider();
         }
     }
 }

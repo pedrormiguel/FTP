@@ -6,7 +6,6 @@ using CORE.Domain.Common;
 using CORE.Domain.Entities;
 using CORE.Domain.Validation;
 using FTPLib.Class.Common;
-using FTPLib.Class.Dto;
 using FTPPersistence.Interfaces;
 using DtoConnectionSever = CORE.Domain.Common.DtoConnectionSever;
 
@@ -14,8 +13,8 @@ namespace FTPPersistence.Repository
 {
     public class DbFileHandler : IDbFile
     {
-        public string PathDbFile { get; }
-        public string FullRouteOfDirectory { get; }
+        private string PathDbFile { get; }
+        private string FullRouteOfDirectory { get; }
         private const string NameFile = "DB.txt";
         private const string TempFile = "TEMPFILE.txt";
         private readonly string _routeOfDirectory = "../../../DB/File/txt/";
@@ -36,26 +35,21 @@ namespace FTPPersistence.Repository
             PathDbFile = GetPathFile();
         }
 
-        private string GetPathFile()
+        public string GetPathFile()
         {
             var sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             var sFile = Path.Combine(sCurrentDirectory, _routeOfFile);
             return Path.GetFullPath(sFile);
         }
 
-        private string GetPath()
-        {
-            var sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var sFile = Path.Combine(sCurrentDirectory, $"../../../DB/File/txt/");
-            return Path.GetFullPath(sFile);
-        }
+        public string GetPathDirectory() => FullRouteOfDirectory;
 
         public async Task<Response<bool>> Add(BaseEntity credentials)
         {
             var response = new Response<bool>();
             var credential = (Credential)credentials;
             var validator = new CredentialValidator();
-            var isValid = validator.Validate(credential);
+            var isValid = await validator.ValidateAsync(credential);
 
             if (!isValid.IsValid)
             {
@@ -116,7 +110,7 @@ namespace FTPPersistence.Repository
                 using (var sr = new StreamReader(PathDbFile))
                 {
                     await using var sw = new StreamWriter(tempPah, true);
-                    
+
                     string line;
                     while ((line = await sr.ReadLineAsync()) != null)
                     {
@@ -147,19 +141,20 @@ namespace FTPPersistence.Repository
         {
             var response = new Response<string>();
             var path = $"{FullRouteOfDirectory}{TempFile}";
+            var idReceived = DtoConnectionSever.Map(credentials.ToString()).Id.ToString(); 
 
             try
             {
                 using (var sr = new StreamReader(PathDbFile))
                 {
                     await using var sw = new StreamWriter(path, true);
-
+                    
                     string line;
                     while ((line = await sr.ReadLineAsync()) != null)
                     {
                         var idLine = DtoConnectionSever.Map(line).Id.ToString();
 
-                        if (!idLine.Contains(credentials.Id.ToString()))
+                        if (!idLine.Equals(idReceived))
                         {
                             await sw.WriteLineAsync(line);
                         }
@@ -182,5 +177,6 @@ namespace FTPPersistence.Repository
 
             return response;
         }
+        
     }
 }
