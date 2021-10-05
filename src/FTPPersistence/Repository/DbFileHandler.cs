@@ -141,42 +141,58 @@ namespace FTPPersistence.Repository
         {
             var response = new Response<string>();
             var path = $"{FullRouteOfDirectory}{TempFile}";
-            var idReceived = DtoConnectionSever.Map(credentials.ToString()).Id.ToString(); 
+            var idReceived = DtoConnectionSever.Map(credentials.ToString()).Id.ToString();
+            var credential = (Credential)credentials;
+            var validator = new CredentialValidator();
+            var validation = await validator.ValidateAsync(credential);
 
-            try
+
+            if (validation.IsValid)
             {
-                using (var sr = new StreamReader(PathDbFile))
+                try
                 {
-                    await using var sw = new StreamWriter(path, true);
-                    
-                    string line;
-                    while ((line = await sr.ReadLineAsync()) != null)
+                    using (var sr = new StreamReader(PathDbFile))
                     {
-                        var idLine = DtoConnectionSever.Map(line).Id.ToString();
+                        await using var sw = new StreamWriter(path, true);
 
-                        if (!idLine.Equals(idReceived))
+                        string line;
+                        while ((line = await sr.ReadLineAsync()) != null)
                         {
-                            await sw.WriteLineAsync(line);
-                        }
-                        else
-                        {
-                            var newLine = credentials.ToString();
-                            await sw.WriteLineAsync(newLine);
-                            response.Data = newLine;
+                            var idLine = DtoConnectionSever.Map(line).Id.ToString();
+
+                            if (!idLine.Equals(idReceived))
+                            {
+                                await sw.WriteLineAsync(line);
+                            }
+                            else
+                            {
+                                var newLine = credentials.ToString();
+                                await sw.WriteLineAsync(newLine);
+                                response.Data = newLine;
+                            }
                         }
                     }
+
+                    response.Success = true;
+                    File.Replace(path, PathDbFile, null);
+                }
+                catch (Exception ex)
+                {
+                    response.ErrorMapException(ex);
+                }
+            }
+            else
+            {
+                foreach (var item in validation.Errors)
+                {
+                    response.ValidationErrors.Add(item.ErrorMessage);
                 }
 
-                response.Success = true;
-                File.Replace(path, PathDbFile, null);
-            }
-            catch (Exception ex)
-            {
-                response.ErrorMapException(ex);
+                response.Success = validation.IsValid;
+                response.Data = credentials.ToString();
             }
 
             return response;
         }
-        
     }
 }
