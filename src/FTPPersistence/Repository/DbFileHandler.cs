@@ -6,7 +6,6 @@ using CORE.Domain.Common;
 using CORE.Domain.Entities;
 using CORE.Domain.Validation;
 using FTPLib.Class.Common;
-using FTPLib.Class.Dto;
 using FTPPersistence.Interfaces;
 using DtoConnectionSever = CORE.Domain.Common.DtoConnectionSever;
 
@@ -142,19 +141,20 @@ namespace FTPPersistence.Repository
         {
             var response = new Response<string>();
             var path = $"{FullRouteOfDirectory}{TempFile}";
+            var idReceived = DtoConnectionSever.Map(credentials.ToString()).Id.ToString(); 
 
             try
             {
                 using (var sr = new StreamReader(PathDbFile))
                 {
                     await using var sw = new StreamWriter(path, true);
-
+                    
                     string line;
                     while ((line = await sr.ReadLineAsync()) != null)
                     {
                         var idLine = DtoConnectionSever.Map(line).Id.ToString();
 
-                        if (!idLine.Contains(credentials.Id.ToString()))
+                        if (!idLine.Equals(idReceived))
                         {
                             await sw.WriteLineAsync(line);
                         }
@@ -177,5 +177,6 @@ namespace FTPPersistence.Repository
 
             return response;
         }
+        
     }
 }
