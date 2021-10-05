@@ -15,4 +15,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\UI\FTPCommandApp\FTPCommandApp.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="DB" />
+	</ItemGroup>
 </Project>

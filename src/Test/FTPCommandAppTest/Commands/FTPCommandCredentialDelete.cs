@@ -15,6 +15,8 @@ namespace FTPCommandAppTest.Commands
     {
         private readonly CliApplicationBuilder _app;
         private readonly ServiceProvider _provider;
+        private readonly string _pathOfFile;
+        private readonly string _pathOfDirectory;
 
 
         public FtpCommandCredentialDelete()
@@ -23,6 +25,9 @@ namespace FTPCommandAppTest.Commands
             servicesCollection.AddTransient<IDbFile, DbFileHandler>();
             servicesCollection.AddTransient<CredentialsCommandDelete>();
             _provider = servicesCollection.BuildServiceProvider();
+            
+            _pathOfDirectory = _provider.GetService<IDbFile>()?.GetPathDirectory();
+            _pathOfFile = _provider.GetService<IDbFile>()?.GetPathFile();
 
             _app = new CliApplicationBuilder()
                 .AddCommand<CredentialsCommandDelete>()
@@ -46,6 +51,7 @@ namespace FTPCommandAppTest.Commands
 
             // Assert
             stdOutput.ShouldBe($"Element deleted. {credential.HostName}\n");
+            ValidateAndCleanFile.CleanFile(_pathOfFile, _pathOfDirectory).ShouldBeTrue();
         }
 
     }
