@@ -1,3 +1,1 @@
-clear
-
-dotnet run -p src/UI/CommandFtpApp/
+dotnet run -p /Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/UI/FTPCommandApp $1
