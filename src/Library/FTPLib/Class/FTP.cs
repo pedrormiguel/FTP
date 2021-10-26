@@ -15,7 +15,7 @@ namespace FTPLib.Class
         public bool IsConnected => _client.IsConnected;
         public Ftp(string host, string user, string password, int port = 21)
         {
-            _client = new FtpClient(host: host, user: user, pass: password, port: 21);
+            _client = new FtpClient(host: host, user: user, pass: password, port: port);
         }
 
         public Response<bool> Connect()
