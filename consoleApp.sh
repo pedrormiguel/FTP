@@ -1,3 +1,3 @@
 clear
 
-dotnet run -p /Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/UI/FTPConsoleApp
+dotnet run -p ./src/UI/FTPConsoleApp/FTPConsoleApp.csproj
