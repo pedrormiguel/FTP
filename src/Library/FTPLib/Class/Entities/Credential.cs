@@ -1,3 +1,5 @@
+using CORE.Domain.Common;
+
 namespace FTPLib.Class.Entities
 {
     public class Credential : BaseEntity

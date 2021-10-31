@@ -1,6 +1,5 @@
 using System;
-using FTPLib.Class.Common;
-using FTPLib.Class.Entities;
+using CORE.Domain.Common;
 
 namespace FTPLib.Class.Dto
 {
@@ -35,7 +34,7 @@ namespace FTPLib.Class.Dto
         public static DtoConnectionSever Map(string line)
         {
             var credentials = line.Split(';');
-            
+
             return new DtoConnectionSever
             {
                 Id = Guid.Parse(credentials[0]),
