@@ -4,9 +4,17 @@ Implemeting FTP Client
 
 FTP 
 
-# SCRIPT 
+# SCRIPT'S
 
-1. sh run.script to run UIConsole project
+1. CONSOLE APP
+
+    - sh consoleApp.sh
+
+2. COMMAND APP
+
+    - sh commander.sh [options]
+    
+        - Example  sh commander.sh "Credentials List"
 
 # STRUCTURE
 
