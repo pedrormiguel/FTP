@@ -1,4 +1,4 @@
-using FTPLib.Class.Entities;
+using CORE.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FTPPersistence
