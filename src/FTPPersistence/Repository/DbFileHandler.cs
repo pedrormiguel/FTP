@@ -94,7 +94,6 @@ namespace FTPPersistence.Repository
             catch (Exception ex)
             {
                 response.ErrorMapException(ex);
-
             }
 
             return response;
@@ -191,6 +190,33 @@ namespace FTPPersistence.Repository
                 response.Success = validation.IsValid;
                 response.Data = credentials.ToString();
             }
+
+            return response;
+        }
+
+        public async Task<Response<Credential>> GetById(Guid id)
+        {
+            var response = new Response<Credential>();
+
+            try
+            {
+                foreach (var line in File.ReadLines(PathDbFile))
+                {
+                    var currentCredential = DtoConnectionSever.Map(line);
+
+                    if (currentCredential.Id != id) continue;
+                    
+                    response.Data = currentCredential;
+                    break;
+                }
+
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                response.ErrorMapException(ex);
+            }
+
 
             return response;
         }
