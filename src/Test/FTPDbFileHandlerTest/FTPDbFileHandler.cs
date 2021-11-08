@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,6 +37,30 @@ namespace FTPDbFileHandlerTest
             ValidateAndCleanFile().ShouldBeTrue();
         }
 
+        [Fact]
+        public async Task Should_GetById_WhenIdIsValid()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            const string name = "TEST";
+            const string server = "TEST";
+            const string pass = "TEST";
+            const int port = 22;
+            var credential = new Credential 
+                {Id = id, UserName = name, Password = pass, Port = port, HostName = server};
+
+            // Act
+            await _dbFileHandler.Add(credential);
+            var response = await _dbFileHandler.GetById(id);
+
+            // Assert
+            response.Success.ShouldBeTrue();
+            response.Data.UserName.ShouldBe(credential.UserName);
+            response.Data.HostName.ShouldBe(credential.HostName);
+            response.Data.Password.ShouldBe(credential.Password);
+            response.Data.Port.ShouldBe(credential.Port);
+        }
+        
         [Fact]
         public async Task Should_Add_Success()
         {
