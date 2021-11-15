@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CORE.Domain.Entities;
 using FluentFTP;
 using FluentFTP.Helpers;
 using FTPLib.Class.Common;
@@ -17,6 +18,10 @@ namespace FTPLib.Class
         {
             _client = new FtpClient(host: host, user: user, pass: password, port: port);
         }
+        public Ftp(Credential credential)
+        {
+            _client = new FtpClient(host: credential.HostName, user: credential.UserName, pass: credential.Password , port: credential.Port);
+        }
 
         public Response<bool> Connect()
         {
@@ -28,6 +33,7 @@ namespace FTPLib.Class
                 _client.LoadProfile(profile[0]);
                 _client.Connect();
                 response.Success = true;
+                response.Data = true;
             }
             catch (Exception ex)
             {

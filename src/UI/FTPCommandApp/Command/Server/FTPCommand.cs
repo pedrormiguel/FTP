@@ -1,45 +1,56 @@
+using System;
 using System.Threading.Tasks;
-using FTPLib.Class;
 using CliFx;
 using CliFx.Attributes;
-using CliFx.Exceptions;
 using CliFx.Infrastructure;
+using CommandFtpApp.Common;
+using FTPLib.Class;
+using FTPPersistence.Interfaces;
 
-namespace CommandFtpApp.Command
+namespace CommandFtpApp.Command.Server
 {
-    [Command("FTP Connect", Description = "Connect to a server")]
-    public class FTPCommand : ICommand
+    [Command("FTP Test Connection")]
+    public class FtpCommand : ICommand
     {
-        [CommandOption("Server", shortName: 's', IsRequired = true, Description = "Url of the FTP Server.")]
-        public string FtpServer { get; init; }
+        private Guid GuidId;
 
-        [CommandOption("User", shortName: 'u', IsRequired = true, Description = "Name of user credential.")]
-        public string UserName { get; init; }
+        [CommandOption("ID", shortName: 'I', IsRequired = true, Description = "ID of the credential.")]
+        public string Id { get; set; }
 
-        [CommandOption("Password", shortName: 'p', IsRequired = true, Description = "Password of user credential.")]
-        public string Password { get; init; }
-
-        [CommandOption("Port", Description = "Port of the server.")]
-        public string Port { get; init; } = "21";
-
-        public ValueTask ExecuteAsync(IConsole console)
+        private Ftp _ftpClient;
+        private readonly IDbFile _dbFile;
+        
+        public FtpCommand(IDbFile dbFile)
         {
-            var isNumber = int.TryParse(Port, out var intPort);
+            _dbFile = dbFile;
+        }
+        
+        public async ValueTask ExecuteAsync(IConsole console)
+        {
+            console.WithColors(ConsoleColor.Yellow, ConsoleColor.Black);
 
-            if (!isNumber)
-                throw new CommandException("Error Code : 0 \nThe port has to be a numeric value.", 0);
+            if (!Guid.TryParse(Id, out GuidId))
+            {
+                await console.Error.WriteLineAsync("Guid should contain 32 digits with 4 dashes (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx).");
+                return;
+            }
+            
+            var response = await _dbFile.GetById(GuidId);
 
-            var client = new Ftp(host: FtpServer, user: UserName, password: Password, port: intPort);
-            var status = client.Connect();
-
-            console.Output.WriteLine($"FTP : {client.IsConnected} - status {status.Data} -Error {status.Error}");
-            console.Output.WriteLine();
-            return default;
+            if (!response.Success)
+            {
+                await console.Error.WriteLineAsync($"Not register {Id}.");
+                return;
+            }
+            
+            _ftpClient = new Ftp(response.Data);
+            var status = _ftpClient.Connect();
+            await console.Output.WriteLineAsync($"Connection With Server Successful: {_ftpClient.IsConnected}");
         }
     }
-
+    
     [Command("FTP Display")]
-    public class FTPCommandDisplay : ICommand
+    public class FtpCommandDisplay : ICommand
     {
         public ValueTask ExecuteAsync(IConsole console)
         {

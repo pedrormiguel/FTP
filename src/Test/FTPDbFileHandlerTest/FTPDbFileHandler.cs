@@ -62,6 +62,25 @@ namespace FTPDbFileHandlerTest
         }
         
         [Fact]
+        public async Task Should_GetById_WhenIdIsNotValid()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            const string name = "TEST";
+            const string server = "TEST";
+            const string pass = "TEST";
+            const int port = 22;
+            var credential = new Credential 
+                {Id = id, UserName = name, Password = pass, Port = port, HostName = server};
+
+            // Act
+            var response = await _dbFileHandler.GetById(id);
+
+            // Assert
+            response.Success.ShouldBeFalse();
+        }
+        
+        [Fact]
         public async Task Should_Add_Success()
         {
             //Arrange

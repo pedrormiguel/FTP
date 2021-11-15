@@ -209,15 +209,15 @@ namespace FTPPersistence.Repository
                     response.Data = currentCredential;
                     break;
                 }
-
-                response.Success = true;
+                
+                if( !(response.Data is null) )
+                    response.Success = true;
             }
             catch (Exception ex)
             {
                 response.ErrorMapException(ex);
             }
-
-
+            
             return response;
         }
     }

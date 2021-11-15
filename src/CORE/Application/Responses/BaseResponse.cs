@@ -6,12 +6,12 @@ namespace CORE.Application.Responses
     {
         protected BaseResponse()
         {
-            Success = true;
+            Success = false;
         }
 
         public BaseResponse(string message = null)
         {
-            Success = true;
+            Success = false;
             Message = message;
         }
 
