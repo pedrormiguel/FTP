@@ -6,7 +6,7 @@ using Credentials = CORE.Domain.Entities.Credential;
 
 namespace CommandFtpApp.Command.Credential
 {
-    [Command("Credentials Add", Description = "Add new ftp server with credential, to use anonymous credentials use '-' in the user.")]
+    [Command("Credentials Add", Description = "Register a credential, for anonymous credential use '-' in user.")]
     public class CredentialsCommandAdd : CredentialsBaseCommand
     {
         [CommandOption("Server", shortName: 's', IsRequired = true, Description = "Url of the FTP Server.")]
