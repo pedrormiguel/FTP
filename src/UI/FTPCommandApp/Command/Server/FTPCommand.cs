@@ -105,4 +105,32 @@ namespace CommandFtpApp.Command.Server
             return;
         }
     }
+
+    [Command("FTP UploadFile")]
+    public class FtpCommandUploadFile : FTP
+    {
+        public FtpCommandUploadFile(IDbFile dbFile) : base(dbFile)
+        {
+        }
+
+        public override async ValueTask ExecuteAsync(IConsole console)
+        {
+            console.WithColors(ConsoleColor.Yellow, ConsoleColor.Black);
+
+            if (!Guid.TryParse(Id, out GuidId))
+            {
+                await console.Error.WriteLineAsync("Guid should contain 32 digits with 4 dashes (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx).");
+                return;
+            }
+
+            var response = await _dbFile.GetById(GuidId);
+
+            if(!response.Success)
+            {
+                await console.Error.WriteLineAsync($"Not register {Id}.");
+                return;
+            }
+
+         }
+    }
 }
