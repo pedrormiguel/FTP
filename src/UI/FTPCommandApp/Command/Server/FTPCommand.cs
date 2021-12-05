@@ -3,29 +3,37 @@ using System.Threading.Tasks;
 using CliFx;
 using CliFx.Attributes;
 using CliFx.Infrastructure;
-using CommandFtpApp.Common;
 using FTPLib.Class;
 using FTPPersistence.Interfaces;
 
 namespace CommandFtpApp.Command.Server
 {
-    [Command("FTP Test Connection")]
-    public class FtpCommand : ICommand
+    [Command("FTP")]
+    public abstract class FTP : ICommand
     {
-        private Guid GuidId;
+        protected Guid GuidId;
+        protected Ftp _ftpClient;
+        protected readonly IDbFile _dbFile;
+
+        protected FTP(IDbFile dbFile)
+        {
+            _dbFile = dbFile;
+        }
 
         [CommandOption("ID", shortName: 'I', IsRequired = true, Description = "ID of the credential.")]
         public string Id { get; set; }
 
-        private Ftp _ftpClient;
-        private readonly IDbFile _dbFile;
-        
-        public FtpCommand(IDbFile dbFile)
+        public abstract ValueTask ExecuteAsync(IConsole console);
+    }
+
+    [Command("FTP Test Connection")]
+    public class FtpCommand : FTP
+    {
+        public FtpCommand(IDbFile dbFile) : base(dbFile)
         {
-            _dbFile = dbFile;
         }
-        
-        public async ValueTask ExecuteAsync(IConsole console)
+
+        public override async ValueTask ExecuteAsync(IConsole console)
         {
             console.WithColors(ConsoleColor.Yellow, ConsoleColor.Black);
 
@@ -34,7 +42,7 @@ namespace CommandFtpApp.Command.Server
                 await console.Error.WriteLineAsync("Guid should contain 32 digits with 4 dashes (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx).");
                 return;
             }
-            
+
             var response = await _dbFile.GetById(GuidId);
 
             if (!response.Success)
@@ -42,21 +50,59 @@ namespace CommandFtpApp.Command.Server
                 await console.Error.WriteLineAsync($"Not register {Id}.");
                 return;
             }
-            
+
             _ftpClient = new Ftp(response.Data);
             var status = _ftpClient.Connect();
             await console.Output.WriteLineAsync($"Connection With Server Successful: {_ftpClient.IsConnected}");
         }
     }
-    
-    [Command("FTP Display")]
-    public class FtpCommandDisplay : ICommand
-    {
-        public ValueTask ExecuteAsync(IConsole console)
-        {
-            console.Output.WriteLine("Displaying");
 
-            return default;
+    [Command("FTP DisplayFiles", Description = "Display all the files on the server.")]
+    public class FtpCommandDisplay : FTP
+    {
+        public FtpCommandDisplay(IDbFile dbFile) : base(dbFile)
+        {
+        }
+
+        public override async ValueTask ExecuteAsync(IConsole console)
+        {
+            console.WithColors(ConsoleColor.Yellow, ConsoleColor.Black);
+
+            if (!Guid.TryParse(Id, out GuidId))
+            {
+                await console.Error.WriteLineAsync("Guid should contain 32 digits with 4 dashes (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx).");
+                return;
+            }
+
+            var response = await _dbFile.GetById(GuidId);
+
+            if (!response.Success)
+            {
+                await console.Error.WriteLineAsync($"Not register {Id}.");
+                return;
+            }
+
+            _ftpClient = new Ftp(response.Data);
+
+            var status = _ftpClient.Connect();
+
+            var responseFilesTree = await _ftpClient.GetListItems();
+
+            console.Output.WriteLine("Files on the server : \n");
+
+            if (responseFilesTree.Data is not null)
+            {
+                foreach (var item in responseFilesTree.Data)
+                {
+                    console.Output.WriteLine($"- {item}");
+                }
+            }
+            else
+            {
+                console.Output.WriteLine("There's not file on the server");
+            }
+
+            return;
         }
     }
 }
