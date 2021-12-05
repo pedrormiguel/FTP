@@ -20,7 +20,10 @@ namespace FTPLib.Class
         }
         public Ftp(Credential credential)
         {
-            _client = new FtpClient(host: credential.HostName, user: credential.UserName, pass: credential.Password , port: credential.Port);
+            if( !(credential.UserName.IsBlank() || credential.UserName.ToLower().Equals("-")) )
+                _client = new FtpClient(host: credential.HostName, user: credential.UserName, pass: credential.Password, port: credential.Port);
+            else
+            _client = new FtpClient(host:credential.HostName);
         }
 
         public Response<bool> Connect()
