@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CliFx;
 using CliFx.Attributes;
 using CliFx.Infrastructure;
+using CommandFtpApp.Common;
 using FTPLib.Class;
 using FTPPersistence.Interfaces;
 
@@ -131,6 +132,29 @@ namespace CommandFtpApp.Command.Server
                 return;
             }
 
-         }
+            _ftpClient = new Ftp(response.Data);
+            _ftpClient.Connect();
+
+            console.Output.Write("* Insert the local path :");
+            var localPath = console.Input.ReadLine();
+ 
+            console.Output.Write("* Insert the remote path :");
+            var remotePath = console.Input.ReadLine();
+
+            console.Output.WriteLine("Uploading File....");
+
+            var responseUploadFile = await _ftpClient.UploadFile(localPath, remotePath);
+
+            if (!responseUploadFile.Success)
+            {
+                console.ShowError(responseUploadFile.Error, responseUploadFile.ValidationErrors);
+                return;
+            }
+          
+            console.Output.WriteLine(responseUploadFile.Data);
+            
+            console.Output.WriteLine("Hit a key to return to the menu.");
+            console.Input.ReadLine();
+          }
     }
 }
