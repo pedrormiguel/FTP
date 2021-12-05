@@ -22,6 +22,7 @@ namespace CommandFtpApp
             servicesCollection.AddTransient<CredentialCommandUpdate>();
             servicesCollection.AddTransient<FtpCommand>();
             servicesCollection.AddTransient<FtpCommandDisplay>();
+            servicesCollection.AddTransient<FtpCommandUploadFile>();
 
             return servicesCollection.BuildServiceProvider();
         }

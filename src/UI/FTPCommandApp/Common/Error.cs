@@ -7,7 +7,7 @@ namespace CommandFtpApp.Common
     {
         public static void ShowError(this IConsole console, string errorMessage, IEnumerable<string> errors)
         {
-            console.Error.WriteLine($"Not was successful. Error  {errorMessage}");
+            console.Error.WriteLine($"{errorMessage}");
 
             foreach (var error in errors)
             {
