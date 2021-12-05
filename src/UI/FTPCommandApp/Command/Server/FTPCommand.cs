@@ -83,6 +83,7 @@ namespace CommandFtpApp.Command.Server
             }
 
             _ftpClient = new Ftp(response.Data);
+
             var status = _ftpClient.Connect();
 
             var responseFilesTree = await _ftpClient.GetListItems();
