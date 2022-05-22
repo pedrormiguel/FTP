@@ -155,6 +155,6 @@ namespace CommandFtpApp.Command.Server
             
             console.Output.WriteLine("Hit a key to return to the menu.");
             console.Input.ReadLine();
-          }
+        }
     }
 }

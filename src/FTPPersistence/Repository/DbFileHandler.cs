@@ -200,7 +200,7 @@ namespace FTPPersistence.Repository
 
             try
             {
-                foreach (var line in File.ReadLines(PathDbFile))
+                 foreach (var line in await File.ReadAllLinesAsync(PathDbFile))
                 {
                     var currentCredential = DtoConnectionSever.Map(line);
 
