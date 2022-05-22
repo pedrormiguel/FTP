@@ -18,9 +18,11 @@ namespace FTPAPI
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>()
+                              .UseUrls("http://*:2354", "https://*:2354");
                 });
     }
 }
