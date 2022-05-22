@@ -22,7 +22,7 @@ namespace FTPAPI
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()
-                              .UseUrls("http://*:2354", "https://*:2354");
+                              .UseKestrel();
                 });
     }
 }
