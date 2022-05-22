@@ -1,3 +1,7 @@
+using FTPLib.Class;
+using FTPLib.Interfaces;
+using FTPPersistence.Interfaces;
+using FTPPersistence.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,7 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FTPAPI2
+namespace FTPAPI
 {
     public class Startup
     {
@@ -30,8 +34,12 @@ namespace FTPAPI2
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "FTPAPI2", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "FTPAPI", Version = "v1" });
             });
+
+            services.AddTransient<IDbFile, DbFileHandler>();
+
+            //services.AddSingleton<IFtp,Ftp>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +49,7 @@ namespace FTPAPI2
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FTPAPI2 v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FTPAPI v1"));
             }
 
             app.UseHttpsRedirection();

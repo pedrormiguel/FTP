@@ -73,7 +73,7 @@ namespace CommandFtpApp.Command.Server
             {
                 await console.Error.WriteLineAsync("Guid should contain 32 digits with 4 dashes (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx).");
                 return;
-            }
+            } 
 
             var response = await _dbFile.GetById(GuidId);
 

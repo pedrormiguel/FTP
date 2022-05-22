@@ -8,4 +8,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FTPPersistence\FTPPersistence.csproj" />
+    <ProjectReference Include="..\Library\FTPLib\FTPLib.csproj" />
+  </ItemGroup>
+
 </Project>
