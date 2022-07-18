@@ -2,6 +2,8 @@
 
 Implemeting FTP Client
 
+![](https://vistr.dev/badge?repo=pedrormiguel.FTP)
+
 FTP 
 
 # SCRIPT'S
