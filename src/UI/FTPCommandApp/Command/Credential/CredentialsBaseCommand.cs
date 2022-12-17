@@ -1,9 +1,9 @@
 using CliFx;
 using CliFx.Attributes;
 using CliFx.Infrastructure;
-using System.Threading.Tasks;
-using FTPPersistence.Interfaces;
 using FTPLib.Class.Common;
+using FTPPersistence.Interfaces;
+using System.Threading.Tasks;
 
 namespace CommandFtpApp.Command.Credential
 {

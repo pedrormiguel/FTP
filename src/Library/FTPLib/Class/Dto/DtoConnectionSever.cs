@@ -1,5 +1,5 @@
-using System;
 using CORE.Domain.Common;
+using System;
 
 namespace FTPLib.Class.Dto
 {

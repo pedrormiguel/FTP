@@ -1,8 +1,8 @@
+using CORE.Application.Contracts.Persistence;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CORE.Application.Contracts.Persistence;
-using Microsoft.EntityFrameworkCore;
 
 namespace FTPPersistence.Repository
 {
@@ -14,7 +14,7 @@ namespace FTPPersistence.Repository
         {
             FtpDbContext = ftpDbContext;
         }
-        
+
         public async Task<TEntity> GetByIdAsync(Guid id)
         {
             return await FtpDbContext.Set<TEntity>().FindAsync(id);
@@ -29,12 +29,12 @@ namespace FTPPersistence.Repository
         {
             await FtpDbContext.Set<TEntity>().AddAsync(entity);
             await FtpDbContext.SaveChangesAsync();
-            
+
             return entity;
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
-        { 
+        {
             FtpDbContext.Entry(entity).State = EntityState.Modified;
             await FtpDbContext.SaveChangesAsync();
 
@@ -42,7 +42,7 @@ namespace FTPPersistence.Repository
         }
 
         public async Task<TEntity> DeleteAsync(TEntity entity)
-        { 
+        {
             FtpDbContext.Set<TEntity>().Remove(entity);
 
             await FtpDbContext.SaveChangesAsync();

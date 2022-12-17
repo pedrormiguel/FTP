@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using CliFx;
+﻿using CliFx;
 using CliFx.Infrastructure;
 using CommandFtpApp.Command.Credential;
 using FTPPersistence.Interfaces;
 using FTPPersistence.Repository;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace FTPCommandAppTest.Commands
@@ -22,9 +22,9 @@ namespace FTPCommandAppTest.Commands
             var servicesCollection = new ServiceCollection();
             servicesCollection.AddTransient<IDbFile, DbFileHandler>();
             servicesCollection.AddTransient<CredentialsCommandAdd>();
-            
+
             var provider = servicesCollection.BuildServiceProvider();
-            
+
             _pathOfDirectory = provider.GetService<IDbFile>()?.GetPathDirectory();
             _pathOfFile = provider.GetService<IDbFile>()?.GetPathFile();
 

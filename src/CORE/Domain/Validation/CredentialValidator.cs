@@ -10,11 +10,11 @@ namespace CORE.Domain.Validation
             RuleFor(x => x.HostName)
                 .NotEmpty()
                 .NotNull().WithMessage(x => $"{nameof(x.HostName)} must not be null.");
-            
+
             RuleFor(x => x.Id)
                 .NotEmpty()
                 .NotNull();
-            
+
             RuleFor(x => x.UserName).NotEmpty();
 
             RuleFor(x => x.Password).NotEmpty();

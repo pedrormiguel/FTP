@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using CliFx.Attributes;
+﻿using CliFx.Attributes;
 using CliFx.Infrastructure;
 using CORE.Domain.Common;
 using FTPPersistence.Interfaces;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Credentials = CORE.Domain.Entities.Credential;
 
 
@@ -16,15 +16,15 @@ namespace CommandFtpApp.Command.Credential
         public CredentialCommandUpdate(IDbFile dbFile) : base(dbFile)
         {
         }
-        
+
         [CommandOption("ID", shortName: 'I', IsRequired = true, Description = "ID of the credential.")]
         public new string Id { get; set; }
-        
+
         public override async ValueTask ExecuteAsync(IConsole console)
         {
             var credentials = await DbFile.ReadAll();
             console.WithColors(ConsoleColor.Yellow, ConsoleColor.Black);
- 
+
             if (!credentials.Data.Any())
             {
                 await console.Error.WriteLineAsync($"Not has register any credential.");
@@ -49,12 +49,12 @@ namespace CommandFtpApp.Command.Credential
         private Credentials GenerateCredential(Credentials credential)
         {
             Console.WriteLine($"{UserName}");
-            
+
             credential.HostName = string.IsNullOrEmpty(FtpServer) ? credential.HostName : FtpServer;
             credential.UserName = string.IsNullOrEmpty(UserName) ? credential.UserName : UserName;
             credential.Password = string.IsNullOrEmpty(Password) ? credential.Password : Password;
             credential.Port = string.IsNullOrEmpty(Port) ? credential.Port : int.Parse(Port);
-            
+
             return credential;
         }
     }

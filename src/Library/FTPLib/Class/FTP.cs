@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using FluentFTP;
 using FluentFTP.Helpers;
 using FTPLib.Class.Common;
 using FTPLib.Class.Dto;
 using FTPLib.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FTPLib.Class
 {

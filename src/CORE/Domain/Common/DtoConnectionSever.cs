@@ -1,5 +1,5 @@
-using System;
 using CORE.Domain.Entities;
+using System;
 
 namespace CORE.Domain.Common
 {

@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CliFx;
 using CliFx.Infrastructure;
 using CommandFtpApp.Command.Credential;
@@ -10,6 +7,9 @@ using FTPPersistence.Interfaces;
 using FTPPersistence.Repository;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace FTPCommandAppTest.Commands
@@ -20,18 +20,18 @@ namespace FTPCommandAppTest.Commands
         private readonly ServiceProvider _provider;
         private readonly string _pathOfFile;
         private readonly string _pathOfDirectory;
-        
+
         public FtpCommandCredentialUpdate()
         {
             var servicesCollection = new ServiceCollection();
             servicesCollection.AddTransient<IDbFile, DbFileHandler>();
             servicesCollection.AddTransient<CredentialCommandUpdate>();
-            
+
             _provider = servicesCollection.BuildServiceProvider();
-            
+
             _pathOfDirectory = _provider.GetService<IDbFile>()?.GetPathDirectory();
             _pathOfFile = _provider.GetService<IDbFile>()?.GetPathFile();
-            
+
             _app = new CliApplicationBuilder()
                 .AddCommand<CredentialCommandUpdate>()
                 .UseTypeActivator(_provider.GetService);
@@ -46,12 +46,12 @@ namespace FTPCommandAppTest.Commands
             var db = _provider.GetService<IDbFile>();
             var newValue = "CHANGE";
             string newPort = "22";
-            
+
             var credentials = new Credential()
-                { HostName = "UTEST", UserName = "UTEST", Password = "UTEST", Port = 21 };
-            
+            { HostName = "UTEST", UserName = "UTEST", Password = "UTEST", Port = 21 };
+
             await db.Add(credentials);
-            
+
             var command = new[] { "Credentials Update", "-I", $"{credentials.Id}", "--User", newValue, "--Server", newValue, "--Password", newValue, "--Port", newPort };
 
             // Act
@@ -60,13 +60,13 @@ namespace FTPCommandAppTest.Commands
             var items = await db.ReadAll();
             var selected = items.Data.FirstOrDefault(x => x.Contains(credentials.Id.ToString()));
             var dto = DtoConnectionSever.Map(selected);
-            
+
             // Assert
-            ValidateAndCleanFile.CleanFile(_pathOfFile,_pathOfDirectory).ShouldBeTrue();
+            ValidateAndCleanFile.CleanFile(_pathOfFile, _pathOfDirectory).ShouldBeTrue();
             dto.HostName.ShouldBe(newValue);
             dto.UserName.ShouldBe(newValue);
             dto.Password.ShouldBe(newValue);
             dto.Port.ToString().ShouldBe(newPort);
-        } 
+        }
     }
 }

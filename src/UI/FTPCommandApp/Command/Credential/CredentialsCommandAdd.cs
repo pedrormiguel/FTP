@@ -1,7 +1,7 @@
 using CliFx.Attributes;
 using CliFx.Infrastructure;
-using System.Threading.Tasks;
 using FTPPersistence.Interfaces;
+using System.Threading.Tasks;
 using Credentials = CORE.Domain.Entities.Credential;
 
 namespace CommandFtpApp.Command.Credential
@@ -21,7 +21,7 @@ namespace CommandFtpApp.Command.Credential
         public CredentialsCommandAdd(IDbFile dbFile) : base(dbFile)
         {
         }
-        
+
         public override ValueTask ExecuteAsync(IConsole console)
         {
             console.Output.WriteLine("Adding credentials");

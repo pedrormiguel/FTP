@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using CliFx;
+﻿using CliFx;
+using System.Threading.Tasks;
 
 namespace CommandFtpApp
 {
@@ -8,7 +8,7 @@ namespace CommandFtpApp
         public static async Task<int> Main(string[] args)
         {
             var servicesProvider = ContainerConfig.Configure();
-            
+
             return await new CliApplicationBuilder()
             .AddCommandsFromThisAssembly()
             .UseTypeActivator(servicesProvider.GetService)

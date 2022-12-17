@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using CORE.Domain.Common;
+﻿using CORE.Domain.Common;
 using CORE.Domain.Entities;
 using FTPLib.Class.Common;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FTPPersistence.Interfaces
 {

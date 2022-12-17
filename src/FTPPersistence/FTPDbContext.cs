@@ -5,7 +5,7 @@ namespace FTPPersistence
 {
     public class FtpDbContext : DbContext
     {
-        public FtpDbContext(DbContextOptions<FtpDbContext> options) 
+        public FtpDbContext(DbContextOptions<FtpDbContext> options)
             : base(options)
         {
         }

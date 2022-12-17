@@ -1,24 +1,24 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using CliFx.Attributes;
 using CliFx.Infrastructure;
 using CORE.Domain.Common;
 using FTPPersistence.Interfaces;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CommandFtpApp.Command.Credential
 {
-    
+
     [Command("Credentials Delete", Description = "Delete credential server registered.")]
     public class CredentialsCommandDelete : CredentialsBaseCommand
     {
         public CredentialsCommandDelete(IDbFile dbFile) : base(dbFile)
         {
         }
-        
+
         [CommandOption("ID", shortName: 'I', IsRequired = true, Description = "ID of the credential.")]
         public override string Id { get; init; }
-        
+
         public override async ValueTask ExecuteAsync(IConsole console)
         {
             var credentials = await DbFile.ReadAll();

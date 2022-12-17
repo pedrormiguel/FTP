@@ -1,9 +1,9 @@
-using System.Threading.Tasks;
-using FTPLib.Class;
 using CliFx;
 using CliFx.Attributes;
 using CliFx.Exceptions;
 using CliFx.Infrastructure;
+using FTPLib.Class;
+using System.Threading.Tasks;
 
 namespace CommandFtpApp.Command
 {

@@ -7,7 +7,7 @@ namespace CORE.Application.Contracts.Persistence
     public interface IAsyncRepository<T> where T : class
     {
         Task<T> GetByIdAsync(Guid id);
-    
+
         /// <summary>
         /// Get Event by Id
         /// </summary>

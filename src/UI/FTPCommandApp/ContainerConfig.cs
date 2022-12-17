@@ -10,7 +10,7 @@ namespace CommandFtpApp
         public static ServiceProvider Configure()
         {
             var servicesCollection = new ServiceCollection();
-            
+
             servicesCollection.AddSingleton<IDbFile, DbFileHandler>();
             servicesCollection.AddTransient<CredentialsCommandAdd>();
             servicesCollection.AddTransient<CredentialsCommandList>();

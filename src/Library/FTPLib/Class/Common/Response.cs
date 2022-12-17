@@ -1,5 +1,5 @@
-using System;
 using CORE.Application.Responses;
+using System;
 
 namespace FTPLib.Class.Common
 {

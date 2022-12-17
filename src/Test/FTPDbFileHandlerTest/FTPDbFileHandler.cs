@@ -1,12 +1,12 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using CORE.Domain.Entities;
 using FTPLib.Class.Dto;
 using FTPPersistence.Interfaces;
 using FTPPersistence.Repository;
 using Shouldly;
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace FTPDbFileHandlerTest
@@ -46,8 +46,8 @@ namespace FTPDbFileHandlerTest
             const string server = "TEST";
             const string pass = "TEST";
             const int port = 22;
-            var credential = new Credential 
-                {Id = id, UserName = name, Password = pass, Port = port, HostName = server};
+            var credential = new Credential
+            { Id = id, UserName = name, Password = pass, Port = port, HostName = server };
 
             // Act
             await _dbFileHandler.Add(credential);
@@ -60,7 +60,7 @@ namespace FTPDbFileHandlerTest
             response.Data.Password.ShouldBe(credential.Password);
             response.Data.Port.ShouldBe(credential.Port);
         }
-        
+
         [Fact]
         public async Task Should_Add_Success()
         {

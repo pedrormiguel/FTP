@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using FTPLib.Class.Common;
 using FTPLib.Class.Dto;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FTPLib.Interfaces
 {

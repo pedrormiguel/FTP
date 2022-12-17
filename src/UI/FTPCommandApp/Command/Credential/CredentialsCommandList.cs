@@ -1,11 +1,10 @@
-using System;
-using System.Threading.Tasks;
-using CliFx;
 using CliFx.Attributes;
 using CliFx.Infrastructure;
 using ConsoleTables;
 using CORE.Domain.Common;
 using FTPPersistence.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace CommandFtpApp.Command.Credential
 {

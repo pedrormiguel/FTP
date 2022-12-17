@@ -4,6 +4,6 @@ namespace CORE.Application.Contracts.Persistence
 {
     public interface ICredentialRepository : IAsyncRepository<Credential>
     {
-        
+
     }
 }

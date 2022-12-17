@@ -12,12 +12,13 @@ namespace FTPPersistence
             IConfiguration configuration)
         {
             services.AddDbContext<FtpDbContext>(
-                opt => {
+                opt =>
+                {
                     opt.UseSqlServer(configuration.GetConnectionString("FTPStringConnection"));
                 });
 
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
-            
+
             return services;
         }
     }

@@ -1,8 +1,8 @@
-using System.IO;
-using System.Threading.Tasks;
 using FTPLib.Class;
 using FTPLib.Class.Common;
 using Shouldly;
+using System.IO;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace FTPTestLib
