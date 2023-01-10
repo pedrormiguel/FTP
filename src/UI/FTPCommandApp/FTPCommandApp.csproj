@@ -1,14 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>CommandFtpApp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CliFx" Version="2.0.6" />
-    <PackageReference Include="Autofac" Version="6.2.0" />
+    <Compile Remove="Model\**" />
+    <EmbeddedResource Remove="Model\**" />
+    <None Remove="Model\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CliFx" Version="2.3.1" />
+    <PackageReference Include="Autofac" Version="6.5.0" />
     <PackageReference Include="ConsoleTables" Version="2.4.2" />
   </ItemGroup>
 
@@ -21,8 +27,5 @@
     <None Remove="Model\" />
     <None Remove="Microsoft.Extensions.DependencyInjection" />
     <None Remove="Autofac" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
   </ItemGroup>
 </Project>

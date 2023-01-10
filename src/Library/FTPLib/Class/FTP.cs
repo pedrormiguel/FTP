@@ -75,7 +75,7 @@ namespace FTPLib.Class
 
                 foreach (FtpListItem item in items)
                 {
-                    if (item.Type == FtpFileSystemObjectType.File)
+                    if (item.Type == FtpFileSystemObjectType.File )
                         directory.Add(DtoItem.Map(item.FullName, item.OwnerPermissions.ToString(), item.Size));
 
                     response.Data = directory;
@@ -105,7 +105,7 @@ namespace FTPLib.Class
 
             try
             {
-                status = await _client.UploadFileAsync(localPath, remotePath, createRemoteDir: true);
+                status =  await _client.UploadFileAsync(localPath, remotePath, createRemoteDir: true);
             }
             catch (Exception ex)
             {
