@@ -47,10 +47,12 @@ namespace FTPCommandAppTest.Commands
             var args = new[] { "Credentials Delete", "-I", $"{credential.Id}" };
 
             await _app.UseConsole(console).Build().RunAsync(args);
-            var stdOutput = console.ReadOutputString();
+            var stdOutput = console.ReadOutputString()
+                                   .Replace("\n", " ")
+                                   .Replace("\r", ""); 
 
             // Assert
-            stdOutput.ShouldBe($"Element deleted. {credential.HostName}\n");
+            stdOutput.ShouldBe($"Element deleted. {credential.HostName} ");
             ValidateAndCleanFile.CleanFile(_pathOfFile, _pathOfDirectory).ShouldBeTrue();
         }
 

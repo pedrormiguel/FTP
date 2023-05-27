@@ -5,6 +5,11 @@
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 	<ItemGroup>
+	  <Compile Remove="DB\**" />
+	  <EmbeddedResource Remove="DB\**" />
+	  <None Remove="DB\**" />
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="CliFx" Version="2.3.1" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
 		<PackageReference Include="Shouldly" Version="4.1.0" />
@@ -20,8 +25,5 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\UI\FTPCommandApp\FTPCommandApp.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="DB" />
 	</ItemGroup>
 </Project>

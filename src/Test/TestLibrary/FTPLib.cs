@@ -62,7 +62,7 @@ namespace FTPTestLib
         public async Task Should_DownloadFile_Successful()
         {
             //Arrange
-            var pathDirectory = "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Test/TestLibrary/download";
+            var pathDirectory = "/Users/pedro/Projects/FtpClientConsole/src/Test/TestLibrary/download";
             var localPathToDownload = $"{pathDirectory}/test.jpg";
             var remotePathFile = "/download/Winter.jpg";
             var client = new Ftp(host: "demo.wftpserver.com", "demo", "demo");
@@ -83,7 +83,7 @@ namespace FTPTestLib
         public async Task Should_DownloadFile_SkippedFile()
         {
             //Arrange
-            var pathDirectory = "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Test/TestLibrary/download";
+            var pathDirectory = "/Users/pedro/Projects/FtpClientConsole/src/Test/TestLibrary/download";
             var localPathToDownload = $"{pathDirectory}/Summer.jpg";
             var remotePathFile = "/download/Summer.jpg";
             var client = new Ftp(host: "demo.wftpserver.com", "demo", "demo");
@@ -102,7 +102,7 @@ namespace FTPTestLib
         public async Task Should_DownloadFile_WithNonExistingFile()
         {
             //Arrange
-            var pathDirectory = "/Users/pedromiguelruiznunez/Projects/FtpClientConsole/src/Test/TestLibrary/download";
+            var pathDirectory = "/Users/pedro/Projects/FtpClientConsole/src/Test/TestLibrary/download";
             var localPathToDownload = $"{pathDirectory}/test.jpg";
             var remotePathFile = "/download/FileDoesnotExist.jpg";
             var client = new Ftp(host: "demo.wftpserver.com", "demo", "demo");

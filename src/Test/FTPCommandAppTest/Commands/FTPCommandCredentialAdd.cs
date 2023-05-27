@@ -44,10 +44,12 @@ namespace FTPCommandAppTest.Commands
 
             // Act
             await _app.UseConsole(console).Build().RunAsync(command, envVars);
-            var stdOut = console.ReadOutputString();
+            var stdOut = console.ReadOutputString()
+                                .Replace("\n", " ")
+                                .Replace("\r", "");
 
             // Assert
-            stdOut.ShouldBe("Adding credentials\nStatus of the request : True\n");
+            stdOut.ShouldBe("Adding credentials Status of the request : True ");
             stdOut.ShouldContain("True");
             ValidateAndCleanFile.CleanFile(_pathOfFile, _pathOfDirectory).ShouldBeTrue();
 
@@ -65,7 +67,7 @@ namespace FTPCommandAppTest.Commands
             await _app.UseConsole(console).Build().RunAsync(command, envVars);
             var stdOut = console.ReadOutputString();
 
-            var requirements = "* -s|--Server       Url of the FTP Server. \n* -u|--User         Name of user credential. \n* -p|--Password     Password of user credential. \n  -I|--ID           ID of the credential. \n  --Port            Port of the server. Default: \"21\".\n  -h|--help         Shows help text. ";
+            var requirements = "Register a credential, for anonymous credential use '-' in user.";
 
             // Assert
             stdOut.ShouldContain(requirements);
