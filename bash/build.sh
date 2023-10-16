@@ -1,1 +1,1 @@
-dotnet build './src/../UI/FTPCommandApp/
+dotnet build './../src/UI/FTPCommandApp/'
