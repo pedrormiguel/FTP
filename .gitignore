@@ -9,7 +9,8 @@
 *.user
 *.userosscache
 *.sln.docstates
-src/UI/FTPConsoleApp/DB/File/txt/DB.txt
+src/UI/FTPConsoleApp/DB/
+src/Test/FTPCommandAppTest/DB/
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
